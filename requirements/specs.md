@@ -17,11 +17,11 @@
 ## Database Structure
 * Router functionalities are maintian in a database supported by three tables with following structure.
 
-|Experiment_info |
+|experiment_info |
 |----------------|
 |id              |
 |actual_url      |
-|shoten_url      |
+|short_url      |
 |num_participants|
 |status          |
 
@@ -30,7 +30,7 @@
 |id           |
 |gallup_id    |
 |randomized_id|
-|arrival_time |
+|last_arrival_time |
 
 |user_experiment|
 |---------------|
@@ -38,7 +38,8 @@
 |experiment_id  |
 |arrival_time
 |send_off_time  |
-|waited_time    |
+
+* Wait time can be calculated by the difference between arrival time and send off time.
 
 * When user arrives to the router we log the arrival time of the user in the `user_info` table and when user get send off to an experiment the arrival time for the `user_info` table get coppied to the `user_experiment` table's `arrival_time`. Along with that we log time the user was sent to an experiment along with the time that user waited from the arrival. 
 
