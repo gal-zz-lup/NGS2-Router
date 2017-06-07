@@ -1,28 +1,40 @@
 # Router schema
 # --- !Ups
 
-CREATE TABLE Experiment (
+CREATE TABLE admin (
     id bigint(20) NOT NULL AUTO_INCREMENT,
-    actual_url varchar(255) NOT NULL,
-    shorten_url varchar(255) NOT NULL,
-    number_participants int(5) NOT NULL,
+    username varchar(255) NOT NULL AUTO_INCREMENT,
+    password varchar(255) NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE experiment (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    experiment_url varchar(255) NOT NULL,
+    n_participants int(5) NOT NULL,
     status varchar(255) NOT NULL,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE User (
+CREATE TABLE `user` (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   gallup_id bigint(20) NOT NULL,
+  email varchar(255) NOT NULL,
   randomized_id bigint(20) NOT NULL,
   arrival_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
 );
 
-CREATE TABLE UserExperiment_info (
+CREATE TABLE user_experiment (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  FOREIGN KEY (user_id) REFERENCES User(id),
-  FOREIGN KEY (experiment_id) REFERENCES Experiment(id),
+  FOREIGN KEY (user_id) REFERENCES `user`(id),
+  FOREIGN KEY (experiment_id) REFERENCES experiment(id),
   arrival_time TIMESTAMP NOT NULL,
-  send_off_time TIMESTAMP NOT NULL,
-  wait_time int(50) NOT NULL
+  send_off_time TIMESTAMP NOT NULL
 );
+
+# --- !Downs
+DROP TABLE experiment;
+DROP TABLE `user`;
+DROP TABLE user_experiment; 
 
