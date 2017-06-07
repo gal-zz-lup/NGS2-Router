@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * Created by anuradha_uduwage.
  */
-public class UserExperiment {
+public class ExperimentUserInfo {
 
     private final int userExperimentId;
     private final int userId;

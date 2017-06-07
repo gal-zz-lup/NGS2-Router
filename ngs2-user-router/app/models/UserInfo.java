@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 /**
  * Created by anuradha_uduwage.
  */
-public class User {
+public class UserInfo {
 
     private final int userId;
     private final int gallupId;
@@ -19,7 +19,7 @@ public class User {
      * @param randomizedId
      * @param arrivalTime
      */
-    public User(int userId, int gallupId, Long randomizedId, Timestamp arrivalTime) {
+    public UserInfo(int userId, int gallupId, Long randomizedId, Timestamp arrivalTime) {
         this.userId = userId;
         this.gallupId = gallupId;
         this.randomizedId = randomizedId;
