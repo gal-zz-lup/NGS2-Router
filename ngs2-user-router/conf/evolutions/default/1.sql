@@ -16,7 +16,7 @@ CREATE TABLE experiment (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE `user` (
+CREATE TABLE user_info (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   gallup_id bigint(20) NOT NULL,
   email varchar(255) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE user_experiment (
+CREATE TABLE experiment_user_info (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   FOREIGN KEY (user_id) REFERENCES `user`(id),
   FOREIGN KEY (experiment_id) REFERENCES experiment(id),
@@ -35,6 +35,6 @@ CREATE TABLE user_experiment (
 
 # --- !Downs
 DROP TABLE experiment;
-DROP TABLE `user`;
-DROP TABLE user_experiment; 
+DROP TABLE user_info;
+DROP TABLE experiment_user_info;
 
