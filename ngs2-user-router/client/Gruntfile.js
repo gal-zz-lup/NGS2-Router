@@ -69,6 +69,17 @@ module.exports = function (grunt) {
 
     // The actual grunt server settings
     connect: {
+      // Configuring grunt proxy.
+      // prior to setting this go to client folder and install Node.js package
+      // to handle proxy settings.
+      proxies: [
+        {
+          context: '/app', // the context of the data service
+          host: 'localhost', // wherever the data service is running
+          port: 9090, // the port that the data service is running on
+          changeOrigin: true
+        }
+      ],
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
@@ -78,7 +89,28 @@ module.exports = function (grunt) {
       livereload: {
         options: {
           open: true,
+
           middleware: function (connect) {
+
+            var middlewares = [];
+
+            //setup the proxy
+            middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
+
+            //serve static files
+            middlewares.push(connect.static('.tmp'));
+            middlewares.push(connect().use(
+              '/bower_components',
+              connect.static('./bower_components')
+            ));
+            middlewares.push(connect().use(
+              '/app/style',
+              connect.static('./app/styles')
+            ));
+            middlewares.push(connect.static(appConfig.app));
+
+            return middlewares;
+            /*
             return [
               connect.static('.tmp'),
               connect().use(
@@ -90,7 +122,7 @@ module.exports = function (grunt) {
                 connect.static('./app/styles')
               ),
               connect.static(appConfig.app)
-            ];
+            ];*/
           }
         }
       },
@@ -220,7 +252,7 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -426,6 +458,8 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-connect-proxy');
+
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -436,6 +470,8 @@ module.exports = function (grunt) {
       'clean:server',
       'wiredep',
       'concurrent:server',
+      'autoprefixer:server',
+      'configureProxies:server',
       'postcss:server',
       'connect:livereload',
       'watch'
