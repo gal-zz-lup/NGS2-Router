@@ -1,9 +1,11 @@
 package models;
 
+import com.avaje.ebean.Model;
+
 /**
  * Created by anuradha_uduwage.
  */
-public class Experiment {
+public class Experiment extends Model {
 
     private final int id;
     private final String actualURL;

@@ -1,11 +1,16 @@
 package models;
 
+import com.avaje.ebean.Model;
+import javax.persistence.*;
+
+
 import java.sql.Timestamp;
 
 /**
  * Created by anuradha_uduwage.
  */
-public class ExperimentUserInfo {
+@Entity
+public class ExperimentUserInfo extends Model {
 
     private final int userExperimentId;
     private final int userId;
@@ -21,6 +26,7 @@ public class ExperimentUserInfo {
         this.arrivalTime = arrivalTime;
         this.sendOffTime = sendOffTime;
     }
+
 
     public int getUserExperimentId() {
         return userExperimentId;
