@@ -1,73 +1,43 @@
 package models;
 
 import com.avaje.ebean.Model;
+import play.data.format.Formats;
+import play.data.validation.Constraints;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.Constraint;
+import java.sql.Timestamp;
 
 /**
  * Created by anuradha_uduwage.
  */
+@Entity
 public class Experiment extends Model {
 
-    private final int id;
-    private final String actualURL;
-    private final String shortenURL;
-    private final int numberOfParticipants;
-    private final String status;
+    @Id
+    public long id;
 
-    /**
-     *
-     * @param id
-     * @param actualURL
-     * @param shortenURL
-     * @param numberOfParticipants
-     * @param status
-     */
-    public Experiment(int id, String actualURL, String shortenURL, int numberOfParticipants, String status) {
-        this.id = id;
-        this.actualURL = actualURL;
-        this.shortenURL = shortenURL;
-        this.numberOfParticipants = numberOfParticipants;
-        this.status = status;
-    }
+    @Column(length = 255, unique = true, nullable = false)
+    @Constraints.MaxLength(255)
+    @Constraints.Required
+    public String actualURL;
 
-    /**
-     *
-     * @return
-     */
-    public int getId() {
-        return id;
-    }
+    @Column(length = 255, unique = true, nullable = false)
+    @Constraints.MaxLength(255)
+    @Constraints.Required
+    public String shortenURL;
 
-    /**
-     *
-     * @return
-     */
-    public String getActualURL() {
-        return actualURL;
-    }
+    public int numberOfParticipants;
 
-    /**
-     *
-     * @return
-     */
-    public String getShortenURL() {
-        return shortenURL;
-    }
+    @Column(columnDefinition = "TEXT")
+    @Constraints.Required
+    public String status;
 
-    /**
-     *
-     * @return
-     */
-    public int getNumberOfParticipants() {
-        return numberOfParticipants;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getStatus() {
-        return status;
-    }
+    @Constraints.Required
+    @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Timestamp createdTime;
 
 
 

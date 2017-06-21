@@ -1,61 +1,40 @@
 package models;
 
+import play.data.format.Formats;
+import play.data.validation.Constraints;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.sql.Timestamp;
 
 /**
  * Created by anuradha_uduwage.
  */
+@Entity
 public class UserInfo {
 
-    private final int userId;
-    private final int gallupId;
-    private final Long randomizedId;
-    private final Timestamp arrivalTime;
+    @Id
+    @Constraints.Required
+    public Long userId;
 
-    /**
-     *
-     * @param userId
-     * @param gallupId
-     * @param randomizedId
-     * @param arrivalTime
-     */
-    public UserInfo(int userId, int gallupId, Long randomizedId, Timestamp arrivalTime) {
-        this.userId = userId;
-        this.gallupId = gallupId;
-        this.randomizedId = randomizedId;
-        this.arrivalTime = arrivalTime;
-    }
+    @Constraints.Required
+    public Long gallupId;
 
-    /**
-     *
-     * @return
-     */
-    public int getUserId() {
-        return userId;
-    }
+    @Column(length = 255, unique = true, nullable = false)
+    @Constraints.MaxLength(255)
+    @Constraints.Required
+    @Constraints.Email
+    public String email;
 
-    /**
-     *
-     * @return
-     */
-    public int getGallupId() {
-        return gallupId;
-    }
+    @Column(columnDefinition = "TEXT")
+    public String language;
 
-    /**
-     *
-     * @return
-     */
-    public Long getRandomizedId() {
-        return randomizedId;
-    }
+    @Constraints.Required
+    public Long randomizedId;
 
-    /**
-     *
-     * @return
-     */
-    public Timestamp getArrivalTime() {
-        return arrivalTime;
-    }
+    @Constraints.Required
+    @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Timestamp arrivalTime;
 
 }
