@@ -12,3 +12,6 @@ libraryDependencies ++= Seq(
   javaWs
 )
 libraryDependencies += evolutions
+
+playEbeanModels in Compile := Seq("models.*")
+playEbeanDebugLevel := 4
