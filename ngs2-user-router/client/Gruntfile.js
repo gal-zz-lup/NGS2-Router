@@ -27,6 +27,14 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
+    autoprefixer: {
+      options: {
+
+      },
+      server: {
+
+      }
+    },
 
     // Project settings
     yeoman: appConfig,

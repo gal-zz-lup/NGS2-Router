@@ -1,0 +1,22 @@
+<tr ng-class="{'info':editing, 'active':hover}" ng-mouseover="hover=true" ng-mouseleave="hover=false">
+  <td>{{experiment.id}}</td>
+  <td ng-if="editing"><input type="text" size="30" ng-model="experiment.actual_url"></td>
+  <td ng-if="!editing">{{experiment.actual_url}}</td>
+  <td ng-if="editing"><input type="number" size="2" ng-model="experiment.num_participants"></td>
+  <td ng-if="!editing">{{experiment.num_participants}}</td>
+  <td ng-if="!editing">
+    {{experiment.status}}
+  </td>
+  <td ng-if="editing">
+    <button ng-style="{'visibility' : editing ? 'visible' : 'hidden' }" ng-click="toggleExperiment(experiment)" class="btn btn-default btn-xs form-inline">
+      <span ng-class="{'glyphicon-stop' : experiment.status === 'ACTIVE', 'glyphicon-play' : experiment.status === 'STOPPED'}" class="glyphicon" aria-hidden="true"></span>
+    </button>
+  </td>
+  <td ng-if="!editing">{{experiment.priority}}</td>
+  <td ng-if="editing"><input type="number" size="2" ng-model="experiment.priority"></td>
+  <td>
+    <button ng-style="{'visibility' : (hover || editing) ? 'visible' : 'hidden'}" ng-click="editExperiment()" class="btn btn-default btn-xs form-inline">
+      <span ng-class="{'glyphicon-ok' : editing, 'glyphicon-pencil' : !editing}" class="glyphicon" aria-hidden="true"></span>
+    </button>
+  </td>
+</tr>

@@ -1,0 +1,28 @@
+<div>
+    <div class="pull-right">
+      <button ng-click="importUsers()" class="btn btn-default btn-xs">
+        <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
+        Import Users
+      </button>
+      <button ng-click="exportUsers()" class="btn btn-default btn-xs">
+        <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
+        Export Users
+      </button>
+    </div>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Gallup ID</th>
+        <th>Language</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="user in users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.gallup_id }}</td>
+        <td>{{ user.language }}</td>
+      </tr>
+      </tbody>
+    </table>
+</div>
