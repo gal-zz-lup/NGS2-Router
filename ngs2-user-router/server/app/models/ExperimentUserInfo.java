@@ -32,17 +32,4 @@ public class ExperimentUserInfo extends Model {
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Timestamp sendOffTime;
 
-
 }
-/*
-CREATE TABLE experiment_user_info (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  user_info_id bigint(20) NOT NULL,
-  FOREIGN KEY (user_info_id) REFERENCES user_info(id),
-  experiment_id bigint(20) NOT NULL,
-  FOREIGN KEY (experiment_id) REFERENCES experiment(id),
-  arrival_time TIMESTAMP NOT NULL,
-  send_off_time TIMESTAMP NOT NULL,
-  PRIMARY KEY (id)
-);
- */
