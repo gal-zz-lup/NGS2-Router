@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Finder;
 import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
 
@@ -13,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
  * Created by anuradha_uduwage on 6/7/17.
  */
 @Entity
-public class Admin {
+public class Admin extends Model {
 
     @Id
     public Long id;
@@ -22,17 +23,18 @@ public class Admin {
     @Constraints.MaxLength(255)
     @Constraints.Required
     @Constraints.Email
-    public String username;
+    public String email;
 
     @Column(length = 64, nullable = false)
     private byte[] shaPassword;
 
     /**
      * Set email address as the username.
-     * @param username email address as the username
+     * @param email email address as the username
      */
-    public void setUsername(String username) {
-        this.username = username.toLowerCase();
+    public void setEmail(String email) {
+
+        this.email = email.toLowerCase();
     }
 
     /**
@@ -40,8 +42,22 @@ public class Admin {
      * @param password
      */
     public void setPassword(String password) {
+
         this.shaPassword = getShar512(password);
     }
+
+
+    public static final Finder<Long, Admin> find = new Finder<Long, Admin>(
+            Long.class, Admin.class);
+
+    public static Admin findByUsernameAndPassword(String email, String password) {
+        return find
+                .where()
+                .eq("email", email.toLowerCase())
+                .eq("shaPassword", getShar512(password))
+                .findUnique();
+    }
+
 
 
     public static byte[] getShar512(String value) {
@@ -53,8 +69,5 @@ public class Admin {
             throw new RuntimeException(ex);
         }
     }
-
-
-
 
 }
