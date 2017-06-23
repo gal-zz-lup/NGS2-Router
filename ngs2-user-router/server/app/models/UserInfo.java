@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Created by anuradha_uduwage.
@@ -27,10 +28,10 @@ public class UserInfo {
     @Constraints.Email
     public String email;
 
-    @Column(columnDefinition = "TEXT")
+    @Constraints.MaxLength(16)
     public String language;
 
-    @Constraints.Required
+    @Column(columnDefinition = "TEXT")
     public Long randomizedId;
 
     @Constraints.Required
