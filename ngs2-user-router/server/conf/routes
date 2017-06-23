@@ -11,3 +11,11 @@ GET     /message                    controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+#PUT     /experiments                controllers.ExperimentController.createExperiment
+
+#POST    /experiments/:experimentId  controllers.ExperimentController.updateExperiment(experimentId:Long)
+
+#DELETE  /experiments/:experimentId  controllers.ExperimentController.deleteExperiment(experimentId:Long)
+
+#GET     /experiments/               controllers.ExperimentController.getAllExperiments()
