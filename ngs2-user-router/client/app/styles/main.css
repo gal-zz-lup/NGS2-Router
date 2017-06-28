@@ -85,3 +85,12 @@ body {
 input[type='number'] {
   width: 4em;
 }
+
+#alerts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+}
+

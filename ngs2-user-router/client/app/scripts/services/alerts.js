@@ -8,9 +8,9 @@
  * Service in the clientApp.
  */
 angular.module('clientApp')
-  .factory('alertService', function($timeout) {
+  .factory('AlertService', ['$rootScope', '$timeout', function($scope, $timeout) {
 
-      var ALERT_TIMEOUT = 5000;
+      var ALERT_TIMEOUT = 3000;
 
       function add(type, msg, timeout) {
 
@@ -24,7 +24,7 @@ angular.module('clientApp')
           }, ALERT_TIMEOUT);
         }
 
-        return alerts.push({
+        return $scope.alerts.push({
           type: type,
           msg: msg,
           close: function() {
@@ -34,19 +34,19 @@ angular.module('clientApp')
       }
 
       function closeAlert(alert) {
-        return closeAlertIdx(alerts.indexOf(alert));
+        return closeAlertIdx($scope.alerts.indexOf(alert));
       }
 
       function closeAlertIdx(index) {
-        return alerts.splice(index, 1);
+        return $scope.alerts.splice(index, 1);
       }
 
       function clear(){
-        alerts = [];
+        $scope.alerts = [];
       }
 
       function get() {
-        return alerts;
+        return $scope.alerts;
       }
 
       var service = {
@@ -55,9 +55,10 @@ angular.module('clientApp')
           closeAlertIdx: closeAlertIdx,
           clear: clear,
           get: get
-        },
-        alerts = [];
+        };
+
+      $scope.alerts = [];
 
       return service;
     }
-  );
+  ]);
