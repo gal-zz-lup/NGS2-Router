@@ -19,6 +19,7 @@ angular
     'ui.bootstrap',
     'app.directives.experiment',
     'app.directives.users',
+    'app.modals.create_experiment',
     'app.modals.export_users',
     'app.modals.import_users',
     'app.services.experiment',

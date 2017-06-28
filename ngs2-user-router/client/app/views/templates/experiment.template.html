@@ -1,5 +1,7 @@
 <tr ng-class="{'info':editing, 'active':hover}" ng-mouseover="hover=true" ng-mouseleave="hover=false" ng-if="!deleted">
   <td>{{experiment.id}}</td>
+  <td ng-if="editing"><input type="text" size="30" ng-model="experiment.experiment_name"></td>
+  <td ng-if="!editing">{{experiment.experiment_name}}</td>
   <td ng-if="editing"><input type="text" size="30" ng-model="experiment.actual_url"></td>
   <td ng-if="!editing">{{experiment.actual_url}}</td>
   <td ng-if="editing"><input type="number" size="2" ng-model="experiment.num_participants"></td>
