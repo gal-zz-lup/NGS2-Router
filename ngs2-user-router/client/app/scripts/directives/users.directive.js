@@ -2,6 +2,17 @@
   'use strict';
 
   function UsersController($scope, $uibModal, UsersService) {
+    $scope.hover = false;
+
+    $scope.deleteUser = function(user) {
+      if (confirm("Are you sure you want this delete this user? This cannot be undone.")) {
+        UsersService.removeUser(user.id)
+          .then(function () {
+            $scope.users.splice($scope.users.indexOf(user), 1);
+          });
+      }
+    };
+
     $scope.importUsers = function() {
       var modalInstance = $uibModal.open({
         animation: true,

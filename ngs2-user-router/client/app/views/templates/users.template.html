@@ -15,13 +15,19 @@
         <th>ID</th>
         <th>Gallup ID</th>
         <th>Language</th>
+        <th><!-- Actions --></th>
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="user in users">
+      <tr ng-repeat="user in users" ng-mouseover="hover=true" ng-mouseleave="hover=false" ng-class="{'active':hover}">
         <td>{{ user.id }}</td>
         <td>{{ user.gallup_id }}</td>
         <td>{{ user.language }}</td>
+        <td align="right">
+          <button ng-style="{'visibility' : (hover) ? 'visible' : 'hidden'}" ng-click="deleteUser(user)" class="btn btn-default btn-xs form-inline">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+          </button>
+        </td>
       </tr>
       </tbody>
     </table>
