@@ -44,6 +44,12 @@
             'url': 'https://brdbrd.net/D9E1F3'
           });
         });
+      },
+      removeUser: function(userId) {
+        return $q(function(resolve) {
+          resolve({
+          });
+        });
       }
     };
   }

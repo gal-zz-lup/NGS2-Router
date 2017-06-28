@@ -1,4 +1,4 @@
-<tr ng-class="{'info':editing, 'active':hover}" ng-mouseover="hover=true" ng-mouseleave="hover=false">
+<tr ng-class="{'info':editing, 'active':hover}" ng-mouseover="hover=true" ng-mouseleave="hover=false" ng-if="!deleted">
   <td>{{experiment.id}}</td>
   <td ng-if="editing"><input type="text" size="30" ng-model="experiment.actual_url"></td>
   <td ng-if="!editing">{{experiment.actual_url}}</td>
@@ -13,10 +13,13 @@
     </button>
   </td>
   <td ng-if="!editing">{{experiment.priority}}</td>
-  <td ng-if="editing"><input type="number" size="2" ng-model="experiment.priority"></td>
-  <td>
+  <td ng-if="editing"><input type="number" size="2" min="0" ng-model="experiment.priority"></td>
+  <td align="right">
     <button ng-style="{'visibility' : (hover || editing) ? 'visible' : 'hidden'}" ng-click="editExperiment()" class="btn btn-default btn-xs form-inline">
       <span ng-class="{'glyphicon-ok' : editing, 'glyphicon-pencil' : !editing}" class="glyphicon" aria-hidden="true"></span>
+    </button>
+    <button ng-style="{'visibility' : (hover) ? 'visible' : 'hidden', 'display' : (editing) ? 'none' : 'inline-block'}" ng-click="deleteExperiment(experiment)" class="btn btn-default btn-xs form-inline">
+      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
     </button>
   </td>
 </tr>

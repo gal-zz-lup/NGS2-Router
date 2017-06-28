@@ -34,6 +34,12 @@
             'priority': 3
           });
         });
+      },
+      removeExperiment: function(experimentId) {
+        return $q(function(resolve) {
+          resolve({
+          });
+        });
       }
     };
   }
