@@ -1,6 +1,6 @@
-@(form: Form[LoginForm])
+@(form: FormFactory[LoginForm])
 @main("Login") {
-    @helper.form(routes.au.authenticate()) {
+    @helper.form(routes.AuthenticationController.authenticateAdmin()) {
         <h1>Login</h1>
         <p>
             <input type="text" name="name" placeholder="Name" value="@form("name").value">

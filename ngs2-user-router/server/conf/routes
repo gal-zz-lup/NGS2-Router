@@ -11,9 +11,10 @@
 
 # Map static resources from the /public folder to the /assets URL path
 # GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-GET       /                          controllers.ApplicationController.index()
-POST      /login                     controllers.AuthenticationController.login()
-POST      /upload                    controllers.ApplicationController.uploadCSVFile()
+GET     /                          controllers.ApplicationController.index()
+POST    /login                     controllers.AuthenticationController.login()
+POST    /login                     controllers.AuthenticationController.authenticateAdmin()
+POST    /upload                    controllers.ApplicationController.uploadCSVFile()
 #PUT     /experiments                controllers.ExperimentController.createExperiment
 
 #POST    /experiments/:experimentId  controllers.ExperimentController.updateExperiment(experimentId:Long)
