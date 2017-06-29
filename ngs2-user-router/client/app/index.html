@@ -22,6 +22,10 @@
 <![endif]-->
 
 <!-- Add your site or application content here -->
+<div id="alerts">
+  <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert(alert)">{{alert.msg}}</div>
+</div>
+
 <div class="header">
   <div class="navbar navbar-default" role="navigation">
     <div class="container">
@@ -49,7 +53,6 @@
 <div class="container">
   <div ng-view=""></div>
 </div>
-
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>
