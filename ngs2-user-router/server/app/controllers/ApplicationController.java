@@ -1,5 +1,7 @@
 package controllers;
 
+import models.Admin;
+import play.data.Form;
 import play.data.FormFactory;
 import play.data.validation.Constraints;
 import play.mvc.Controller;
@@ -27,7 +29,13 @@ public class ApplicationController extends Controller {
     FormFactory formFactory;
 
     public Result login() {
-        //final Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
+        final Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
+        if (loginForm.hasErrors()) {
+            return badRequest(loginForm.errorsAsJson());
+        }
+        Login loggingInUser = loginForm.get();
+        //Admin adminUser = Admin.
+
         return ok("Success!!!");
     }
 
