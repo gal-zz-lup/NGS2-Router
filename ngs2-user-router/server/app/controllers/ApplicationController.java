@@ -41,8 +41,9 @@ public class ApplicationController extends Controller {
                 String contentType = csvFile.getContentType();
                 File file = csvFile.getFile();
                 //need to parse the file and convert to json
-                return ok("Success!!!");
+
             }
+            return ok("File upload success!!!");
         } catch (Exception ex) {
             return internalServerError();
         }
