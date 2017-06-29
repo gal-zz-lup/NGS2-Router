@@ -8,6 +8,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
+import views.html.index;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -28,15 +29,8 @@ public class ApplicationController extends Controller {
     @Inject
     FormFactory formFactory;
 
-    public Result login() {
-        final Form<Login> loginForm = formFactory.form(Login.class).bindFromRequest();
-        if (loginForm.hasErrors()) {
-            return badRequest(loginForm.errorsAsJson());
-        }
-        Login loggingInUser = loginForm.get();
-        //Admin adminUser = Admin.
-
-        return ok("Success!!!");
+    public Result index() {
+        return ok(index.render(session("user")));
     }
 
     public Result uploadCSVFile() {
