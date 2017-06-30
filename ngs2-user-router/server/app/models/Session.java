@@ -8,9 +8,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 /**
- * Created by anuradha_uduwage on 6/27/17.
+ * Created by anuradha_uduwage.
  */
-public class Session extends Model {
+public class Session {
 
     @ManyToOne
     @Constraints.Required
@@ -23,6 +23,7 @@ public class Session extends Model {
         this.loggedInDate = loggedIn;
         this.lastSeenDate = lastSeen;
     }
+
 
     public Admin getAdminUser() {
         return adminUser;

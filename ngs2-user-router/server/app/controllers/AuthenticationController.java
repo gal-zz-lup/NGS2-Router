@@ -21,6 +21,7 @@ public class AuthenticationController extends Controller{
     private final UserSessionWrapper userSessionWrapper;
 
     public AuthenticationController() {
+
         userSessionWrapper = UserSessionWrapper.instance;
     }
 
@@ -43,9 +44,9 @@ public class AuthenticationController extends Controller{
                     } else {
                         // do we need to redirect the user to login or
                         // bit confuse since regular traffic doesn't need to go here.
+                        return redirect(routes.AuthenticationController.login());
                     }
                 }).orElse(redirect(routes.AuthenticationController.login()));
-        return ok("TODO: need to implement");
     }
 
 

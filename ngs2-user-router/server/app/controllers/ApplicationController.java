@@ -8,6 +8,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
+import play.mvc.Security;
 import views.html.index;
 
 import javax.inject.Inject;
@@ -29,6 +30,7 @@ public class ApplicationController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    @Security.Authenticated
     public Result index() {
         return ok(index.render(session("user")));
     }
