@@ -44,8 +44,4 @@ public class Admin extends Model {
         return password;
     }
 
-
-
-
-
 }

@@ -39,6 +39,51 @@ public class Experiment extends Model {
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Timestamp createdTime;
 
+    public long getId() {
+        return id;
+    }
 
+    public String getActualURL() {
+        return actualURL;
+    }
 
+    public String getShortenURL() {
+        return shortenURL;
+    }
+
+    public int getNumberOfParticipants() {
+        return numberOfParticipants;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setActualURL(String actualURL) {
+        this.actualURL = actualURL;
+    }
+
+    public void setShortenURL(String shortenURL) {
+        this.shortenURL = shortenURL;
+    }
+
+    public void setNumberOfParticipants(int numberOfParticipants) {
+        this.numberOfParticipants = numberOfParticipants;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
+    }
 }
