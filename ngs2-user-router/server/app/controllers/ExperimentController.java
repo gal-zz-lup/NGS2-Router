@@ -1,5 +1,6 @@
 package controllers;
 
+import com.avaje.ebean.Model.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Experiment;
 import play.libs.Json;
@@ -11,6 +12,8 @@ import util.Utility;
  * Created by anuradha_uduwage.
  */
 public class ExperimentController extends Controller {
+
+    public static Finder<Long, Experiment> find = new Finder<Long, Experiment>(Experiment.class);
 
     public Result createExperiment() {
         JsonNode json = request().body().asJson();
