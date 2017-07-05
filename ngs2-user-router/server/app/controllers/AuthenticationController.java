@@ -1,14 +1,16 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import models.Admin;
 import play.data.Form;
 import play.data.FormFactory;
+import play.libs.Json;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
-import services.UserSessionWrapper;
-import views.html.login;
+import play.mvc.Security;
 
 import javax.inject.Inject;
-import java.util.Optional;
 
 /**
  * Created by anuradha_uduwage.
@@ -18,36 +20,51 @@ public class AuthenticationController extends Controller{
     @Inject
     FormFactory formFactory;
 
-    private final UserSessionWrapper userSessionWrapper;
+    public final static String AUTH_TOKEN_HEADER = "X-AUTH-TOKEN";
+    public final static String AUTH_TOKEN = "authenticationToken";
 
-    public AuthenticationController() {
-
-        userSessionWrapper = UserSessionWrapper.instance;
+    public static Admin getAdmin() {
+        return (Admin) Http.Context.current().args.get("user");
     }
 
+
+    /**
+     * Method establish authentication token and returns the authentication token.
+     * @return
+     */
     public Result login() {
-        return ok(login.render(formFactory.form(LoginForm.class)));
+
+        Form<LoginForm> loginForm = formFactory.form(LoginForm.class).bindFromRequest();
+
+        if (loginForm.hasErrors()) {
+            return badRequest(loginForm.errorsAsJson());
+        }
+
+        LoginForm login = loginForm.get();
+
+        Admin adminUser = Admin.findByEmailAndPassword(login.email, login.password);
+
+        if (adminUser == null) {
+            return unauthorized();
+        } else {
+            String authenticationToken = adminUser.createAuthToken();
+            ObjectNode authTokenJson = Json.newObject();
+            authTokenJson.put(AUTH_TOKEN, authenticationToken);
+            response().setCookie(Http.Cookie.builder(AUTH_TOKEN, authenticationToken).withSecure(ctx()
+                    .request().secure()).build());
+            return ok(authTokenJson);
+        }
     }
 
+    /**
+     * Logout the user and redirect to the root.
+     * @return
+     */
+    @Security.Authenticated(SecurityController.class)
     public Result logout() {
-        userSessionWrapper.logout(session("user"));
-        session().clear();
-        return redirect(routes.AuthenticationController.login());
+        response().discardCookie(AUTH_TOKEN);
+        getAdmin().deleteAuthToken();
+        return redirect("/");
     }
-    public Result authenticateAdmin() {
-        final Form<LoginForm> loginForm = formFactory.form(LoginForm.class).bindFromRequest();
-        return Optional.ofNullable(loginForm.get())
-                .map(form -> {
-                    if (userSessionWrapper.login(form.email, form.password)) {
-                        session().put("user", form.email);
-                        return redirect(routes.ApplicationController.index());
-                    } else {
-                        // do we need to redirect the user to login or
-                        // bit confuse since regular traffic doesn't need to go here.
-                        return redirect(routes.AuthenticationController.login());
-                    }
-                }).orElse(redirect(routes.AuthenticationController.login()));
-    }
-
 
 }

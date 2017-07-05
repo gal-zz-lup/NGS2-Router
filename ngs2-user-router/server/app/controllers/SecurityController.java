@@ -12,7 +12,6 @@ public class SecurityController extends Security.Authenticator {
 
     @Override
     public String getUsername(Http.Context context) {
-        //String[] authTokenHeaderValues = context.request().headers().get(SecurityController.Aut)
         return context.session().get("username");
     }
 

@@ -76,6 +76,20 @@ public class Admin extends Model {
 
     public static Finder<Long, Admin> find = new Finder<Long, Admin>(Admin.class);
 
+    /**
+     * Find user by email address and hash value of the password.
+     * @param email email address.
+     * @param password raw passsword.
+     * @return
+     */
+    public static Admin findByEmailAndPassword(String email, String password) {
+        return find
+                .where()
+                .eq("email", email.toLowerCase())
+                .eq("shaPassword", getSha512(password))
+                .findUnique();
+    }
+
 
     /**
      * Find user by email
