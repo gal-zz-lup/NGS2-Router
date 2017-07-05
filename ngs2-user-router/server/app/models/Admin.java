@@ -1,10 +1,13 @@
 package models;
 
-import com.avaje.ebean.Finder;
 import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 
 /**
@@ -21,27 +24,85 @@ public class Admin extends Model {
     @Constraints.Required
     @Constraints.Email
     public String email;
-    @Constraints.Required
-    public String password;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Constraints.Required
+    @Constraints.MinLength(6)
+    @Constraints.MaxLength(256)
+    private String password;
+
+    private String authenticationToken;
 
     public void setEmail(String email) {
-        this.email = email;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
+        this.email = email;
     }
 
     public String getEmail() {
         return email;
     }
 
+    @Column(length = 64, unique = true, nullable = false)
+    private byte[] shaPassword;
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+        shaPassword = getSha512(password);
+    }
+
+    /**
+     * Create token to recognize authenticated user.
+     * @return authenticationToken
+     */
+    public String createAuthToken() {
+        authenticationToken = UUID.randomUUID().toString();
+        save();
+        return authenticationToken;
+    }
+
+    public void deleteAuthToken() {
+        authenticationToken = null;
+        save();
+    }
+
+    public Admin(String email, String password) {
+        setEmail(email);
+        setPassword(password);
+    }
+
+
+    public static Finder<Long, Admin> find = new Finder<Long, Admin>(Admin.class);
+
+
+    /**
+     * Find user by email
+     * @param email email address of the user.
+     * @return
+     */
+    public static Admin findByEmail(String email) {
+        return find
+                .where()
+                .eq("email", email.toLowerCase())
+                .findUnique();
+    }
+
+
+    /**
+     * Get SHA-512 hash of the password.
+     * @param value raw password.
+     * @return Hash value of the password
+     */
+    public static byte[] getSha512(String value) {
+        try {
+            return MessageDigest.getInstance("SHA-512").digest(value.getBytes("UTF-8"));
+        } catch (NoSuchAlgorithmException ex) {
+            throw new RuntimeException(); //TODO:need to add logging module and log these
+        } catch (UnsupportedEncodingException ex) {
+            throw new RuntimeException();
+        }
     }
 
 }
