@@ -86,4 +86,6 @@ public class Experiment extends Model {
     public void setCreatedTime(Timestamp createdTime) {
         this.createdTime = createdTime;
     }
+
+    public static Finder<Long, Experiment> find = new Finder<Long, Experiment>(Experiment.class);
 }
