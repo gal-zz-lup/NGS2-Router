@@ -13,7 +13,9 @@ import util.Utility;
  */
 public class ExperimentController extends Controller {
 
-    public static Finder<Long, Experiment> find = new Finder<Long, Experiment>(Experiment.class);
+    public Result getAllExperiments() {
+        return ok(Json.toJson(Experiment.find.all()));
+    }
 
     public Result createExperiment() {
         JsonNode json = request().body().asJson();
