@@ -8,7 +8,7 @@
  * Service in the clientApp.
  */
 angular.module('clientApp')
-  .factory('AlertService', ['$rootScope', '$timeout', function($scope, $timeout) {
+  .factory('alertService', ['$rootScope', '$timeout', function($scope, $timeout) {
 
       var ALERT_TIMEOUT = 3000;
 
