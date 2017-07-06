@@ -81,6 +81,12 @@ module.exports = function (grunt) {
       // Configuring grunt proxy.
       // prior to setting this go to client folder and install Node.js package
       // to handle proxy settings.
+      options: {
+        port: 9000,
+        // Change this to '0.0.0.0' to access the server from outside.
+        hostname: 'localhost',
+        livereload: 35729
+      },
       proxies: [
         {
           context: '/app', // the context of the data service
@@ -89,12 +95,6 @@ module.exports = function (grunt) {
           changeOrigin: true
         }
       ],
-      options: {
-        port: 9090,
-        // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost',
-        livereload: 35729
-      },
       livereload: {
         options: {
           open: true,
