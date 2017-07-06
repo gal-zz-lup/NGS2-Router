@@ -24,7 +24,7 @@ public class AuthenticationController extends Controller{
     public final static String AUTH_TOKEN = "authenticationToken";
 
     public static Admin getAdmin() {
-        return (Admin) Http.Context.current().args.get("user");
+        return (Admin) Http.Context.current().args.get("adminUser");
     }
 
 

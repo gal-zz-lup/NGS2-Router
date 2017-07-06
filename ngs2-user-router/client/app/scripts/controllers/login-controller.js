@@ -7,9 +7,9 @@ angular.module('clientApp')
     $scope.isAuthenticated = function() {
       if(userService.username) {
         $log.debug(userService.username);
-        // where should user be landing
+        $location.path('/main'); //not sure if this is the correct place to land
       } else {
-        $http.get('/app/isauthenticated')
+        $http.get('/app/login')
           .error(function() {
             $location.path('/login');
           })
@@ -17,6 +17,7 @@ angular.module('clientApp')
             if(data.hasOwnProperty('success')) {
               userService.username = data.success.user;
               // where should the user be landing CRUD service?
+              $location.path('/main');
             }
           });
       }
@@ -32,11 +33,24 @@ angular.module('clientApp')
       };
 
       $http.post('/app/login', payload)
-        .error(function(data){
+        .error(function(data, status){
           log.debug(data)
+          if (status == 400) {
+            angular.forEach(data, function(value, key) {
+              if (key === 'email' || key === 'password') {
+                alertService.add('danger', key + ' : ' + value);
+              } else {
+                alertService.add('danger', value.message);
+              }
+            })
+          }
         })
         .success(function(data){
           $log.debug(data);
+          if(data.hasOwnProperty('success')) {
+            userService.username = data.success.user;
+            $location.path('/main')
+          }
         });
     };
   });

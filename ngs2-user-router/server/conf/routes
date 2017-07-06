@@ -10,15 +10,15 @@
 # GET     /message                    controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-GET     /                          controllers.ApplicationController.index()
-POST    /login                     controllers.AuthenticationController.login()
-POST    /login                     controllers.AuthenticationController.authenticateAdmin()
+#GET     /app/index                           controllers.ApplicationController.index()
+POST    /app/login                  controllers.AuthenticationController.login
+POST    /app/logout                 controllers.AuthenticationController.logout
 #POST    /upload                    controllers.ApplicationController.uploadCSVFile()
-#PUT     /experiments                controllers.ExperimentController.createExperiment
+#PUT     /experiments               controllers.ExperimentController.createExperiment
 
 #POST    /experiments/:experimentId  controllers.ExperimentController.updateExperiment(experimentId:Long)
 
 #DELETE  /experiments/:experimentId  controllers.ExperimentController.deleteExperiment(experimentId:Long)
 
 #GET     /experiments/               controllers.ExperimentController.getAllExperiments()
+GET     /assets/*file               controllers.Assets.at(path="/public", file)

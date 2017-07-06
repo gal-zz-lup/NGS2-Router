@@ -103,6 +103,23 @@ public class Admin extends Model {
                 .findUnique();
     }
 
+    /**
+     * Find user by authenticated token
+     * @param authenticationToken authentication token.
+     * @return
+     */
+    public static Admin findByAuthenticatedToken(String authenticationToken) {
+        if (authenticationToken == null) {
+            return null;
+        } else {
+            try {
+                return find.where().eq("authenticationToken", authenticationToken).findUnique();
+            } catch (Exception ex) {
+                return null;
+            }
+        }
+    }
+
 
     /**
      * Get SHA-512 hash of the password.

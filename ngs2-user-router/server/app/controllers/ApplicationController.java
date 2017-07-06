@@ -1,7 +1,5 @@
 package controllers;
 
-import models.Admin;
-import play.data.Form;
 import play.data.FormFactory;
 import play.data.validation.Constraints;
 import play.mvc.Controller;
@@ -9,7 +7,6 @@ import play.mvc.Result;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Security;
-import views.html.index;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -30,9 +27,8 @@ public class ApplicationController extends Controller {
     @Inject
     FormFactory formFactory;
 
-    @Security.Authenticated
     public Result index() {
-        return ok(index.render(session("user")));
+        return ok("Hello");
     }
 
     public Result uploadCSVFile() {
