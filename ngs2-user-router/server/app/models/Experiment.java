@@ -22,6 +22,11 @@ public class Experiment extends Model {
     @Column(length = 255, unique = true, nullable = false)
     @Constraints.MaxLength(255)
     @Constraints.Required
+    public String experimentName;
+
+    @Column(length = 255, unique = true, nullable = false)
+    @Constraints.MaxLength(255)
+    @Constraints.Required
     public String actualURL;
 
     @Column(length = 255, unique = true, nullable = false)
@@ -41,6 +46,10 @@ public class Experiment extends Model {
 
     public long getId() {
         return id;
+    }
+
+    public String getExperimentName() {
+        return experimentName;
     }
 
     public String getActualURL() {
@@ -65,6 +74,10 @@ public class Experiment extends Model {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setExperimentName(String experimentName) {
+        this.experimentName = experimentName;
     }
 
     public void setActualURL(String actualURL) {
