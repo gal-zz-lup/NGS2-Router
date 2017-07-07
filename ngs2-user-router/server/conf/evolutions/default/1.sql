@@ -10,7 +10,9 @@ CREATE TABLE admin (
 
 CREATE TABLE experiment (
     id bigint(20) NOT NULL AUTO_INCREMENT,
-    experiment_url varchar(255) NOT NULL,
+    experiment_name VARCHAR (255) NOT NULL,
+    experiment_url_actual varchar(255) NOT NULL,
+    experiment_url_short varchar(255) NOT NULL,
     n_participants int(5) NOT NULL,
     status varchar(255) NOT NULL,
     created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
