@@ -9,6 +9,7 @@ import play.data.validation.Constraints;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import scala.util.parsing.json.JSONObject;
 import util.Utility;
 
 import javax.inject.Inject;
@@ -23,10 +24,19 @@ public class ExperimentController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    /**
+     * Get all experiments
+     * @return return list of experiments.
+     */
     public Result getAllExperiments() {
+
         return ok(Json.toJson(Experiment.find.all()));
     }
 
+    /**
+     * Create experiment.
+     * @return
+     */
     public Result createExperiment() {
         JsonNode json = request().body().asJson();
         if (json == null) {
@@ -40,16 +50,46 @@ public class ExperimentController extends Controller {
         experiment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         experiment.setNumberOfParticipants(experimentForm.get().numberOfParticipants);
         experiment.setStatus(experimentForm.get().status);
+        experiment.save();
         JsonNode jsonObject = Json.toJson(experiment);
         return created(Utility.createResponse(jsonObject, true));
     }
 
-    public Result updateExperiment(Experiment experiment) {
-        return ok("TODO");
+    /**
+     * Update experiment
+     * @param id experiment id
+     * @return
+     */
+    public Result updateExperiment(Long id) {
+
+        Experiment experiment;
+        Form<Experiment> experimentForm;
+
+        try {
+            experiment = Experiment.find.byId(id);
+            experimentForm = formFactory.form(Experiment.class).fill(experiment);
+            experiment = experimentForm.get();
+            experiment.save();
+            return ok("Experiment successfully updated");
+        } catch (Exception ex) {
+            return badRequest("Something went wrong during update");
+        }
     }
 
-    public Result deleteExperiment() {
-        return ok("TODO");
+    /**
+     * Delete experiment
+     * @return
+     */
+    public Result deleteExperiment(Long id) {
+        JsonNode json = request().body().asJson();
+        if (json == null) {
+            return badRequest(Utility.createResponse("Expecting json", false));
+        }
+        else {
+            Experiment.find.ref(id).delete();
+        }
+
+        return ok("Experiment successfully deleted.");
     }
 
     public static class ExperimentForm {
