@@ -49,20 +49,4 @@ public class ApplicationController extends Controller {
         }
     }
 
-
-    /**x
-     * Static class for the user credential.
-     */
-    public static class UserForm {
-        @Constraints.Required
-        @Constraints.Email
-        public String email;
-    }
-
-    public static class Login extends UserForm {
-        @Constraints.Required
-        public String password;
-    }
-
-
 }

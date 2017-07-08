@@ -9,7 +9,6 @@ import play.data.validation.Constraints;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import scala.util.parsing.json.JSONObject;
 import util.Utility;
 
 import javax.inject.Inject;
@@ -50,6 +49,7 @@ public class ExperimentController extends Controller {
         experiment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         experiment.setNumberOfParticipants(experimentForm.get().numberOfParticipants);
         experiment.setStatus(experimentForm.get().status);
+        //experimentForm.get(); can we use this instead of using setters?
         experiment.save();
         JsonNode jsonObject = Json.toJson(experiment);
         return created(Utility.createResponse(jsonObject, true));
@@ -70,11 +70,13 @@ public class ExperimentController extends Controller {
             experimentForm = formFactory.form(Experiment.class).fill(experiment);
             experiment = experimentForm.get();
             experiment.save();
-            return ok("Experiment successfully updated");
+            JsonNode jsonObject = Json.toJson(experiment);
+            return ok(Utility.createResponse(jsonObject, true));
         } catch (Exception ex) {
-            return badRequest("Something went wrong during update");
+            return notFound("Something went wrong during update");
         }
     }
+
 
     /**
      * Delete experiment
@@ -84,14 +86,21 @@ public class ExperimentController extends Controller {
         JsonNode json = request().body().asJson();
         if (json == null) {
             return badRequest(Utility.createResponse("Expecting json", false));
+        } else {
+            boolean status = Experiment.find.ref(id).delete();
+            if (!status) {
+                return notFound(Utility.createResponse(
+                        "Experiment with id:" + id + " not found", false));
+            } else {
+                return ok(Utility.createResponse(
+                        "Experiment with id:" + id + " deleted", true));
+            }
         }
-        else {
-            Experiment.find.ref(id).delete();
-        }
-
-        return ok("Experiment successfully deleted.");
     }
 
+    /**
+     * Static class to hold experiment form values.
+     */
     public static class ExperimentForm {
 
         @Constraints.Required

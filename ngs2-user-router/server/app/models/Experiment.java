@@ -44,6 +44,8 @@ public class Experiment extends Model {
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Timestamp createdTime;
 
+    public static Finder<Long, Experiment> find = new Finder<Long, Experiment>(Experiment.class);
+
     public long getId() {
         return id;
     }
@@ -99,6 +101,4 @@ public class Experiment extends Model {
     public void setCreatedTime(Timestamp createdTime) {
         this.createdTime = createdTime;
     }
-
-    public static Finder<Long, Experiment> find = new Finder<Long, Experiment>(Experiment.class);
 }
