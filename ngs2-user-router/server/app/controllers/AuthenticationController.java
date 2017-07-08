@@ -24,6 +24,7 @@ public class AuthenticationController extends Controller{
     public final static String AUTH_TOKEN = "authenticationToken";
 
     public static Admin getAdmin() {
+
         return (Admin) Http.Context.current().args.get("adminUser");
     }
 
@@ -54,6 +55,13 @@ public class AuthenticationController extends Controller{
                     .request().secure()).build());
             return ok(authTokenJson);
         }
+    }
+
+    public Result isAuthenticated() {
+        if (getAdmin() != null ) {
+           return ok("User is logged in");
+        }
+        else return unauthorized();
     }
 
     /**
