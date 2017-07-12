@@ -20,10 +20,10 @@ public class ExperimentUserInfo extends Model {
     public Long userExperimentId;
 
     @ManyToOne
-    public UserInfo user;
+    public List<UserInfo> users;
 
     @ManyToOne
-    public Experiment experiment;
+    public List<Experiment> experiments;
 
     @Constraints.Required
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -53,20 +53,28 @@ public class ExperimentUserInfo extends Model {
         this.userExperimentId = userExperimentId;
     }
 
-    public UserInfo getUser() {
-        return user;
+    /**
+     * Return list of users
+     * @return
+     */
+    public List<UserInfo> getUsers() {
+
+        return users;
     }
 
-    public void setUserId(UserInfo user) {
-        this.user = user;
+    public void setUserId(List<UserInfo> users) {
+
+        this.users = users;
     }
 
-    public Experiment getExperiment() {
-        return experiment;
+    public List<Experiment> getExperiments() {
+
+        return experiments;
     }
 
-    public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
+    public void setExperiment(List<Experiment> experiment) {
+
+        this.experiments = experiments;
     }
 
     public Timestamp getArrivalTime() {

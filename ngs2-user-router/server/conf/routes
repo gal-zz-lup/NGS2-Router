@@ -11,7 +11,7 @@
 
 # Map static resources from the /public folder to the /assets URL path
 #GET     /app/index                           controllers.ApplicationController.index()
-#GET     /                           controllers.Assets.at(path="../client/app/", file="index.html")
+GET     /                           controllers.Assets.at(path="../client/app/views/", file="index.html")
 
 # Admin Login routes
 POST    /app/login                      controllers.AuthenticationController.login
@@ -23,6 +23,8 @@ GET     /app/createExperiment           controllers.ExperimentController.createE
 POST    /app/updateExperiment/:id       controllers.ExperimentController.updateExperiment(id: Long)
 POST    /app/deleteExperiment/:id       controllers.ExperimentController.deleteExperiment(id: Long)
 GET     /app/allExperiments             controllers.ExperimentController.getAllExperiments()
+GET     /app/experimentsByUser/:userId  controllers.ExperimentUserInfoController.experimentsByUser(userId: Long)
+GET     /app/usersByExperiment/:expId   controllers.ExperimentUserInfoController.usersByExperiment(expId: Long)
 
 #POST   /upload                     controllers.ApplicationController.uploadCSVFile()
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
