@@ -11,7 +11,7 @@
 
 # Map static resources from the /public folder to the /assets URL path
 #GET     /app/index                           controllers.ApplicationController.index()
-GET     /                           controllers.Assets.at(path="../client/app/", file="index.html")
+GET     /                               controllers.Assets.at(path="../client/app/", file="index.html")
 
 # Admin Login routes
 POST    /app/login                      controllers.AuthenticationController.login

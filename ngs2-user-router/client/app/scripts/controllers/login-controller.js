@@ -6,7 +6,7 @@ angular.module('clientApp')
 
     $scope.isAuthenticated = function() {
       if(adminService.username) {
-        $log.debug(userService.username);
+        $log.debug(adminService.username);
         $location.path('/');
       } else {
         $http.get('/app/isauthenticated')
