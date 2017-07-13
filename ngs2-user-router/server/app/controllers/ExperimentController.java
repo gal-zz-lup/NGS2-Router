@@ -14,6 +14,8 @@ import util.Utility;
 import javax.inject.Inject;
 import java.sql.Timestamp;
 
+import services.URLShortenerService;
+
 
 /**
  * Created by anuradha_uduwage.
@@ -37,6 +39,8 @@ public class ExperimentController extends Controller {
      * @return
      */
     public Result createExperiment() {
+        URLShortenerService urlShortenerService = new URLShortenerService();
+
         JsonNode json = request().body().asJson();
         if (json == null) {
             return badRequest(Utility.createResponse("Expecting json", false));
@@ -45,7 +49,10 @@ public class ExperimentController extends Controller {
         Form<ExperimentForm> experimentForm = formFactory.form(ExperimentForm.class).bindFromRequest();
         Experiment experiment = new Experiment();
         experiment.setActualURL(experimentForm.get().experimentName);
-        experiment.setShortenURL(experiment.getActualURL()); //need to implement url shortner
+        //TODO: Revisit URL Shortner to see if we need a database call to check if URL exist
+        //TODO: instead of hashmap. At the moment if Experiment Controller gets call at multiple times
+        //TODO: we will be looking at empty hashmap.
+        experiment.setShortenURL(urlShortenerService.getShortURL(experiment.getActualURL()));
         experiment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         experiment.setNumberOfParticipants(experimentForm.get().numberOfParticipants);
         experiment.setStatus(experimentForm.get().status);
