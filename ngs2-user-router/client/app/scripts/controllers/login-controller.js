@@ -2,10 +2,10 @@
  * Created by anuradha_uduwage on 6/23/17.
  */
 angular.module('clientApp')
-  .controller('LoginCtrl', function ($scope, userService, $location, $log, $http, alertService) {
+  .controller('LoginCtrl', function ($scope, adminService, $location, $log, $http, alertService) {
 
     $scope.isAuthenticated = function() {
-      if(userService.username) {
+      if(adminService.username) {
         $log.debug(userService.username);
         $location.path('/');
       } else {
@@ -15,7 +15,7 @@ angular.module('clientApp')
           })
           .success(function(data) {
             if(data.hasOwnProperty('success')) {
-              userService.username = data.success.user;
+              adminService.username = data.success.username;
               $location.path('/');
             }
           });
@@ -52,7 +52,7 @@ angular.module('clientApp')
         .success(function(data){
           $log.debug(data);
           if(data.hasOwnProperty('success')) {
-            userService.username = data.success.username;
+            adminService.username = data.success.username;
             $location.path('/');
           }
         });
