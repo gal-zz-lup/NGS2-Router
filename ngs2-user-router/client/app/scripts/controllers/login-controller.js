@@ -4,7 +4,6 @@
 angular.module('clientApp')
   .controller('LoginCtrl', function ($scope, userService, $location, $log, $http, alertService) {
 
-    /*
     $scope.isAuthenticated = function() {
       if(userService.username) {
         $log.debug(userService.username);
@@ -24,7 +23,7 @@ angular.module('clientApp')
     };
 
     $scope.isAuthenticated();
-    */
+
     $scope.login = function() {
 
       var payload = {

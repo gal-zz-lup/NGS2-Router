@@ -16,21 +16,20 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.bootstrap',
-    'app.directives.experiment',
+    'ui.bootstrap'
+    /*'app.directives.experiment',
     'app.directives.users',
     'app.modals.create_experiment',
     'app.modals.export_users',
     'app.modals.import_users',
     'app.services.experiment',
-    'app.services.users'
+    'app.services.users'*/
   ])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/index.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
+        templateUrl: 'views/main.html',
+        controller: 'MainCtrl'
       })
       .when('/login', {
         templateUrl: 'views/login.html',
