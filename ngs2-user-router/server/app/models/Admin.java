@@ -68,10 +68,11 @@ public class Admin extends Model {
         save();
     }
 
+    /*
     public Admin(String email, String password) {
         setEmail(email);
         setPassword(password);
-    }
+    }*/
 
 
     public static Finder<Long, Admin> find = new Finder<Long, Admin>(Admin.class);

@@ -2,6 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Admin;
+import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.libs.Json;
@@ -35,6 +36,7 @@ public class AuthenticationController extends Controller{
      */
     public Result login() {
 
+        Logger.info("Attempt to authenticate admin user");
         Form<LoginForm> loginForm = formFactory.form(LoginForm.class).bindFromRequest();
 
         if (loginForm.hasErrors()) {
@@ -46,6 +48,7 @@ public class AuthenticationController extends Controller{
         Admin adminUser = Admin.findByEmailAndPassword(login.email, login.password);
 
         if (adminUser == null) {
+            Logger.info("Unable to find Admin user with email" + login.email);
             return unauthorized();
         } else {
             String authenticationToken = adminUser.createAuthToken();

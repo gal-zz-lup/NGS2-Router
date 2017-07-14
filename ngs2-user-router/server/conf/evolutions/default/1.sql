@@ -3,8 +3,11 @@
 
 CREATE TABLE admin (
     id bigint(20) NOT NULL AUTO_INCREMENT,
-    email varchar(255) NOT NULL AUTO_INCREMENT,
+    auth_token VARCHAR (255),
+    email varchar(255) NOT NULL,
+    sha_password varbinary(64) NOT NULL,
     password varbinary(64) NOT NULL,
+    CONSTRAINT uq_admin_user_email UNIQUE (email),
     CONSTRAINT pk_admin PRIMARY KEY (id)
 );
 
