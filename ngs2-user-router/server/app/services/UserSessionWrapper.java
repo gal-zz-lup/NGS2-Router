@@ -51,7 +51,7 @@ public class UserSessionWrapper {
         final Optional<Admin> potentialUser = Optional.ofNullable(userRepo.get(email));
         Preconditions.checkArgument(!potentialUser.isPresent(), "User already exist in the system");
 
-        Admin admin = new Admin(email, password);
+        Admin admin = new Admin();
         admin.setEmail(email);
         admin.setPassword(bCryptHash(password));
         admin.save();
