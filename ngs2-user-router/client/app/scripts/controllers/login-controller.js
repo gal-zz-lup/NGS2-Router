@@ -10,6 +10,15 @@ angular.module('clientApp')
         $location.path('/');
       } else {
         $http.get('/app/isauthenticated')
+          .then(function(data) {
+            if(data.hasOwnProperty('success')) {
+              adminService.username = data.success.username;
+              $location.path('/app/createExperiment');
+            }
+          }, function() {
+            $location.path('/login');
+          });
+          /*
           .error(function() {
             $location.path('/login');
           })
@@ -18,7 +27,7 @@ angular.module('clientApp')
               adminService.username = data.success.username;
               $location.path('/');
             }
-          });
+          });*/
       }
     };
 
@@ -32,7 +41,7 @@ angular.module('clientApp')
       };
 
       $http.post('/app/login', payload)
-        .error(function(data, status){
+        .then(function(data, status){
           if(status === 400) {
             angular.forEach(data, function(value, key) {
               if(key === 'email' || key === 'password') {
@@ -48,8 +57,7 @@ angular.module('clientApp')
           } else {
             alertService.add('danger', data);
           }
-        })
-        .success(function(data){
+        }, function(data){
           $log.debug(data);
           if(data.hasOwnProperty('success')) {
             adminService.username = data.success.username;
