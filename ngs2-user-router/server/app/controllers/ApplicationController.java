@@ -53,6 +53,7 @@ public class ApplicationController extends Controller {
 
                 }
             }
+
             if (recordsList != null)
                 return ok(Utility.createResponse(recordsList, true));
             else

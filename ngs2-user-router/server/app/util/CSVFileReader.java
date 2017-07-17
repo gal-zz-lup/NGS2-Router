@@ -23,6 +23,11 @@ public class CSVFileReader extends AbstractFileReader {
         return csvFileReader;
     }
 
+    /**
+     * Method implements the csv file parser and return list of records.
+     * @param inputStream input data from the file.
+     * @return
+     */
     @Override
     public List<Object> parseFile(InputStream inputStream) {
         Logger.info("Getting reading to parse the file");
