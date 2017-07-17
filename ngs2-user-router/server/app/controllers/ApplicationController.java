@@ -54,7 +54,6 @@ public class ApplicationController extends Controller {
                 }
             }
             if (recordsList != null)
-                //return ok(Json.toJson(recordsList));
                 return ok(Utility.createResponse(recordsList, true));
             else
                 return badRequest(Utility.createResponse("There were no records in the list", false));
