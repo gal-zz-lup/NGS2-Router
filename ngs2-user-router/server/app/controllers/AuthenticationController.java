@@ -62,7 +62,8 @@ public class AuthenticationController extends Controller{
 
     public Result isAuthenticated() {
         if (getAdmin() != null ) {
-           return ok("User is logged in");
+            Logger.info("User " + getAdmin().getEmail() + " is logged in");
+            return ok("User " + getAdmin().getEmail() + "is logged in");
         }
         else return unauthorized();
     }
