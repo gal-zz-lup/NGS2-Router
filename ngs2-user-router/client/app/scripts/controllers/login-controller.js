@@ -18,16 +18,6 @@ angular.module('clientApp')
           }, function() {
             $location.path('/login');
           });
-          /*
-          .error(function() {
-            $location.path('/login');
-          })
-          .success(function(data) {
-            if(data.hasOwnProperty('success')) {
-              adminService.username = data.success.username;
-              $location.path('/');
-            }
-          });*/
       }
     };
 
