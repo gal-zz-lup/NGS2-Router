@@ -43,7 +43,6 @@ public class ApplicationController extends Controller {
             FilePart<File> csvFile = body.getFile("csvfile");
 
             if (csvFile != null && csvFile.getFilename().contains(".csv")) {
-                String filename = csvFile.getFilename();
                 CSVFileReader fileReader = CSVFileReader.getReaderInstance();
                 try {
                     File file = csvFile.getFile();
@@ -55,7 +54,8 @@ public class ApplicationController extends Controller {
                 }
             }
             if (recordsList != null)
-                return ok(Json.toJson(recordsList));
+                //return ok(Json.toJson(recordsList));
+                return ok(Utility.createResponse(recordsList, true));
             else
                 return badRequest(Utility.createResponse("There were no records in the list", false));
         } catch (Exception ex) {
