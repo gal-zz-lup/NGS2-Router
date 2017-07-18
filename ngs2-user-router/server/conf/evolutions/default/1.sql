@@ -2,11 +2,10 @@
 # --- !Ups
 
 CREATE TABLE admin (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    auth_token VARCHAR (255),
+    id bigint(20) AUTO_INCREMENT NOT NULL,
+    authentication_token VARCHAR (255) NULL,
     email varchar(255) NOT NULL,
     sha_password varbinary(64) NOT NULL,
-    password varbinary(64) NOT NULL,
     CONSTRAINT uq_admin_user_email UNIQUE (email),
     CONSTRAINT pk_admin PRIMARY KEY (id)
 );
@@ -29,6 +28,7 @@ CREATE TABLE user_info (
   language VARCHAR(16) NOT NULL,
   randomized_id VARCHAR(255) NOT NULL,
   arrival_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status VARCHAR(255) NOT NULL,
   CONSTRAINT uq_user_email UNIQUE (email),
   CONSTRAINT pk_user_info PRIMARY KEY (id)
 );

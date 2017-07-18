@@ -27,6 +27,8 @@ public class DemoData {
                 admin1.setEmail("admin1@demo.com");
                 admin1.setPassword("password");
                 admin1.save();
+            } else {
+                Logger.info("User already exists in the database");
             }
         }
     }

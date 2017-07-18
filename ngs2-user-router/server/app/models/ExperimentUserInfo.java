@@ -82,14 +82,17 @@ public class ExperimentUserInfo extends Model {
     }
 
     public void setArrivalTime(Timestamp arrivalTime) {
+
         this.arrivalTime = arrivalTime;
     }
 
     public Timestamp getSendOffTime() {
+
         return sendOffTime;
     }
 
     public void setSendOffTime(Timestamp sendOffTime) {
+
         this.sendOffTime = sendOffTime;
     }
 }

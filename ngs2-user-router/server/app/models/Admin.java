@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class Admin extends Model {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long id;
 
     @Column(length = 255, unique = true, nullable = false)
@@ -25,9 +27,11 @@ public class Admin extends Model {
     @Constraints.Email
     public String email;
 
+    @Transient
     @Constraints.Required
     @Constraints.MinLength(6)
     @Constraints.MaxLength(256)
+    @JsonIgnore
     private String password;
 
     private String authenticationToken;
