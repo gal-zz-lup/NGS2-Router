@@ -19,7 +19,7 @@ POST    /app/logout                     controllers.AuthenticationController.log
 GET     /app/isauthenticated            controllers.AuthenticationController.isAuthenticated
 
 # Admin CRUD routes
-GET     /app/createExperiment           controllers.ExperimentController.createExperiment
+PUT     /app/createExperiment           controllers.ExperimentController.createExperiment
 POST    /app/updateExperiment/:id       controllers.ExperimentController.updateExperiment(id: Long)
 POST    /app/deleteExperiment/:id       controllers.ExperimentController.deleteExperiment(id: Long)
 GET     /app/allExperiments             controllers.ExperimentController.getAllExperiments()
