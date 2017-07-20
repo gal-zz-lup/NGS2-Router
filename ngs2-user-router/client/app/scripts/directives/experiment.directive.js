@@ -15,8 +15,8 @@
     };
 
     $scope.deleteExperiment = function(experiment) {
-      console.log("deleteExperiment", experiment);
-      if (confirm("Are you sure you want this delete this experiment? This cannot be undone.")) {
+      console.log('deleteExperiment', experiment);
+      if (window.confirm('Are you sure you want this delete this experiment? This cannot be undone.')) {
         ExperimentService.removeExperiment(experiment.id)
           .then(function () {
             $scope.deleted = true;

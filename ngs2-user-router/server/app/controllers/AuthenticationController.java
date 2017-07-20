@@ -32,7 +32,8 @@ public class AuthenticationController extends Controller{
     public Result logout() {
         userSessionWrapper.logout(session("user"));
         session().clear();
-        return redirect(routes.AuthenticationController.login());
+        //return redirect(routes.AuthenticationController.login());
+        return redirect("/");
     }
     public Result authenticateAdmin() {
         final Form<LoginForm> loginForm = formFactory.form(LoginForm.class).bindFromRequest();
@@ -44,9 +45,11 @@ public class AuthenticationController extends Controller{
                     } else {
                         // do we need to redirect the user to login or
                         // bit confuse since regular traffic doesn't need to go here.
-                        return redirect(routes.AuthenticationController.login());
+                        //return redirect(routes.AuthenticationController.login());
+                        return redirect("/");
                     }
-                }).orElse(redirect(routes.AuthenticationController.login()));
+                //}).orElse(redirect(routes.AuthenticationController.login()));
+                }).orElse(redirect("/"));
     }
 
 

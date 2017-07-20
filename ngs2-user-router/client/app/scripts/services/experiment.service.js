@@ -40,6 +40,7 @@
         });
       },
       removeExperiment: function(experimentId) {
+        console.log('removeExperiment', experimentId);
         return $q(function(resolve) {
           resolve({
           });

@@ -13,7 +13,7 @@
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 GET     /                          controllers.ApplicationController.index()
 POST    /login                     controllers.AuthenticationController.login()
-POST    /login                     controllers.AuthenticationController.authenticateAdmin()
+#POST    /authenticate              controllers.AuthenticationController.authenticateAdmin()
 #POST    /upload                    controllers.ApplicationController.uploadCSVFile()
 #PUT     /experiments                controllers.ExperimentController.createExperiment
 
@@ -21,4 +21,4 @@ POST    /login                     controllers.AuthenticationController.authenti
 
 #DELETE  /experiments/:experimentId  controllers.ExperimentController.deleteExperiment(experimentId:Long)
 
-#GET     /experiments/               controllers.ExperimentController.getAllExperiments()
+GET     /experiments               controllers.ExperimentController.getAllExperiments()

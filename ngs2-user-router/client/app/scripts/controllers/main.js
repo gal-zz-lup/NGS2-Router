@@ -12,7 +12,7 @@ function MainController($scope, ExperimentService, UsersService, $uibModal, Aler
   $scope.users = [];
   ExperimentService.getAllExperiments().then(function(resp) {
     $scope.experiments = resp;
-    console.log("experiments", resp);
+    console.log('experiments', resp);
   });
 
   UsersService.getAllUsers().then(function(resp) {
@@ -37,7 +37,7 @@ function MainController($scope, ExperimentService, UsersService, $uibModal, Aler
   };
 
   $scope.closeAlert = function(alert) {
-    console.log("closeAlert");
+    console.log('closeAlert');
     AlertService.closeAlert(alert);
   };
 }

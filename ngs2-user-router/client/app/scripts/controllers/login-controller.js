@@ -1,8 +1,11 @@
 /**
  * Created by anuradha_uduwage on 6/23/17.
  */
+
+'use strict';
+
 angular.module('clientApp')
-  .controller('LoginCtrl', function ($scope, userService, $location, $log, $http, alertService) {
+  .controller('LoginCtrl', function ($scope, userService, $location, $log, $http) {
 
     $scope.isAuthenticated = function() {
       if(userService.username) {
@@ -33,7 +36,7 @@ angular.module('clientApp')
 
       $http.post('/app/login', payload)
         .error(function(data){
-          log.debug(data)
+          $log.debug(data);
         })
         .success(function(data){
           $log.debug(data);

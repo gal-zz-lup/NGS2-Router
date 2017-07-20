@@ -47,6 +47,7 @@
       },
       removeUser: function(userId) {
         return $q(function(resolve) {
+          console.log('Remove user', userId);
           resolve({
           });
         });

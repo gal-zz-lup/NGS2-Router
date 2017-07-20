@@ -12,6 +12,10 @@ import util.Utility;
  */
 public class ExperimentController extends Controller {
 
+    public Result getAllExperiments() {
+        return ok(Json.toJson(Experiment.find.all()));
+    }
+
     public Result createExperiment() {
         JsonNode json = request().body().asJson();
         if (json == null) {
