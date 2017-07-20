@@ -9,11 +9,11 @@
       add: function (type, msg, timeout) {
         if (timeout) {
           $timeout(function(){
-            closeAlert(this);
+            this.closeAlert(this);
           }, timeout);
         } else {
           $timeout(function(){
-            closeAlert(this);
+            this.closeAlert(this);
           }, ALERT_TIMEOUT);
         }
 
@@ -21,7 +21,7 @@
           type: type,
           msg: msg,
           close: function() {
-            return closeAlert(this);
+            return this.closeAlert(this);
           }
         });
       },

@@ -519,7 +519,8 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
-  grunt.registerTask('watch', [
+  grunt.registerTask('buildwatch', [
+    'build',
     'watch'
   ]);
 

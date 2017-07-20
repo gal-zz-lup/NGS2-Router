@@ -48,14 +48,17 @@ public class ExperimentController extends Controller {
 
         Form<ExperimentForm> experimentForm = formFactory.form(ExperimentForm.class).bindFromRequest();
         Experiment experiment = new Experiment();
-        experiment.setActualURL(experimentForm.get().experimentName);
+        experiment.setExperimentName(experimentForm.get().experimentName);
+        experiment.setActualURL(experimentForm.get().actualURL);
         //TODO: Revisit URL Shortner to see if we need a database call to check if URL exist
         //TODO: instead of hashmap. At the moment if Experiment Controller gets call at multiple times
         //TODO: we will be looking at empty hashmap.
-        experiment.setShortenURL(urlShortenerService.getShortURL(experiment.getActualURL()));
+        //TODO: ShortURL should be created server-side, not passed in from the client.
+        experiment.setShortenURL("TODO");
         experiment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         experiment.setNumberOfParticipants(experimentForm.get().numberOfParticipants);
-        experiment.setStatus(experimentForm.get().status);
+        experiment.setPriority(experimentForm.get().priority);
+        experiment.setStatus("ACTIVE");
         //experimentForm.get(); can we use this instead of using setters?
         experiment.save();
         JsonNode jsonObject = Json.toJson(experiment);
@@ -118,15 +121,11 @@ public class ExperimentController extends Controller {
         @Constraints.Required
         public String actualURL;
 
-        @Constraints.MaxLength(255)
-        @Constraints.Required
-        public String shortenURL;
-
         @Constraints.Required
         public int numberOfParticipants;
 
         @Constraints.Required
-        public String status;
+        public int priority;
 
     }
 

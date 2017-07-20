@@ -11,7 +11,7 @@ public class Utility {
 
     public static ObjectNode createResponse(Object response, boolean ok) {
         ObjectNode result = Json.newObject();
-        result.put("isSuccessfull", ok);
+        result.put("isSuccessful", ok);
         if (response instanceof String)
             result.put("body", (String) response);
         else result.set("body", (JsonNode) response);
