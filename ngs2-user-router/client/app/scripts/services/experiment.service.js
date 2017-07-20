@@ -1,9 +1,17 @@
 (function() {
   'use strict';
 
-  function ExperimentService($q) {
+  function ExperimentService(ApiConfig, $http, $q) {
     return {
       getAllExperiments: function () {
+        return $http.get(ApiConfig.url + 'app/allExperiments')
+          .then(function(response) {
+            return $q.when(response.data);
+          },
+          function(response) {
+            return $q.reject(response.data);
+          });
+        /*
         return $q(function(resolve) {
           resolve([
             {'id': 1,
@@ -26,6 +34,7 @@
               'priority': 2}
           ]);
         });
+        */
       },
       createExperiment: function(experimentName, experimentUrl, numParticipants, experimentPriority) {
         return $q(function(resolve) {
@@ -53,5 +62,5 @@
     .module('app.services.experiment', [])
     .factory('ExperimentService', ExperimentService);
 
-  ExperimentService.$inject = ['$q'];
+  ExperimentService.$inject = ['ApiConfig', '$http', '$q'];
 })();

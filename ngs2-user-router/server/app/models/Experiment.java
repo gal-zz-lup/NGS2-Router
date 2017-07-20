@@ -24,16 +24,17 @@ public class Experiment extends Model {
     @Constraints.Required
     public String experimentName;
 
-    @Column(length = 255, unique = true, nullable = false)
+    @Column(name = "experiment_url_actual", length = 255, unique = true, nullable = false)
     @Constraints.MaxLength(255)
     @Constraints.Required
     public String actualURL;
 
-    @Column(length = 255, unique = true, nullable = false)
+    @Column(name = "experiment_url_short", length = 255, unique = true, nullable = false)
     @Constraints.MaxLength(255)
     @Constraints.Required
     public String shortenURL;
 
+    @Column(name = "n_participants")
     public int numberOfParticipants;
 
     @Column(columnDefinition = "TEXT")

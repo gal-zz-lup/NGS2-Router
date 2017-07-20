@@ -16,14 +16,15 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.bootstrap'
-    /*'app.directives.experiment',
+    'ui.bootstrap',
+    'app.directives.experiment',
     'app.directives.users',
     'app.modals.create_experiment',
     'app.modals.export_users',
     'app.modals.import_users',
+    'app.services.alert',
     'app.services.experiment',
-    'app.services.users'*/
+    'app.services.users'
   ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
@@ -40,4 +41,8 @@ angular
       });
 
    $locationProvider.html5Mode({ enabled: true, requireBase: false }).hashPrefix('*');
+  })
+  .constant('ApiConfig', {
+    url: 'http://localhost:9090/'
   });
+
