@@ -2,15 +2,19 @@
 # --- !Ups
 
 CREATE TABLE admin (
-    id bigint(20) NOT NULL AUTO_INCREMENT,
-    email varchar(255) NOT NULL AUTO_INCREMENT,
-    password varbinary(64) NOT NULL,
+    id bigint(20) AUTO_INCREMENT NOT NULL,
+    authentication_token VARCHAR (255) NULL,
+    email varchar(255) NOT NULL,
+    sha_password varbinary(64) NOT NULL,
+    CONSTRAINT uq_admin_user_email UNIQUE (email),
     CONSTRAINT pk_admin PRIMARY KEY (id)
 );
 
 CREATE TABLE experiment (
     id bigint(20) NOT NULL AUTO_INCREMENT,
-    experiment_url varchar(255) NOT NULL,
+    experiment_name VARCHAR (255) NOT NULL,
+    experiment_url_actual varchar(255) NOT NULL,
+    experiment_url_short varchar(255) NOT NULL,
     n_participants int(5) NOT NULL,
     status varchar(255) NOT NULL,
     created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -24,6 +28,7 @@ CREATE TABLE user_info (
   language VARCHAR(16) NOT NULL,
   randomized_id VARCHAR(255) NOT NULL,
   arrival_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status VARCHAR(255) NOT NULL,
   CONSTRAINT uq_user_email UNIQUE (email),
   CONSTRAINT pk_user_info PRIMARY KEY (id)
 );
