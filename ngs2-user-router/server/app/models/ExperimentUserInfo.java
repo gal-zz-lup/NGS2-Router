@@ -17,6 +17,7 @@ import java.util.List;
 public class ExperimentUserInfo extends Model {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long userExperimentId;
 
     @ManyToOne

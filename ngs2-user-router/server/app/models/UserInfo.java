@@ -4,9 +4,7 @@ import com.avaje.ebean.Model;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -17,6 +15,7 @@ import java.time.LocalDateTime;
 public class UserInfo extends Model {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Constraints.Required
     public Long userId;
 
