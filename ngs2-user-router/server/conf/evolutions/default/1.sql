@@ -49,4 +49,4 @@ CREATE TABLE experiment_user_info (
 DROP TABLE experiment;
 DROP TABLE user_info;
 DROP TABLE experiment_user_info;
-DROP TABLE admin
+DROP TABLE admin;
