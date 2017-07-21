@@ -33,6 +33,7 @@
 |experiment_instance     |
 |------------------------|
 |id                      |
+|experiment_id           |
 |experiment_instance_name|
 |experiment_url_actual   |
 |experiment_url_short    |
