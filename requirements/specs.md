@@ -17,6 +17,9 @@
 ## Database Structure
 * Router functionalities are maintain in a database supported by three tables with following structure.
 
+## Marking user_info_experiment_instance rows as incomplete
+* It is possible that users may join a game but drop out after the tutorial or after a few rounds. In these cases we may be told to allow these users to re-participate in a particular experiment. We should be able to mark these user_info_experiment_instances as incomplete.
+
 |admin               |
 |--------------------|
 |id                  |
