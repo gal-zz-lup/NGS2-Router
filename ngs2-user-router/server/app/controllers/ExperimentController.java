@@ -3,6 +3,7 @@ package controllers;
 import com.avaje.ebean.Model.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Experiment;
+import models.ExperimentInstance;
 import play.data.Form;
 import play.data.FormFactory;
 import play.data.validation.Constraints;
@@ -48,19 +49,23 @@ public class ExperimentController extends Controller {
 
         Form<ExperimentForm> experimentForm = formFactory.form(ExperimentForm.class).bindFromRequest();
         Experiment experiment = new Experiment();
+        ExperimentInstance experimentInstance = new ExperimentInstance();
+        experimentInstance.setExperiment(experiment);
         experiment.setExperimentName(experimentForm.get().experimentName);
-        experiment.setActualURL(experimentForm.get().actualURL);
+        experimentInstance.setActualURL(experimentForm.get().actualURL);
         //TODO: Revisit URL Shortner to see if we need a database call to check if URL exist
         //TODO: instead of hashmap. At the moment if Experiment Controller gets call at multiple times
         //TODO: we will be looking at empty hashmap.
         //TODO: ShortURL should be created server-side, not passed in from the client.
-        experiment.setShortenURL("TODO");
+        experimentInstance.setShortenURL("TODO");
         experiment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
-        experiment.setNumberOfParticipants(experimentForm.get().numberOfParticipants);
-        experiment.setPriority(experimentForm.get().priority);
-        experiment.setStatus("ACTIVE");
+        experimentInstance.setNumberOfParticipants(experimentForm.get().numberOfParticipants);
+        experimentInstance.setPriority(experimentForm.get().priority);
+        experimentInstance.setStatus("ACTIVE");
         //experimentForm.get(); can we use this instead of using setters?
         experiment.save();
+        experimentInstance.save();
+        //TODO: do we need to return the experimentInstance as a json?
         JsonNode jsonObject = Json.toJson(experiment);
         return created(Utility.createResponse(jsonObject, true));
     }

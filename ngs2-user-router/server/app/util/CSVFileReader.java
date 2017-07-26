@@ -1,5 +1,6 @@
 package util;
 
+import models.UserInfo;
 import play.Logger;
 import play.mvc.WebSocket;
 
@@ -31,6 +32,8 @@ public class CSVFileReader extends AbstractFileReader {
     @Override
     public List<Object> parseFile(InputStream inputStream) {
         Logger.info("Getting reading to parse the file");
+
+        UserInfo userInfo = new UserInfo();
 
         BufferedReader bufferedReader;
         List<Object> recordList = null;
