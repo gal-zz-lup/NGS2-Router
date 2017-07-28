@@ -2,7 +2,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Experiment;
-import models.ExperimentUserInfo;
+import models.UserInfoExperimentInstance;
 import models.UserInfo;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by anuradha_uduwage.
  */
-public class ExperimentUserInfoController extends Controller {
+public class UserInfoExperimentInstanceController extends Controller {
 
     /**
      * Given userId method will return all the experiments that user is participating or participated in past.
@@ -23,8 +23,8 @@ public class ExperimentUserInfoController extends Controller {
      */
     public Result experimentsByUser(Long userId) {
 
-        List<Experiment> experimentsList = ExperimentUserInfo.find.ref(userId).getExperiments();
-        JsonNode jsonObject = Json.toJson(experimentsList);
+        Experiment experiment = UserInfoExperimentInstance.find.ref(userId).getExperiment();
+        JsonNode jsonObject = Json.toJson(experiment);
         return created(Utility.createResponse(jsonObject, true));
     }
 
@@ -35,8 +35,8 @@ public class ExperimentUserInfoController extends Controller {
      */
     public Result usersByExperiment(Long experimentId) {
 
-        List<UserInfo> userInfoList = ExperimentUserInfo.find.ref(experimentId).getUsers();
-        JsonNode jsonObject = Json.toJson(userInfoList);
+        UserInfo userInfo = UserInfoExperimentInstance.find.ref(experimentId).getUserInfo();
+        JsonNode jsonObject = Json.toJson(userInfo);
         return created(Utility.createResponse(jsonObject, true));
     }
 }

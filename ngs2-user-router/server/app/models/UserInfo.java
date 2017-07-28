@@ -22,21 +22,20 @@ public class UserInfo extends Model {
     @Constraints.Required
     public Long gallupId;
 
-    @Column(length = 255, unique = true, nullable = false)
-    @Constraints.MaxLength(255)
-    @Constraints.Required
-    @Constraints.Email
-    public String email;
-
+    @Column(name = "language", nullable = false)
     @Constraints.MaxLength(16)
     public String language;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "randomized_id", columnDefinition = "TEXT")
     public Long randomizedId;
 
     @Constraints.Required
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Timestamp arrivalTime;
+
+    @Column(name = "status", length = 255, nullable = false)
+    @Constraints.Required
+
 
     public static Finder<Long, UserInfo> find = new Finder<Long, UserInfo>(UserInfo.class);
 
@@ -54,14 +53,6 @@ public class UserInfo extends Model {
 
     public void setGallupId(Long gallupId) {
         this.gallupId = gallupId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getLanguage() {

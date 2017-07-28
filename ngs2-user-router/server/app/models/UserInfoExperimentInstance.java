@@ -14,17 +14,17 @@ import java.util.List;
  * Created by anuradha_uduwage.
  */
 @Entity
-public class ExperimentUserInfo extends Model {
+public class UserInfoExperimentInstance extends Model {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long userExperimentId;
 
-    @ManyToOne
-    public List<UserInfo> users;
+    @OneToOne
+    private UserInfo userInfo;
 
-    @ManyToOne
-    public List<Experiment> experiments;
+    @OneToOne
+    private Experiment experiment;
 
     @Constraints.Required
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -34,8 +34,8 @@ public class ExperimentUserInfo extends Model {
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Timestamp sendOffTime;
 
-    public static Finder<Long, ExperimentUserInfo>
-            find = new Finder<Long, ExperimentUserInfo>(ExperimentUserInfo.class);
+    public static Finder<Long, UserInfoExperimentInstance>
+            find = new Finder<Long, UserInfoExperimentInstance>(UserInfoExperimentInstance.class);
 
     public static List<Experiment> findByExperiment(Experiment experiment) {
         return Experiment.find.where().eq("experiment", experiment).findList();
@@ -45,6 +45,9 @@ public class ExperimentUserInfo extends Model {
         return UserInfo.find.where().eq("userInfo", userInfo).findList();
     }
 
+    public static int getUserCountByExperiment(String experimentId) {
+        return find.where().eq("experiment", experimentId).findRowCount();
+    }
 
     public Long getUserExperimentId() {
         return userExperimentId;
@@ -54,28 +57,20 @@ public class ExperimentUserInfo extends Model {
         this.userExperimentId = userExperimentId;
     }
 
-    /**
-     * Return list of users
-     * @return
-     */
-    public List<UserInfo> getUsers() {
-
-        return users;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
-    public void setUserId(List<UserInfo> users) {
-
-        this.users = users;
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
-    public List<Experiment> getExperiments() {
-
-        return experiments;
+    public Experiment getExperiment() {
+        return experiment;
     }
 
-    public void setExperiment(List<Experiment> experiment) {
-
-        this.experiments = experiments;
+    public void setExperiment(Experiment experiment) {
+        this.experiment = experiment;
     }
 
     public Timestamp getArrivalTime() {
