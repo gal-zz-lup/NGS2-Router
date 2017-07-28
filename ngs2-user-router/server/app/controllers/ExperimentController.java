@@ -1,6 +1,5 @@
 package controllers;
 
-import com.avaje.ebean.Model.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Experiment;
 import play.data.Form;
@@ -13,8 +12,6 @@ import util.Utility;
 
 import javax.inject.Inject;
 import java.sql.Timestamp;
-
-import services.URLShortenerService;
 
 
 /**
@@ -39,8 +36,6 @@ public class ExperimentController extends Controller {
      * @return
      */
     public Result createExperiment() {
-        URLShortenerService urlShortenerService = new URLShortenerService();
-
         JsonNode json = request().body().asJson();
         if (json == null) {
             return badRequest(Utility.createResponse("Expecting json", false));
@@ -48,18 +43,7 @@ public class ExperimentController extends Controller {
 
         Form<ExperimentForm> experimentForm = formFactory.form(ExperimentForm.class).bindFromRequest();
         Experiment experiment = new Experiment();
-        experiment.setExperimentName(experimentForm.get().experimentName);
-        experiment.setActualURL(experimentForm.get().actualURL);
-        //TODO: Revisit URL Shortner to see if we need a database call to check if URL exist
-        //TODO: instead of hashmap. At the moment if Experiment Controller gets call at multiple times
-        //TODO: we will be looking at empty hashmap.
-        //TODO: ShortURL should be created server-side, not passed in from the client.
-        experiment.setShortenURL("TODO");
-        experiment.setCreatedTime(new Timestamp(System.currentTimeMillis()));
-        experiment.setNumberOfParticipants(experimentForm.get().numberOfParticipants);
-        experiment.setPriority(experimentForm.get().priority);
-        experiment.setStatus("ACTIVE");
-        //experimentForm.get(); can we use this instead of using setters?
+        experiment.experimentName = experimentForm.get().experimentName;
         experiment.save();
         JsonNode jsonObject = Json.toJson(experiment);
         return created(Utility.createResponse(jsonObject, true));
@@ -112,21 +96,9 @@ public class ExperimentController extends Controller {
      * Static class to hold experiment form values.
      */
     public static class ExperimentForm {
-
         @Constraints.Required
         @Constraints.MaxLength(255)
         public String experimentName;
-
-        @Constraints.MaxLength(255)
-        @Constraints.Required
-        public String actualURL;
-
-        @Constraints.Required
-        public int numberOfParticipants;
-
-        @Constraints.Required
-        public int priority;
-
     }
 
 

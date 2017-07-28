@@ -13,13 +13,21 @@ CREATE TABLE admin (
 CREATE TABLE experiment (
     id bigint(20) AUTO_INCREMENT NOT NULL,
     experiment_name VARCHAR (255) NOT NULL,
-    experiment_url_actual VARCHAR(255) NOT NULL,
-    experiment_url_short VARCHAR(255) NOT NULL,
-    n_participants INT(5) UNSIGNED NOT NULL,
-    status varchar(255) NOT NULL,
-    created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    priority INT(5) UNSIGNED NOT NULL,
     CONSTRAINT pk_experiment PRIMARY KEY (id)
+);
+
+CREATE TABLE experiment_instance (
+  id bigint(20) AUTO_INCREMENT NOT NULL,
+  experiment_id bigint(20) NOT NULL,
+  FOREIGN KEY (experiment_id) REFERENCES experiment(id),
+  experiment_instance_name VARCHAR (255) NOT NULL,
+  experiment_instance_url_actual VARCHAR(255) NOT NULL,
+  experiment_instance_url_short VARCHAR(255) NOT NULL,
+  n_participants INT(5) UNSIGNED NOT NULL,
+  status varchar(255) NOT NULL,
+  created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  priority INT(5) UNSIGNED NOT NULL,
+  CONSTRAINT pk_experiment_instance PRIMARY KEY (id)
 );
 
 CREATE TABLE user_info (
@@ -47,6 +55,7 @@ CREATE TABLE experiment_user_info (
 
 # --- !Downs
 DROP TABLE experiment;
+DROP TABLE experiment_instance;
 DROP TABLE user_info;
 DROP TABLE experiment_user_info;
 DROP TABLE admin;

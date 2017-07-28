@@ -26,5 +26,7 @@ GET     /app/allExperiments             controllers.ExperimentController.getAllE
 GET     /app/experimentsByUser/:userId  controllers.ExperimentUserInfoController.experimentsByUser(userId: Long)
 GET     /app/usersByExperiment/:expId   controllers.ExperimentUserInfoController.usersByExperiment(expId: Long)
 
+GET     /app/experimentInstancesByExperiment/:experimentId  controllers.ExperimentInstanceController.getAllExperimentInstancesByExperiment(experimentId: Long)
+
 #POST   /upload                     controllers.ApplicationController.uploadCSVFile()
 GET     /*file               controllers.Assets.at(path="/public", file)
