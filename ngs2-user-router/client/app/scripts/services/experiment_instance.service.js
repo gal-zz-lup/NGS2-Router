@@ -20,7 +20,7 @@
             });
       },
       updateExperimentInstance: function(experimentInstance) {
-        return $http.post(ApiConfig.url + 'app/updateExperimentInstance', experimentInstance)
+        return $http.post(ApiConfig.url + 'app/updateExperimentInstance/' + experimentInstance.id, experimentInstance)
           .then(function(response) {
               return $q.when(response.body);
             },
@@ -29,7 +29,7 @@
             });
       },
       removeExperimentInstance: function(experimentInstanceId) {
-        console.log('removeExperimentInstance', experimentInstanceId);
+        //console.log('removeExperimentInstance', experimentInstanceId);
         return $q(function(resolve) {
           resolve({
           });

@@ -59,7 +59,7 @@ public class ExperimentInstanceController extends Controller {
 
         experimentInstance.experiment = Experiment.find.byId(experimentForm.get().experimentId);
         experimentInstance.experimentInstanceName = experimentForm.get().experimentInstanceName;
-        experimentInstance.experimentInstanceUrlActual = experimentForm.get().experimentInstanceUrl;
+        experimentInstance.experimentInstanceUrlActual = experimentForm.get().experimentInstanceUrlActual;
         //TODO: Revisit URL Shortner to see if we need a database call to check if URL exist
         //TODO: instead of hashmap. At the moment if Experiment Controller gets call at multiple times
         //TODO: we will be looking at empty hashmap.
@@ -81,20 +81,18 @@ public class ExperimentInstanceController extends Controller {
      * @return
      */
     public Result updateExperimentInstance(Long id) {
-
-        ExperimentInstance experimentInstance;
-        Form<ExperimentInstance> experimentInstanceForm;
-
-        try {
-            experimentInstance = ExperimentInstance.find.byId(id);
-            experimentInstanceForm = formFactory.form(ExperimentInstance.class).fill(experimentInstance);
-            experimentInstance = experimentInstanceForm.get();
-            experimentInstance.save();
-            JsonNode jsonObject = Json.toJson(experimentInstance);
-            return ok(Utility.createResponse(jsonObject, true));
-        } catch (Exception ex) {
-            return notFound("Something went wrong during update");
-        }
+      ExperimentInstance experimentInstance = ExperimentInstance.find.byId(id);
+      Form<ExperimentInstanceForm> experimentForm = formFactory.form(ExperimentInstanceForm.class).bindFromRequest();
+      experimentInstance.experimentInstanceName = experimentForm.get().experimentInstanceName;
+      experimentInstance.experimentInstanceUrlActual = experimentForm.get().experimentInstanceUrlActual;
+      //TODO: recalculate short URL here
+      experimentInstance.experimentInstanceUrlShort = "TODO";
+      experimentInstance.nParticipants = experimentForm.get().nParticipants;
+      experimentInstance.priority = experimentForm.get().priority;
+      experimentInstance.status = "ACTIVE";
+      experimentInstance.update();
+      JsonNode jsonObject = Json.toJson(experimentInstance);
+      return ok(Utility.createResponse(jsonObject, true));
     }
 
 
@@ -122,7 +120,6 @@ public class ExperimentInstanceController extends Controller {
      * Static class to hold experiment form values.
      */
     public static class ExperimentInstanceForm {
-        @Constraints.Required
         public Long experimentId;
 
         @Constraints.Required
@@ -131,7 +128,7 @@ public class ExperimentInstanceController extends Controller {
 
         @Constraints.MaxLength(255)
         @Constraints.Required
-        public String experimentInstanceUrl;
+        public String experimentInstanceUrlActual;
 
         @Constraints.Required
         public int nParticipants;

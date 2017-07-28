@@ -12,7 +12,7 @@
     $scope.editExperiment = function(experiment) {
       if ($scope.editing) {
         $scope.dirty = true;
-        console.log('updateExperiment', experiment);
+        //console.log('updateExperiment', experiment);
         ExperimentService.updateExperiment(experiment)
           .then(function() {
             $scope.dirty = false;
@@ -24,7 +24,7 @@
     };
 
     $scope.deleteExperiment = function(experiment) {
-      console.log('deleteExperiment', experiment);
+      //console.log('deleteExperiment', experiment);
       if (window.confirm('Are you sure you want this delete this experiment? This cannot be undone.')) {
         ExperimentService.removeExperiment(experiment.id)
           .then(function () {
@@ -34,7 +34,7 @@
     };
 
     $scope.createExperimentInstance = function(experiment) {
-      console.log('createExperimentInstance', experiment);
+      //console.log('createExperimentInstance', experiment);
 
       var modalInstance = $uibModal.open({
         animation: true,
@@ -47,7 +47,7 @@
       });
 
       modalInstance.result.then(function(newExperimentInstance) {
-        console.log('newExperimentInstance', newExperimentInstance);
+        //console.log('newExperimentInstance', newExperimentInstance);
         experiment.experimentInstances.push(newExperimentInstance);
       });
     }

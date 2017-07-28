@@ -1,8 +1,8 @@
 <tbody ng-if="!deleted">
     <tr ng-class="{'warning':dirty, 'info':editing, 'active':hover, 'success':saved}" ng-mouseover="hover=true" ng-mouseleave="hover=false">
-      <td>{{experiment.id}}</td>
       <td ng-if="editing"><input type="text" size="30" ng-model="experiment.experimentName"></td>
-      <td ng-if="!editing">{{experiment.experimentName}}</td>
+      <td ng-if="!editing"><strong>{{experiment.experimentName}}</strong></td>
+      <td>{{experiment.id}}</td>
       <td align="right">
         <button ng-style="{'visibility' : (hover || editing) ? 'visible' : 'hidden'}" ng-click="editExperiment(experiment)" class="btn btn-default btn-xs form-inline">
           <span ng-class="{'glyphicon-ok' : editing, 'glyphicon-pencil' : !editing}" class="glyphicon" aria-hidden="true"></span>
@@ -14,7 +14,7 @@
     </tr>
     <tr>
       <td colspan="3">
-        <table class="table">
+        <table class="table" style="margin-left: 1em;">
           <thead>
               <tr>
                 <th colspan="7">
@@ -25,12 +25,12 @@
                 </th>
               </tr>
               <tr ng-if="!minimized">
-                <th>ID</th>
                 <th>Name</th>
                 <th>URL</th>
                 <th># Participants</th>
                 <th>Status</th>
                 <th>Priority</th>
+                <th>ID</th>
                 <th><!--Actions--></th>
               </tr>
           </thead>
