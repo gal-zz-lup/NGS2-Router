@@ -11,7 +11,6 @@ import play.mvc.Result;
 import util.Utility;
 
 import javax.inject.Inject;
-import java.sql.Timestamp;
 
 
 /**
@@ -55,22 +54,13 @@ public class ExperimentController extends Controller {
      * @return
      */
     public Result updateExperiment(Long id) {
-
-        Experiment experiment;
-        Form<Experiment> experimentForm;
-
-        try {
-            experiment = Experiment.find.byId(id);
-            experimentForm = formFactory.form(Experiment.class).fill(experiment);
-            experiment = experimentForm.get();
-            experiment.save();
-            JsonNode jsonObject = Json.toJson(experiment);
-            return ok(Utility.createResponse(jsonObject, true));
-        } catch (Exception ex) {
-            return notFound("Something went wrong during update");
-        }
+        Experiment experiment = Experiment.find.byId(id);
+        Form<ExperimentForm> experimentForm = formFactory.form(ExperimentForm.class).bindFromRequest();
+        experiment.experimentName = experimentForm.get().experimentName;
+        experiment.update();
+        JsonNode jsonObject = Json.toJson(experiment);
+        return ok(Utility.createResponse(jsonObject, true));
     }
-
 
     /**
      * Delete experiment

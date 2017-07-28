@@ -56,15 +56,17 @@ public class ExperimentInstanceController extends Controller {
 
         Form<ExperimentInstanceForm> experimentForm = formFactory.form(ExperimentInstanceForm.class).bindFromRequest();
         ExperimentInstance experimentInstance = new ExperimentInstance();
+
+        experimentInstance.experiment = Experiment.find.byId(experimentForm.get().experimentId);
         experimentInstance.experimentInstanceName = experimentForm.get().experimentInstanceName;
-        experimentInstance.actualURL = experimentForm.get().actualURL;
+        experimentInstance.experimentInstanceUrlActual = experimentForm.get().experimentInstanceUrl;
         //TODO: Revisit URL Shortner to see if we need a database call to check if URL exist
         //TODO: instead of hashmap. At the moment if Experiment Controller gets call at multiple times
         //TODO: we will be looking at empty hashmap.
         //TODO: ShortURL should be created server-side, not passed in from the client.
-        experimentInstance.shortenURL = "TODO";
+        experimentInstance.experimentInstanceUrlShort = "TODO";
         experimentInstance.createdTime = new Timestamp(System.currentTimeMillis());
-        experimentInstance.numberOfParticipants = experimentForm.get().numberOfParticipants;
+        experimentInstance.nParticipants = experimentForm.get().nParticipants;
         experimentInstance.priority = experimentForm.get().priority;
         experimentInstance.status = "ACTIVE";
         //experimentForm.get(); can we use this instead of using setters?
@@ -120,6 +122,8 @@ public class ExperimentInstanceController extends Controller {
      * Static class to hold experiment form values.
      */
     public static class ExperimentInstanceForm {
+        @Constraints.Required
+        public Long experimentId;
 
         @Constraints.Required
         @Constraints.MaxLength(255)
@@ -127,15 +131,14 @@ public class ExperimentInstanceController extends Controller {
 
         @Constraints.MaxLength(255)
         @Constraints.Required
-        public String actualURL;
+        public String experimentInstanceUrl;
 
         @Constraints.Required
-        public int numberOfParticipants;
+        public int nParticipants;
 
         @Constraints.Required
         public int priority;
 
     }
-
 
 }

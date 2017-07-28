@@ -1,27 +1,58 @@
-<tr ng-class="{'info':editing, 'active':hover}" ng-mouseover="hover=true" ng-mouseleave="hover=false" ng-if="!deleted">
-  <td>{{experiment.id}}</td>
-  <td ng-if="editing"><input type="text" size="30" ng-model="experiment.experimentName"></td>
-  <td ng-if="!editing">{{experiment.experimentName}}</td>
-  <td ng-if="editing"><input type="text" size="30" ng-model="experiment.actualURL"></td>
-  <td ng-if="!editing">{{experiment.actualURL}}</td>
-  <td ng-if="editing"><input type="number" size="2" ng-model="experiment.numberOfParticipants"></td>
-  <td ng-if="!editing">{{experiment.numberOfParticipants}}</td>
-  <td ng-if="!editing">
-    {{experiment.status}}
-  </td>
-  <td ng-if="editing">
-    <button ng-style="{'visibility' : editing ? 'visible' : 'hidden' }" ng-click="toggleExperiment(experiment)" class="btn btn-default btn-xs form-inline">
-      <span ng-class="{'glyphicon-stop' : experiment.status === 'ACTIVE', 'glyphicon-play' : experiment.status === 'STOPPED'}" class="glyphicon" aria-hidden="true"></span>
-    </button>
-  </td>
-  <td ng-if="!editing">{{experiment.priority}}</td>
-  <td ng-if="editing"><input type="number" size="2" min="0" ng-model="experiment.priority"></td>
-  <td align="right">
-    <button ng-style="{'visibility' : (hover || editing) ? 'visible' : 'hidden'}" ng-click="editExperiment()" class="btn btn-default btn-xs form-inline">
-      <span ng-class="{'glyphicon-ok' : editing, 'glyphicon-pencil' : !editing}" class="glyphicon" aria-hidden="true"></span>
-    </button>
-    <button ng-style="{'visibility' : (hover) ? 'visible' : 'hidden', 'display' : (editing) ? 'none' : 'inline-block'}" ng-click="deleteExperiment(experiment)" class="btn btn-default btn-xs form-inline">
-      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-    </button>
-  </td>
-</tr>
+<tbody ng-if="!deleted">
+    <tr ng-class="{'warning':dirty, 'info':editing, 'active':hover, 'success':saved}" ng-mouseover="hover=true" ng-mouseleave="hover=false">
+      <td>{{experiment.id}}</td>
+      <td ng-if="editing"><input type="text" size="30" ng-model="experiment.experimentName"></td>
+      <td ng-if="!editing">{{experiment.experimentName}}</td>
+      <td align="right">
+        <button ng-style="{'visibility' : (hover || editing) ? 'visible' : 'hidden'}" ng-click="editExperiment(experiment)" class="btn btn-default btn-xs form-inline">
+          <span ng-class="{'glyphicon-ok' : editing, 'glyphicon-pencil' : !editing}" class="glyphicon" aria-hidden="true"></span>
+        </button>
+        <button ng-style="{'visibility' : (hover) ? 'visible' : 'hidden', 'display' : (editing) ? 'none' : 'inline-block'}" ng-click="deleteExperiment(experiment)" class="btn btn-default btn-xs form-inline">
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <table class="table">
+          <thead>
+              <tr>
+                <th colspan="7">
+                  <button ng-click="minimized = !minimized" class="btn btn-xs btn-default">
+                    <span class="glyphicon glyphicon-{{(minimized) ? 'plus' : 'minus'}}" aria-hidden="true"></span>
+                  </button>
+                  Instances
+                </th>
+              </tr>
+              <tr ng-if="!minimized">
+                <th>ID</th>
+                <th>Name</th>
+                <th>URL</th>
+                <th># Participants</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th><!--Actions--></th>
+              </tr>
+          </thead>
+          <tbody ng-if="!minimized">
+              <tr class="experiment-instance"
+                  ng-repeat="experimentInstance in experiment.experimentInstances"
+                  experiment-instance="experimentInstance">
+              </tr>
+              <tr class="info" ng-if="experiment.experimentInstances.length == 0"><td colspan="7">No instances.</td></tr>
+          </tbody>
+          <tfoot ng-if="!minimized">
+          <tr>
+            <td colspan="7" align="right">
+              <button ng-click="createExperimentInstance(experiment)" class="btn btn-xs btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Add Experiment Instance
+              </button>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </td>
+    </tr>
+</tbody>
+

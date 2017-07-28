@@ -12,19 +12,25 @@
             return $q.reject(response.data);
           });
       },
-      createExperiment: function(experimentName, experimentUrl, numParticipants, experimentPriority) {
+      createExperiment: function(experimentName) {
         var payload = {
-          'experimentName': experimentName,
-          'actualURL': experimentUrl,
-          'numberOfParticipants': numParticipants,
-          'priority': experimentPriority
+          'experimentName': experimentName
         };
         return $http.put(ApiConfig.url + 'app/createExperiment', payload)
           .then(function(response) {
-              return $q.when(response.body);
+              return $q.when(response);
             },
             function(response) {
-              return $q.reject(response.body);
+              return $q.reject(response);
+            });
+      },
+      updateExperiment: function(experiment) {
+        return $http.post(ApiConfig.url + 'app/updateExperiment/' + experiment.id, experiment)
+          .then(function(response) {
+              return $q.when(response);
+            },
+            function(response) {
+              return $q.reject(response);
             });
       },
       removeExperiment: function(experimentId) {

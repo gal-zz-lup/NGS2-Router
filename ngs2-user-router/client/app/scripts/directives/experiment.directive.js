@@ -1,17 +1,26 @@
 (function() {
   'use strict';
 
-  function ExperimentController($scope, ExperimentService) {
+  function ExperimentController($scope, ExperimentService, $uibModal, $timeout) {
+    $scope.dirty = false;
+    $scope.saved = false;
     $scope.hover = false;
     $scope.editing = false;
     $scope.deleted = false;
+    $scope.minimized = true;
 
-    $scope.editExperiment = function() {
+    $scope.editExperiment = function(experiment) {
+      if ($scope.editing) {
+        $scope.dirty = true;
+        console.log('updateExperiment', experiment);
+        ExperimentService.updateExperiment(experiment)
+          .then(function() {
+            $scope.dirty = false;
+            $scope.saved = true;
+            $timeout(function() { $scope.saved = false; }, 1000);
+          });
+      }
       $scope.editing = !$scope.editing;
-    };
-
-    $scope.toggleExperiment = function(experiment) {
-      experiment.status = (experiment.status === 'ACTIVE') ? 'STOPPED' : 'ACTIVE';
     };
 
     $scope.deleteExperiment = function(experiment) {
@@ -23,9 +32,28 @@
           });
       }
     };
+
+    $scope.createExperimentInstance = function(experiment) {
+      console.log('createExperimentInstance', experiment);
+
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'views/modals/create-experiment_instance.modals.html',
+        controller: 'CreateExperimentInstanceController',
+        resolve: {
+          experiment: experiment
+        },
+        size: 'lg'
+      });
+
+      modalInstance.result.then(function(newExperimentInstance) {
+        console.log('newExperimentInstance', newExperimentInstance);
+        experiment.experimentInstances.push(newExperimentInstance);
+      });
+    }
   }
 
-  ExperimentController.$inject = ['$scope', 'ExperimentService'];
+  ExperimentController.$inject = ['$scope', 'ExperimentService', '$uibModal', '$timeout'];
 
   function Experiment() {
     return {

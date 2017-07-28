@@ -18,12 +18,15 @@ angular
     'ngTouch',
     'ui.bootstrap',
     'app.directives.experiment',
+    'app.directives.experiment_instance',
     'app.directives.users',
     'app.modals.create_experiment',
+    'app.modals.create_experiment_instance',
     'app.modals.export_users',
     'app.modals.import_users',
     'app.services.alert',
     'app.services.experiment',
+    'app.services.experiment_instance',
     'app.services.users'
   ])
   .config(function ($routeProvider, $locationProvider) {

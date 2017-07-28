@@ -1,6 +1,6 @@
 <h3>Experiments</h3>
 <div class="pull-right">
-  <button ng-click="addExperiment()" class="btn btn-xs btn-default">
+  <button ng-click="createExperiment()" class="btn btn-xs btn-default">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
     Add Experiment
   </button>
@@ -10,16 +10,10 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>URL</th>
-        <th># Participants</th>
-        <th>Status</th>
-        <th>Priority</th>
         <th><!--Actions--></th>
       </tr>
   </thead>
-  <tbody>
-    <tr ng-repeat="experiment in experiments | orderBy:'priority'" experiment="experiment"></tr>
-  </tbody>
+  <tbody ng-repeat="experiment in experiments | orderBy:'id'" experiment="experiment"></tbody>
 </table>
 
 

@@ -19,7 +19,7 @@ function MainController($scope, ExperimentService, UsersService, $uibModal, Aler
     $scope.users = resp;
   });
 
-  $scope.addExperiment = function() {
+  $scope.createExperiment = function() {
     var modalInstance = $uibModal.open({
       animation: true,
       templateUrl: 'views/modals/create-experiment.modals.html',

@@ -6,10 +6,10 @@
       $uibModalInstance.close();
     };
 
-    $scope.createExperiment = function(experimentName, experimentUrl, numParticipants, experimentPriority) {
-      ExperimentService.createExperiment(experimentName, experimentUrl, numParticipants, experimentPriority).then(function(resp) {
+    $scope.createExperiment = function(experimentName) {
+      ExperimentService.createExperiment(experimentName).then(function(resp) {
         console.log('resp', resp);
-        $uibModalInstance.close(resp);
+        $uibModalInstance.close(resp.data.body);
       });
     };
   }

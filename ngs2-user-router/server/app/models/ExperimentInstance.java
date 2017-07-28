@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
@@ -19,27 +20,26 @@ public class ExperimentInstance extends Model {
     public Long id;
 
     @OneToOne
+    @JsonIgnore
     public Experiment experiment;
-
-    public Long experimentId;
 
     @Column(length = 255, unique = true, nullable = false)
     @Constraints.MaxLength(255)
     @Constraints.Required
     public String experimentInstanceName;
 
-    @Column(name = "experiment_url_actual", length = 255, unique = true, nullable = false)
+    @Column(name = "experiment_instance_url_actual", length = 255, unique = true, nullable = false)
     @Constraints.MaxLength(255)
     @Constraints.Required
-    public String actualURL;
+    public String experimentInstanceUrlActual;
 
-    @Column(name = "experiment_url_short", length = 255, unique = true, nullable = false)
+    @Column(name = "experiment_instance_url_short", length = 255, unique = true, nullable = false)
     @Constraints.MaxLength(255)
     @Constraints.Required
-    public String shortenURL;
+    public String experimentInstanceUrlShort;
 
     @Column(name = "n_participants")
-    public int numberOfParticipants;
+    public int nParticipants;
 
     @Column(name = "priority")
     public int priority;
