@@ -5,38 +5,48 @@
     var ALERT_TIMEOUT = 3000;
     $scope.alerts = [];
 
-    return {
-      add: function (type, msg, timeout) {
-        if (timeout) {
-          $timeout(function(){
-            this.closeAlert(this);
-          }, timeout);
-        } else {
-          $timeout(function(){
-            this.closeAlert(this);
-          }, ALERT_TIMEOUT);
-        }
-
-        return $scope.alerts.push({
-          type: type,
-          msg: msg,
-          close: function() {
-            return this.closeAlert(this);
-          }
-        });
-      },
-      closeAlert: function(alert) {
-        return this.closeAlertIdx($scope.alerts.indexOf(alert));
-      },
-      closeAlertIdx: function(index) {
-        return $scope.alerts.splice(index, 1);
-      },
-      clear: function() {
-        $scope.alerts = [];
-      },
-      get: function() {
-        return $scope.alerts;
+    function add(type, msg, timeout) {
+      if (timeout) {
+        $timeout(function(){
+          closeAlert(this);
+        }, timeout);
+      } else {
+        $timeout(function(){
+          closeAlert(this);
+        }, ALERT_TIMEOUT);
       }
+
+      return $scope.alerts.push({
+        type: type,
+        msg: msg,
+        close: function() {
+          return closeAlert(this);
+        }
+      });
+    }
+
+    function closeAlert(alert) {
+      return closeAlertIdx($scope.alerts.indexOf(alert));
+    }
+
+    function closeAlertIdx(index) {
+      return $scope.alerts.splice(index, 1);
+    }
+
+    function clear() {
+      $scope.alerts = [];
+    }
+
+    function get() {
+      return $scope.alerts;
+    }
+
+    return {
+      add: add,
+      closeAlert: closeAlert,
+      closeAlertIdx: closeAlertIdx,
+      clear: clear,
+      get: get
     };
   }
 

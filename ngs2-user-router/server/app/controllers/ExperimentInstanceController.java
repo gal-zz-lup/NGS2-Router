@@ -43,7 +43,7 @@ public class ExperimentInstanceController extends Controller {
 
 
     /**
-     * Create experiment.
+     * Create experiment instance
      * @return
      */
     public Result createExperimentInstance() {
@@ -76,8 +76,8 @@ public class ExperimentInstanceController extends Controller {
     }
 
     /**
-     * Update experiment
-     * @param id experiment id
+     * Update experiment instance
+     * @param id experiment instance id
      * @return
      */
     public Result updateExperimentInstance(Long id) {
@@ -97,27 +97,22 @@ public class ExperimentInstanceController extends Controller {
 
 
     /**
-     * Delete experiment
+     * Delete experiment instance
      * @return
      */
     public Result deleteExperimentInstance(Long id) {
-        JsonNode json = request().body().asJson();
-        if (json == null) {
-            return badRequest(Utility.createResponse("Expecting json", false));
-        } else {
-            boolean status = ExperimentInstance.find.ref(id).delete();
-            if (!status) {
-                return notFound(Utility.createResponse(
-                        "Experiment Instance with id:" + id + " not found", false));
-            } else {
-                return ok(Utility.createResponse(
-                        "Experiment Instance with id:" + id + " deleted", true));
-            }
-        }
+          boolean status = ExperimentInstance.find.ref(id).delete();
+          if (!status) {
+              return notFound(Utility.createResponse(
+                      "Experiment Instance with id:" + id + " not found", false));
+          } else {
+              return ok(Utility.createResponse(
+                      "Experiment Instance with id:" + id + " deleted", true));
+          }
     }
 
     /**
-     * Static class to hold experiment form values.
+     * Static class to hold experiment instance form values.
      */
     public static class ExperimentInstanceForm {
         public Long experimentId;

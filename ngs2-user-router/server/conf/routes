@@ -23,7 +23,8 @@ PUT     /app/createExperiment           controllers.ExperimentController.createE
 PUT     /app/createExperimentInstance           controllers.ExperimentInstanceController.createExperimentInstance
 POST    /app/updateExperiment/:id       controllers.ExperimentController.updateExperiment(id: Long)
 POST    /app/updateExperimentInstance/:id       controllers.ExperimentInstanceController.updateExperimentInstance(id: Long)
-POST    /app/deleteExperiment/:id       controllers.ExperimentController.deleteExperiment(id: Long)
+DELETE    /app/deleteExperiment/:id       controllers.ExperimentController.deleteExperiment(id: Long)
+DELETE    /app/deleteExperimentInstance/:id       controllers.ExperimentInstanceController.deleteExperimentInstance(id: Long)
 GET     /app/allExperiments             controllers.ExperimentController.getAllExperiments()
 GET     /app/experimentsByUser/:userId  controllers.UserInfoExperimentInstanceController.experimentsByUser(userId: Long)
 GET     /app/usersByExperiment/:expId   controllers.UserInfoExperimentInstanceController.usersByExperiment(expId: Long)

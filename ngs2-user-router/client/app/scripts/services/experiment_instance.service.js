@@ -7,16 +7,16 @@
         var payload = {
           'experimentId': experimentId,
           'experimentInstanceName': experimentInstanceName,
-          'experimentInstanceUrl': experimentInstanceUrl,
+          'experimentInstanceUrlActual': experimentInstanceUrl,
           'nParticipants': nParticipants,
           'priority': priority
         };
         return $http.put(ApiConfig.url + 'app/createExperimentInstance', payload)
           .then(function(response) {
-              return $q.when(response.body);
+              return $q.when(response);
             },
             function(response) {
-              return $q.reject(response.body);
+              return $q.reject(response);
             });
       },
       updateExperimentInstance: function(experimentInstance) {
@@ -30,10 +30,13 @@
       },
       removeExperimentInstance: function(experimentInstanceId) {
         //console.log('removeExperimentInstance', experimentInstanceId);
-        return $q(function(resolve) {
-          resolve({
-          });
-        });
+        return $http.delete(ApiConfig.url + 'app/deleteExperimentInstance/' + experimentInstanceId)
+          .then(function(response) {
+              return $q.when(response);
+            },
+            function(response) {
+              return $q.reject(response);
+            });
       }
     };
   }

@@ -37,7 +37,8 @@
           <tbody ng-if="!minimized">
               <tr class="experiment-instance"
                   ng-repeat="experimentInstance in experiment.experimentInstances"
-                  experiment-instance="experimentInstance">
+                  experiment-instance="experimentInstance"
+                  ng-if="!deleted">
               </tr>
               <tr class="info" ng-if="experiment.experimentInstances.length == 0"><td colspan="7">No instances.</td></tr>
           </tbody>

@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  function ExperimentController($scope, ExperimentService, $uibModal, $timeout) {
+  function ExperimentController($scope, ExperimentService, $uibModal, $timeout, AlertService) {
     $scope.dirty = false;
     $scope.saved = false;
     $scope.hover = false;
@@ -29,6 +29,7 @@
         ExperimentService.removeExperiment(experiment.id)
           .then(function () {
             $scope.deleted = true;
+            AlertService.add('success', 'Experiment deleted');
           });
       }
     };
@@ -46,14 +47,15 @@
         size: 'lg'
       });
 
-      modalInstance.result.then(function(newExperimentInstance) {
+      modalInstance.result.then(function(resp) {
         //console.log('newExperimentInstance', newExperimentInstance);
-        experiment.experimentInstances.push(newExperimentInstance);
+        experiment.experimentInstances.push(resp.data.body);
+        AlertService.add('success', 'Experiment instance created');
       });
     }
   }
 
-  ExperimentController.$inject = ['$scope', 'ExperimentService', '$uibModal', '$timeout'];
+  ExperimentController.$inject = ['$scope', 'ExperimentService', '$uibModal', '$timeout', 'AlertService'];
 
   function Experiment() {
     return {

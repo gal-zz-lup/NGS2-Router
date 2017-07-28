@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  function ExperimentInstanceController($scope, ExperimentInstanceService, $timeout) {
+  function ExperimentInstanceController($scope, ExperimentInstanceService, AlertService, $timeout) {
     $scope.dirty = false;
     $scope.saved = false;
     $scope.hover = false;
@@ -30,14 +30,20 @@
       //console.log('deleteExperimentInstance', experimentInstance);
       if (window.confirm('Are you sure you want this delete this experiment instance? This cannot be undone.')) {
         ExperimentInstanceService.removeExperimentInstance(experimentInstance.id)
-          .then(function () {
+          .then(function (resp) {
+            console.log('resp', resp);
             $scope.deleted = true;
+            AlertService.add('success', 'Experiment instance successfully removed.');
+          },
+          function (resp) {
+            console.log('resp', resp);
+            AlertService.add('warning', 'There was an error when trying to remove the experiment instance.');
           });
       }
     };
   }
 
-  ExperimentInstanceController.$inject = ['$scope', 'ExperimentInstanceService', '$timeout'];
+  ExperimentInstanceController.$inject = ['$scope', 'ExperimentInstanceService', 'AlertService', '$timeout'];
 
   function ExperimentInstance() {
     return {

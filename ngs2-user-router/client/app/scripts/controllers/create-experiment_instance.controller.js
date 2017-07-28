@@ -6,10 +6,10 @@
       $uibModalInstance.close();
     };
 
-    $scope.createExperimentInstance = function(experimentInstanceName, experimentInstanceUrl, nParticipants, priority) {
-      console.log("createExperimentInstance", experimentInstanceName, experimentInstanceUrl, nParticipants, priority, experiment);
+    $scope.createExperimentInstance = function(experimentInstanceName, experimentInstanceUrlActual, nParticipants, priority) {
+      console.log("createExperimentInstance", experimentInstanceName, experimentInstanceUrlActual, nParticipants, priority, experiment);
       ExperimentInstanceService
-        .createExperimentInstance(experiment.id, experimentInstanceName, experimentInstanceUrl, nParticipants, priority)
+        .createExperimentInstance(experiment.id, experimentInstanceName, experimentInstanceUrlActual, nParticipants, priority)
         .then(function(resp) {
           console.log('resp', resp);
           $uibModalInstance.close(resp);
