@@ -1,5 +1,7 @@
 package services;
 
+import play.Logger;
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -28,7 +30,7 @@ public class URLShortenerService {
         shortURLConvertToLong = new HashMap<>();
         longURLConvertToShort = new HashMap<>();
         randomNumberGen = new Random();
-        baseDomain = "http://yale.server.address.edu";
+        baseDomain = "http://google.com";
         charList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
     }
 
@@ -39,14 +41,17 @@ public class URLShortenerService {
      */
     private String cleanupURL(String url) {
 
-        if (url.substring(0,8).equals("https://") || url.substring(0,7).equals("http://")) {
-            url = url.substring(0,7);
+      try {
+        if (url.substring(0, 8).equals("https://") || url.substring(0, 7).equals("http://")) {
+          url = url.substring(0, 7);
         }
         if (url.charAt(url.length() - 1) == '/') {
-            url = url.substring(0, url.length() - 1);
+          url = url.substring(0, url.length() - 1);
         }
-
-        return url;
+      } catch (IndexOutOfBoundsException ex) {
+        Logger.error("Something went wrong during cleanup " + ex);
+      }
+      return url;
     }
 
     /**
@@ -56,17 +61,17 @@ public class URLShortenerService {
      */
     private String buildShortURL(String url) {
 
-        String shortURL = null;
+        String shortURL = "";
 
         boolean urlExists = false;
 
         while(!urlExists) {
-            shortURL = null;
+            shortURL = "";
             for (int i=0; i < urlLength; i++) {
                 shortURL += charList[randomNumberGen.nextInt(62)];
             }
 
-            if (shortURLConvertToLong.containsKey(shortURL)) {
+            if (!shortURLConvertToLong.containsKey(shortURL)) {
                 urlExists = true;
                 break;
             }
@@ -95,7 +100,6 @@ public class URLShortenerService {
         } else {
             shortURL = baseDomain + "/" + buildShortURL(longURL);
         }
-
         return shortURL;
     }
 

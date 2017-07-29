@@ -52,6 +52,10 @@ public class ExperimentInstance extends Model {
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Timestamp createdTime;
 
+    @Constraints.Required
+    @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+    public Timestamp updatedTime;
+
     public static Finder<Long, ExperimentInstance> find = new Finder<Long, ExperimentInstance>(ExperimentInstance.class);
 
     /**

@@ -64,8 +64,10 @@ public class ExperimentInstanceController extends Controller {
         //TODO: instead of hashmap. At the moment if Experiment Controller gets call at multiple times
         //TODO: we will be looking at empty hashmap.
         //TODO: ShortURL should be created server-side, not passed in from the client.
-        experimentInstance.experimentInstanceUrlShort = "TODO";
+        experimentInstance.experimentInstanceUrlShort = urlShortenerService.getShortURL(
+                experimentInstance.experimentInstanceUrlActual);
         experimentInstance.createdTime = new Timestamp(System.currentTimeMillis());
+        experimentInstance.updatedTime = experimentInstance.createdTime;
         experimentInstance.nParticipants = experimentForm.get().nParticipants;
         experimentInstance.priority = experimentForm.get().priority;
         experimentInstance.status = "ACTIVE";
@@ -81,12 +83,14 @@ public class ExperimentInstanceController extends Controller {
      * @return
      */
     public Result updateExperimentInstance(Long id) {
+      URLShortenerService urlShortenerService = new URLShortenerService();
       ExperimentInstance experimentInstance = ExperimentInstance.find.byId(id);
       Form<ExperimentInstanceForm> experimentForm = formFactory.form(ExperimentInstanceForm.class).bindFromRequest();
       experimentInstance.experimentInstanceName = experimentForm.get().experimentInstanceName;
       experimentInstance.experimentInstanceUrlActual = experimentForm.get().experimentInstanceUrlActual;
-      //TODO: recalculate short URL here
-      experimentInstance.experimentInstanceUrlShort = "TODO";
+      experimentInstance.experimentInstanceUrlShort = urlShortenerService.getShortURL(
+              experimentInstance.experimentInstanceUrlActual);
+      experimentInstance.updatedTime = new Timestamp(System.currentTimeMillis());
       experimentInstance.nParticipants = experimentForm.get().nParticipants;
       experimentInstance.priority = experimentForm.get().priority;
       experimentInstance.status = "ACTIVE";

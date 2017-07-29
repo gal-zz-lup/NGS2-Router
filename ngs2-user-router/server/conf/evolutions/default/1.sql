@@ -26,6 +26,7 @@ CREATE TABLE experiment_instance (
   n_participants INT(5) UNSIGNED NOT NULL,
   status varchar(255) NOT NULL,
   created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   priority INT(5) UNSIGNED NOT NULL,
   CONSTRAINT pk_experiment_instance PRIMARY KEY (id)
 );
