@@ -31,9 +31,10 @@ CREATE TABLE experiment_instance (
   CONSTRAINT pk_experiment_instance PRIMARY KEY (id)
 );
 
+
 CREATE TABLE user_info (
   id bigint(20) NOT NULL AUTO_INCREMENT,
-  gallup_id bigint(20) NOT NULL,
+  gallup_id VARCHAR(255) NOT NULL,
   email varchar(255) NOT NULL,
   language VARCHAR(16) NOT NULL,
   randomized_id VARCHAR(255) NOT NULL,

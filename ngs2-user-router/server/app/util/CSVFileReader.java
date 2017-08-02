@@ -30,7 +30,7 @@ public class CSVFileReader extends AbstractFileReader {
      * @return
      */
     @Override
-    public List<Object> parseFile(InputStream inputStream) {
+    public void parseFile(InputStream inputStream) {
         Logger.info("Getting reading to parse the file");
 
         UserInfo userInfo = new UserInfo();
@@ -52,7 +52,6 @@ public class CSVFileReader extends AbstractFileReader {
         } catch (IOException ex) {
             Logger.error("Exception occured::: " + ex.getMessage());
         }
-        return recordList;
     }
 
 }

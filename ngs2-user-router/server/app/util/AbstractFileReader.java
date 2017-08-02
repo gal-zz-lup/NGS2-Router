@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by anuradha_uduwage on 7/14/17.
  */
-public  abstract class AbstractFileReader {
+public abstract class AbstractFileReader {
 
     /**
      * Method to upload the the file
@@ -27,6 +27,6 @@ public  abstract class AbstractFileReader {
      * @param inputStream input data from the file.
      * @return
      */
-    abstract public List<Object> parseFile(InputStream inputStream);
+    abstract public void parseFile(InputStream inputStream);
 
 }

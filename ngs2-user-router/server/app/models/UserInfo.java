@@ -20,7 +20,7 @@ public class UserInfo extends Model {
     public Long userId;
 
     @Constraints.Required
-    public Long gallupId;
+    public String gallupId;
 
     @Column(name = "language", nullable = false)
     @Constraints.MaxLength(16)
@@ -47,11 +47,11 @@ public class UserInfo extends Model {
         this.userId = userId;
     }
 
-    public Long getGallupId() {
+    public String getGallupId() {
         return gallupId;
     }
 
-    public void setGallupId(Long gallupId) {
+    public void setGallupId(String gallupId) {
         this.gallupId = gallupId;
     }
 
