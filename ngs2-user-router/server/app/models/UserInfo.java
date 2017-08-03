@@ -29,12 +29,12 @@ public class UserInfo extends Model {
     @Column(name = "randomized_id", columnDefinition = "TEXT")
     public Long randomizedId;
 
-    @Constraints.Required
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Timestamp arrivalTime;
 
     @Column(name = "status", length = 255, nullable = false)
     @Constraints.Required
+    public String status;
 
 
     public static Finder<Long, UserInfo> find = new Finder<Long, UserInfo>(UserInfo.class);
@@ -79,5 +79,12 @@ public class UserInfo extends Model {
         this.arrivalTime = arrivalTime;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 }
