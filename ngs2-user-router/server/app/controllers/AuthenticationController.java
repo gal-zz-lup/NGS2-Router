@@ -10,6 +10,7 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
+import util.Utility;
 
 import javax.inject.Inject;
 
@@ -48,7 +49,7 @@ public class AuthenticationController extends Controller{
     Admin adminUser = Admin.findByEmailAndPassword(login.email, login.password);
 
     if (adminUser == null) {
-      Logger.info("Unable to find Admin user with email" + login.email);
+      Logger.info("Unable to find Admin user with email " + login.email);
       return unauthorized();
     } else {
       String authenticationToken = adminUser.createAuthToken();
@@ -56,7 +57,7 @@ public class AuthenticationController extends Controller{
       authTokenJson.put(AUTH_TOKEN, authenticationToken);
       response().setCookie(Http.Cookie.builder(AUTH_TOKEN, authenticationToken).withSecure(ctx()
           .request().secure()).build());
-      return ok(authTokenJson);
+      return ok(Utility.createResponse(authTokenJson, true));
     }
   }
 

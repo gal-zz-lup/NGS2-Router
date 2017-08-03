@@ -27,7 +27,7 @@ public class UserInfoExperimentInstance extends Model {
 
     @OneToOne
     @JsonIgnore
-    private Experiment experiment;
+    private ExperimentInstance experimentInstance;
 
     @Constraints.Required
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -40,8 +40,8 @@ public class UserInfoExperimentInstance extends Model {
     public static Finder<Long, UserInfoExperimentInstance>
             find = new Finder<Long, UserInfoExperimentInstance>(UserInfoExperimentInstance.class);
 
-    public static List<Experiment> findByExperiment(Experiment experiment) {
-        return Experiment.find.where().eq("experiment", experiment).findList();
+    public static List<UserInfo> findUserByExperimentInstance(ExperimentInstance experimentInstance) {
+        return null;
     }
 
     public static List<UserInfo> findByUser(UserInfo userInfo) {
@@ -57,11 +57,12 @@ public class UserInfoExperimentInstance extends Model {
         this.userInfo = userInfo;
     }
 
-    public Experiment getExperiment() {
-        return experiment;
+    public ExperimentInstance getExperimentInstance() {
+
+        return experimentInstance;
     }
 
     public void setExperiment(Experiment experiment) {
-        this.experiment = experiment;
+        this.experimentInstance = experimentInstance;
     }
 }

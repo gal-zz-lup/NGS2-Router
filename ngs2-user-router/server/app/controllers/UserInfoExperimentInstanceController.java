@@ -23,9 +23,10 @@ public class UserInfoExperimentInstanceController extends Controller {
      */
     public Result experimentsByUser(Long userId) {
 
-        Experiment experiment = UserInfoExperimentInstance.find.ref(userId).getExperiment();
-        JsonNode jsonObject = Json.toJson(experiment);
-        return created(Utility.createResponse(jsonObject, true));
+        //Experiment experiment = UserInfoExperimentInstance.find.ref(userId).getExperimentInstance();
+        //JsonNode jsonObject = Json.toJson(experiment);
+        //return created(Utility.createResponse(jsonObject, true));
+        return null;
     }
 
     /**
