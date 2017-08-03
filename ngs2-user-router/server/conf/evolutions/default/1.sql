@@ -44,20 +44,22 @@ CREATE TABLE user_info (
   CONSTRAINT pk_user_info PRIMARY KEY (id)
 );
 
-CREATE TABLE experiment_user_info (
+CREATE TABLE user_info_experiment_instance (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   user_info_id bigint(20) NOT NULL,
   FOREIGN KEY (user_info_id) REFERENCES user_info(id),
   experiment_id bigint(20) NOT NULL,
   FOREIGN KEY (experiment_id) REFERENCES experiment(id),
+
   arrival_time TIMESTAMP NOT NULL,
   send_off_time TIMESTAMP NOT NULL,
   CONSTRAINT pk_experiment_user_info PRIMARY KEY (id)
 );
 
+
 # --- !Downs
 DROP TABLE experiment;
 DROP TABLE experiment_instance;
 DROP TABLE user_info;
-DROP TABLE experiment_user_info;
+DROP TABLE user_info_experiment_instance;
 DROP TABLE admin;

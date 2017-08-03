@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Created by anuradha_uduwage on 7/16/17.
  */
+@Deprecated
 public class CSVFileReader extends AbstractFileReader {
 
     private static CSVFileReader csvFileReader;

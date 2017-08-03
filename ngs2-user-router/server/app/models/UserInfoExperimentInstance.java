@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
@@ -21,9 +22,11 @@ public class UserInfoExperimentInstance extends Model {
     public Long userExperimentId;
 
     @OneToOne
+    @JsonIgnore
     private UserInfo userInfo;
 
     @OneToOne
+    @JsonIgnore
     private Experiment experiment;
 
     @Constraints.Required
@@ -45,17 +48,6 @@ public class UserInfoExperimentInstance extends Model {
         return UserInfo.find.where().eq("userInfo", userInfo).findList();
     }
 
-    public static int getUserCountByExperiment(String experimentId) {
-        return find.where().eq("experiment", experimentId).findRowCount();
-    }
-
-    public Long getUserExperimentId() {
-        return userExperimentId;
-    }
-
-    public void setUserExperimentId(Long userExperimentId) {
-        this.userExperimentId = userExperimentId;
-    }
 
     public UserInfo getUserInfo() {
         return userInfo;
@@ -71,24 +63,5 @@ public class UserInfoExperimentInstance extends Model {
 
     public void setExperiment(Experiment experiment) {
         this.experiment = experiment;
-    }
-
-    public Timestamp getArrivalTime() {
-        return arrivalTime;
-    }
-
-    public void setArrivalTime(Timestamp arrivalTime) {
-
-        this.arrivalTime = arrivalTime;
-    }
-
-    public Timestamp getSendOffTime() {
-
-        return sendOffTime;
-    }
-
-    public void setSendOffTime(Timestamp sendOffTime) {
-
-        this.sendOffTime = sendOffTime;
     }
 }

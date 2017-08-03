@@ -10,7 +10,8 @@ libraryDependencies ++= Seq(
   javaJdbc,
   cache,
   "org.mindrot" % "jbcrypt" % "0.4",
-  javaWs
+  javaWs,
+  "org.apache.commons" % "commons-csv" % "1.5-SNAPSHOT"
 )
 libraryDependencies += evolutions
 

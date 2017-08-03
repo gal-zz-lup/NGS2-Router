@@ -1,13 +1,16 @@
 package controllers;
 
 import play.Logger;
+import play.data.Form;
 import play.data.FormFactory;
+import play.data.validation.Constraints;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import util.CSVFileReader;
+import util.CSVReader;
 import util.Utility;
 
 import javax.inject.Inject;
@@ -20,7 +23,7 @@ import java.util.List;
 /**
  * Created by anuradha_uduwage
  */
-public class ApplicationController extends Controller {
+public class FileUploadController extends Controller {
 
     /**
      * An action that renders login credentials to identify successful
@@ -37,30 +40,36 @@ public class ApplicationController extends Controller {
     }
 
     public Result uploadCSVFile() {
+
+        Form<FileUploadForm> fileUploadFormForm = formFactory.form(FileUploadForm.class).bindFromRequest();
+
         try {
-            List<Object> recordsList = null;
             MultipartFormData<File> body = request().body().asMultipartFormData();
             FilePart<File> csvFile = body.getFile("csvfile");
-
+            CSVReader csvReader;
             if (csvFile != null && csvFile.getFilename().contains(".csv")) {
-                CSVFileReader fileReader = CSVFileReader.getReaderInstance();
                 try {
-                    File file = csvFile.getFile();
-                    InputStream inputStream = fileReader.uploadFile(file);
-                    recordsList = fileReader.parseFile(inputStream);
+                    csvReader = new CSVReader(csvFile.getFilename());
+                    csvReader.parseFile();
+
                 } catch (Exception ex) {
                     Logger.error("Exception occured::: " + ex.getMessage());
-
+                    return status(400,  "Missing file");
                 }
             }
-
-            if (recordsList != null)
-                return ok(Utility.createResponse(recordsList, true));
-            else
-                return badRequest(Utility.createResponse("There were no records in the list", false));
         } catch (Exception ex) {
             return internalServerError();
         }
+        return ok(Utility.createResponse("File was successfully loaded and parse", true));
+    }
+
+    /**
+     * Static class for the form.
+     */
+    public static class FileUploadForm {
+
+        @Constraints.Required
+        public String filePath;
     }
 
 }

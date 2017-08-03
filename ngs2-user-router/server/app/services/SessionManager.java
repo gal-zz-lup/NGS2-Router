@@ -20,7 +20,7 @@ import java.util.Optional;
  *
  * Created by anuradha_uduwage.
  */
-
+@Deprecated
 public class SessionManager {
 
     private final Map<String, Session> sessionRepo;

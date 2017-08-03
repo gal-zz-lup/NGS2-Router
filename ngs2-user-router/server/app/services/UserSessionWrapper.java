@@ -14,6 +14,7 @@ import java.util.*;
  *
  * Created by anuradha_uduwage.
  */
+@Deprecated
 public class UserSessionWrapper {
 
     private final Map<String, Admin> userRepo;

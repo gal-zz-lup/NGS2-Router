@@ -10,7 +10,7 @@
 # GET     /message                    controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
-#GET     /app/index                           controllers.ApplicationController.index()
+#GET     /app/index                           controllers.FileUploadControllerindex()
 GET     /                               controllers.Assets.at(path="/public", file="index.html")
 
 # Admin Login routes
@@ -31,5 +31,5 @@ GET     /app/usersByExperiment/:expId   controllers.UserInfoExperimentInstanceCo
 
 GET     /app/experimentInstancesByExperiment/:experimentId  controllers.ExperimentInstanceController.getAllExperimentInstancesByExperiment(experimentId: Long)
 
-#POST   /upload                     controllers.ApplicationController.uploadCSVFile()
+#POST   /upload                     controllers.FileUploadControlleruploadCSVFile()
 GET     /*file               controllers.Assets.at(path="/public", file)
