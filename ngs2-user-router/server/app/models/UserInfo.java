@@ -16,6 +16,7 @@ public class UserInfo extends Model {
   public static Finder<Long, UserInfo> find = new Finder<Long, UserInfo>(UserInfo.class);
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
   @Constraints.Required
   public Long userId;
   @Constraints.Required
@@ -23,7 +24,7 @@ public class UserInfo extends Model {
   @Column(name = "language", nullable = false)
   @Constraints.MaxLength(16)
   public String language;
-  @Column(name = "randomized_id", columnDefinition = "TEXT")
+  @Column(name = "randomized_id", length = 255)
   public String randomizedId;
   @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
   public Timestamp arrivalTime;

@@ -40,6 +40,7 @@ CREATE TABLE user_info (
   arrival_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status VARCHAR(255) NOT NULL,
   sample_group VARCHAR(255) NOT NULL,
+  CONSTRAINT uq_user_info_randomized_id UNIQUE (randomized_id),
   CONSTRAINT pk_user_info PRIMARY KEY (id)
 );
 
