@@ -31,5 +31,5 @@ GET     /app/usersByExperiment/:expId   controllers.UserInfoExperimentInstanceCo
 
 GET     /app/experimentInstancesByExperiment/:experimentId  controllers.ExperimentInstanceController.getAllExperimentInstancesByExperiment(experimentId: Long)
 
-#POST   /upload                     controllers.FileUploadControlleruploadCSVFile()
+POST   /app/upload                      controllers.FileUploadController.uploadCSVFile
 GET     /*file               controllers.Assets.at(path="/public", file)
