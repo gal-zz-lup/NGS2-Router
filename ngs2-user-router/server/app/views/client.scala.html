@@ -1,0 +1,141 @@
+@(user: UserInfo)
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Gallup World Lab Experiments</title>
+    <meta name="description" content="A portal for participating in Gallup's World Lab experiments.">
+    <meta name="author" content="Gallup and Yale University">
+
+    <!-- jQuery -->
+    <script
+    src="http://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+
+    <!-- Bootstrap -->
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+    crossorigin="anonymous">
+    <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+
+    <script>
+      function updateProgress(progressObject) {
+        if (progressObject.hasOwnProperty("valuemin")
+            && progressObject.hasOwnProperty("valuemax")
+            && progressObject.hasOwnProperty("value")) {
+          $('#peel-progress').attr('aria-valuemin', progressObject.valuemin);
+          $('#peel-progress').attr('aria-valuemax', progressObject.valuemax);
+          $('#peel-progress').attr('aria-valuenow', progressObject.value);
+          var percent = Math.round((progressObject.value /progressObject.valuemax) * 100);
+          $('#peel-progress').css('width', percent + '%');
+          $('#peel-progress').html(progressObject.value + ' participants have joined');
+        }
+      }
+
+      $(window).on('load', function() {
+
+        var curSrc = '';
+        setInterval(function() {
+          $.getJSON('/client/@(user.randomizedId)/update',
+              function (response) {
+                if (response.hasOwnProperty('src')) {
+                  if (curSrc !== response.src) {
+                    $('#peel-iframe').attr('src', response.src);
+                    curSrc = response.src;
+                  }
+                }
+                if (response.hasOwnProperty('progress')) {
+                  updateProgress(response.progress);
+                }
+                console.log("response", response);
+              });
+        }, 3000);
+
+      });
+    </script>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      #status-div {
+        position: fixed;
+        top: 15px;
+        left: 0;
+        width: 100%;
+        opacity: 0.9;
+        z-index: 2;
+      }
+
+      #peel-debug {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0.9;
+        z-index: 2;
+      }
+
+      #peel-iframe {
+        z-index: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="container-fluid" id="status-div">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="progress">
+            <div id="peel-progress" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemax="20" aria-valuemin="0" style="width: 0%;">
+            </div>
+          </div>
+            <!--div class="progress">
+          <div class="progress-bar progress-bar-info" role="timer" aria-valuenow="14" aria-valuemax="100" aria-valuemin="0" style="width: 14%;">
+            1:24 remaining
+          </div>
+        </div-->
+        </div>
+      </div>
+    </div>
+
+    <iframe
+      id="peel-iframe"
+      width="100%"
+      height="600"
+      scrolling="yes"
+      src=""></iframe>
+
+    <div id="peel-debug" class="form-group">
+      <label class="form-control" for="debug">Debug Info</label>
+      <textarea class="form-control" style="font-family:monospace;" id="debug" rows="10" cols="60">
+id:            @user.getUserId
+arrival_time:  @user.getArrivalTime
+gallup_id:     @user.getGallupId
+language:      @user.getLanguage
+randomized_id: @user.getRandomizedId
+status:        @user.getStatus
+sample_group:  @user.getSampleGroup
+      </textarea>
+    </div>
+  </body>
+</html>

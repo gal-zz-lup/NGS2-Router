@@ -35,13 +35,12 @@ CREATE TABLE experiment_instance (
 CREATE TABLE user_info (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   gallup_id VARCHAR(255) NOT NULL,
-  email varchar(255) NOT NULL,
   language VARCHAR(16) NOT NULL,
   randomized_id VARCHAR(255) NOT NULL,
   arrival_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status VARCHAR(255) NOT NULL,
   sample_group VARCHAR(255) NOT NULL,
-  CONSTRAINT uq_user_email UNIQUE (email),
+  CONSTRAINT uq_user_info_randomized_id UNIQUE (randomized_id),
   CONSTRAINT pk_user_info PRIMARY KEY (id)
 );
 

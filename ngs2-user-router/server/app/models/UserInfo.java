@@ -6,7 +6,6 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 /**
  * Created by anuradha_uduwage.
@@ -14,77 +13,81 @@ import java.time.LocalDateTime;
 @Entity
 public class UserInfo extends Model {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Constraints.Required
-    public Long userId;
+  public static Finder<Long, UserInfo> find = new Finder<Long, UserInfo>(UserInfo.class);
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
+  @Constraints.Required
+  public Long userId;
+  @Constraints.Required
+  public String gallupId;
+  @Column(name = "language", nullable = false)
+  @Constraints.MaxLength(16)
+  public String language;
+  @Column(name = "randomized_id", length = 255)
+  public String randomizedId;
+  @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+  public Timestamp arrivalTime;
+  @Column(name = "status", length = 255, nullable = false)
+  @Constraints.Required
+  public String status;
+  @Column(name = "sample_group", length = 255, nullable = false)
+  @Constraints.Required
+  public String sampleGroup;
 
-    @Constraints.Required
-    public String gallupId;
+  public Long getUserId() {
+    return userId;
+  }
 
-    @Column(name = "language", nullable = false)
-    @Constraints.MaxLength(16)
-    public String language;
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
 
-    @Column(name = "randomized_id", columnDefinition = "TEXT")
-    public Long randomizedId;
+  public String getGallupId() {
+    return gallupId;
+  }
 
-    @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
-    public Timestamp arrivalTime;
+  public void setGallupId(String gallupId) {
+    this.gallupId = gallupId;
+  }
 
-    @Column(name = "status", length = 255, nullable = false)
-    @Constraints.Required
-    public String status;
+  public String getLanguage() {
+    return language;
+  }
 
+  public void setLanguage(String language) {
+    this.language = language;
+  }
 
-    public static Finder<Long, UserInfo> find = new Finder<Long, UserInfo>(UserInfo.class);
+  public String getRandomizedId() {
+    return randomizedId;
+  }
 
-    public Long getUserId() {
-        return userId;
-    }
+  public void setRandomizedId(String randomizedId) {
+    this.randomizedId = randomizedId;
+  }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+  public Timestamp getArrivalTime() {
+    return arrivalTime;
+  }
 
-    public String getGallupId() {
-        return gallupId;
-    }
+  public void setArrivalTime(Timestamp arrivalTime) {
+    this.arrivalTime = arrivalTime;
+  }
 
-    public void setGallupId(String gallupId) {
-        this.gallupId = gallupId;
-    }
+  public String getStatus() {
+    return status;
+  }
 
-    public String getLanguage() {
-        return language;
-    }
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
-    public void setLanguage(String language) {
-        this.language = language;
-    }
+  public String getSampleGroup() {
+    return sampleGroup;
+  }
 
-    public Long getRandomizedId() {
-        return randomizedId;
-    }
-
-    public void setRandomizedId(Long randomizedId) {
-        this.randomizedId = randomizedId;
-    }
-
-    public Timestamp getArrivalTime() {
-        return arrivalTime;
-    }
-
-    public void setArrivalTime(Timestamp arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
+  public void setSampleGroup(String sampleGroup) {
+    this.sampleGroup = sampleGroup;
+  }
 }
