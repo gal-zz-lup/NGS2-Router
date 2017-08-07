@@ -21,6 +21,7 @@ GET       /app/experimentsByUser/:userId                      controllers.UserIn
 GET       /app/usersByExperiment/:expId                       controllers.UserInfoExperimentInstanceController.usersByExperiment(expId: Long)
 
 GET       /app/experimentInstancesByExperiment/:experimentId  controllers.ExperimentInstanceController.getAllExperimentInstancesByExperiment(experimentId: Long)
+POST   /app/upload                      controllers.FileUploadController.uploadCSVFile
 
 # Client routes
 GET       /client/:clientId                                   controllers.ClientController.login(clientId: String)
