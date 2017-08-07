@@ -25,6 +25,7 @@ GET       /app/experimentInstancesByExperiment/:experimentId  controllers.Experi
 # Client routes
 GET       /client/:clientId                                   controllers.ClientController.login(clientId: String)
 GET       /client/:clientId/update                            controllers.ClientController.update(clientId: String)
+GET       /client/:clientId/waiting                           controllers.ClientController.waiting(clientId: String)
 
 # Catch-all route
 GET       /*file                                              controllers.Assets.at(path="/public", file)

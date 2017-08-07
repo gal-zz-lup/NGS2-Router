@@ -9,12 +9,13 @@ import play.twirl.api.Html;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Random;
+import java.util.HashMap;
 
 public class ClientController extends Controller {
-  private int valueTemp = 0;
-  private int TEMPMAXVALUE = 20;
+  // TODO: Replace this with the SchedulerService
+  private int TEMPMAXVALUE = 3;
   private int TEMPMINVALUE = 0;
+  private HashMap<String, Timestamp> joinedClients = new HashMap<>();
 
   public Result login(String clientId) {
     UserInfo user = UserInfo.find.where().eq("randomized_id", clientId).findUnique();
@@ -32,24 +33,30 @@ public class ClientController extends Controller {
   }
 
   public Result update(String clientId) {
+    // TODO: validate clientId efficiently before returning result
     ObjectNode result = Json.newObject();
     result.put("clientId", clientId);
-    // TODO: validate clientId efficiently before returning result
-    Random random = new Random();
-    switch (random.nextInt(3)) {
-      case 0: result.put("src", "http://brdbrd.net");
-      break;
-      case 1: result.put("src", "http://breadboard.yale.edu");
-      break;
-      case 2: result.put("src", "http://xkcd.com");
-      break;
+    joinedClients.put(clientId, Timestamp.from(Instant.now()));
+    if (joinedClients.size() >= TEMPMAXVALUE) {
+      UserInfo user = UserInfo.find.where().eq("randomized_id", clientId).findUnique();
+      user.setStatus("PLAYING");
+      result.put("src", "http://brdbrd.net");
     }
     ObjectNode progress = Json.newObject();
     progress.put("valuemax", TEMPMAXVALUE);
     progress.put("valuemin", TEMPMINVALUE);
-    if (valueTemp < TEMPMAXVALUE) valueTemp++;
-    progress.put("value", valueTemp);
+    progress.put("value", joinedClients.size());
     result.put("progress", progress);
     return ok(result);
+  }
+
+  public Result waiting(String clientId) {
+    UserInfo user = UserInfo.find.where().eq("randomized_id", clientId).findUnique();
+    if (user == null) {
+      // TODO: Redirect to 401 page here
+      return notFound("User not found.");
+    }
+    Html clientTemplate = views.html.waiting.render(user);
+    return ok(clientTemplate);
   }
 }

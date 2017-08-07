@@ -1,0 +1,88 @@
+@(user: UserInfo)
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Gallup World Lab Experiments</title>
+    <meta name="description" content="A portal for participating in Gallup's World Lab experiments.">
+    <meta name="author" content="Gallup and Yale University">
+
+    <!-- jQuery -->
+    <script
+    src="http://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+
+    <!-- Bootstrap -->
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+    integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+    crossorigin="anonymous">
+    <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+
+    <script>
+      $(window).on('load', function() {
+        /*
+        var curSrc = '/client/waiting';
+        setInterval(function() {
+          $.getJSON('/client//update',
+              function (response) {
+                if (response.hasOwnProperty('src')) {
+                  if (curSrc !== response.src) {
+                    $('#peel-iframe').attr('src', response.src);
+                    curSrc = response.src;
+                  }
+                }
+                if (response.hasOwnProperty('progress')) {
+                  updateProgress(response.progress);
+                }
+                console.log("response", response);
+              });
+        }, 3000);
+        */
+      });
+    </script>
+    <style>
+      .peel-container {
+        margin-top: 4em;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="container-fluid peel-container" id="status-div">
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Welcome to the World Lab!</h3>
+          <p>
+            The experiment will begin as soon as we gather enough participants.
+          </p>
+          <p>
+            Please be patient, you will not have to wait long.
+          </p>
+          <p>
+            Once we've gathered enough participants, this screen will change and a 'Begin' button will appear.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

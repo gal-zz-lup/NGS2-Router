@@ -37,24 +37,9 @@
     <![endif]-->
 
     <script>
-      function updateProgress(progressObject) {
-        if (progressObject.hasOwnProperty("valuemin")
-            && progressObject.hasOwnProperty("valuemax")
-            && progressObject.hasOwnProperty("value")) {
-          $('#peel-progress').attr('aria-valuemin', progressObject.valuemin);
-          $('#peel-progress').attr('aria-valuemax', progressObject.valuemax);
-          $('#peel-progress').attr('aria-valuenow', progressObject.value);
-          var percent = Math.round((progressObject.value /progressObject.valuemax) * 100);
-          $('#peel-progress').css('width', percent + '%');
-          $('#peel-progress').html(progressObject.value + ' participants have joined');
-        }
-      }
-
-      $(window).on('load', function() {
-
-        var curSrc = '';
-        setInterval(function() {
-          $.getJSON('/client/@(user.randomizedId)/update',
+      $(document).ready(function() {
+        function updateClient() {
+          $.getJSON('/client/@(user.getRandomizedId)/update',
               function (response) {
                 if (response.hasOwnProperty('src')) {
                   if (curSrc !== response.src) {
@@ -66,9 +51,26 @@
                   updateProgress(response.progress);
                 }
                 console.log("response", response);
+                setTimeout(updateClient, 3000);
               });
-        }, 3000);
+        }
 
+        function updateProgress(progressObject) {
+          if (progressObject.hasOwnProperty("valuemin")
+              && progressObject.hasOwnProperty("valuemax")
+              && progressObject.hasOwnProperty("value")) {
+            $('#peel-progress').attr('aria-valuemin', progressObject.valuemin);
+            $('#peel-progress').attr('aria-valuemax', progressObject.valuemax);
+            $('#peel-progress').attr('aria-valuenow', progressObject.value);
+            var percent = Math.min(Math.round((progressObject.value /progressObject.valuemax) * 100), 100);
+            $('#peel-progress').css('width', percent + '%');
+            $('#peel-progress').html(progressObject.value + ' participants have joined');
+          }
+        }
+
+        var curSrc = '/client/@(user.getRandomizedId)/waiting';
+        $('#peel-iframe').attr('src', curSrc);
+        updateClient();
       });
     </script>
     <style>
@@ -102,6 +104,7 @@
 
   <body>
 
+
     <div class="container-fluid" id="status-div">
       <div class="row">
         <div class="col-md-12">
@@ -109,11 +112,6 @@
             <div id="peel-progress" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemax="20" aria-valuemin="0" style="width: 0%;">
             </div>
           </div>
-            <!--div class="progress">
-          <div class="progress-bar progress-bar-info" role="timer" aria-valuenow="14" aria-valuemax="100" aria-valuemin="0" style="width: 14%;">
-            1:24 remaining
-          </div>
-        </div-->
         </div>
       </div>
     </div>
