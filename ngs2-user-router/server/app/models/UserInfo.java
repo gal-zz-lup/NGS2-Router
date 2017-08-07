@@ -13,34 +13,26 @@ import java.sql.Timestamp;
 @Entity
 public class UserInfo extends Model {
 
+  public static Finder<Long, UserInfo> find = new Finder<Long, UserInfo>(UserInfo.class);
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Constraints.Required
   public Long userId;
-
   @Constraints.Required
   public String gallupId;
-
   @Column(name = "language", nullable = false)
   @Constraints.MaxLength(16)
   public String language;
-
   @Column(name = "randomized_id", columnDefinition = "TEXT")
   public String randomizedId;
-
-  @Constraints.Required
   @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
   public Timestamp arrivalTime;
-
   @Column(name = "status", length = 255, nullable = false)
   @Constraints.Required
   public String status;
-
   @Column(name = "sample_group", length = 255, nullable = false)
   @Constraints.Required
   public String sampleGroup;
-
-  public static Finder<Long, UserInfo> find = new Finder<Long, UserInfo>(UserInfo.class);
 
   public Long getUserId() {
     return userId;
