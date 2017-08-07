@@ -1,0 +1,25 @@
+@(user: UserInfo)
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>Gallup World Lab Experiments</title>
+    <meta name="description" content="A portal for participating in Gallup's World Lab experiments.">
+    <meta name="author" content="Gallup and Yale University">
+
+      <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+      <![endif]-->
+  </head>
+
+  <body>
+    <h1>@user.getUserId</h1>
+    <h2>@user.getArrivalTime</h2>
+    <h2>@user.getGallupId</h2>
+    <h2>@user.getLanguage</h2>
+    <h2>@user.getRandomizedId</h2>
+  </body>
+</html>

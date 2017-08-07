@@ -1,35 +1,29 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-
-# An example controller showing a sample home page
-# GET     /                           controllers.HomeController.index
-# An example controller showing how to use dependency injection
-# GET     /count                      controllers.CountController.count
-# An example controller showing how to write asynchronous code
-# GET     /message                    controllers.AsyncController.message
-
-# Map static resources from the /public folder to the /assets URL path
-#GET     /app/index                           controllers.FileUploadControllerindex()
-GET     /                               controllers.Assets.at(path="/public", file="index.html")
+# Redirect requests to root to index.html
+GET     /                                                     controllers.Assets.at(path="/public", file="index.html")
 
 # Admin Login routes
-POST    /app/login                      controllers.AuthenticationController.login
-POST    /app/logout                     controllers.AuthenticationController.logout
-GET     /app/isauthenticated            controllers.AuthenticationController.isAuthenticated
+POST    /app/login                                            controllers.AuthenticationController.login
+POST    /app/logout                                           controllers.AuthenticationController.logout
+GET     /app/isauthenticated                                  controllers.AuthenticationController.isAuthenticated
 
 # Admin CRUD routes
-PUT     /app/createExperiment           controllers.ExperimentController.createExperiment
-PUT     /app/createExperimentInstance           controllers.ExperimentInstanceController.createExperimentInstance
-POST    /app/updateExperiment/:id       controllers.ExperimentController.updateExperiment(id: Long)
-POST    /app/updateExperimentInstance/:id       controllers.ExperimentInstanceController.updateExperimentInstance(id: Long)
-DELETE    /app/deleteExperiment/:id       controllers.ExperimentController.deleteExperiment(id: Long)
-DELETE    /app/deleteExperimentInstance/:id       controllers.ExperimentInstanceController.deleteExperimentInstance(id: Long)
-GET     /app/allExperiments             controllers.ExperimentController.getAllExperiments()
-GET     /app/experimentsByUser/:userId  controllers.UserInfoExperimentInstanceController.experimentsByUser(userId: Long)
-GET     /app/usersByExperiment/:expId   controllers.UserInfoExperimentInstanceController.usersByExperiment(expId: Long)
+PUT       /app/createExperiment                               controllers.ExperimentController.createExperiment
+PUT       /app/createExperimentInstance                       controllers.ExperimentInstanceController.createExperimentInstance
+POST      /app/updateExperiment/:id                           controllers.ExperimentController.updateExperiment(id: Long)
+POST      /app/updateExperimentInstance/:id                   controllers.ExperimentInstanceController.updateExperimentInstance(id: Long)
+DELETE    /app/deleteExperiment/:id                           controllers.ExperimentController.deleteExperiment(id: Long)
+DELETE    /app/deleteExperimentInstance/:id                   controllers.ExperimentInstanceController.deleteExperimentInstance(id: Long)
+GET       /app/allExperiments                                 controllers.ExperimentController.getAllExperiments()
+GET       /app/experimentsByUser/:userId                      controllers.UserInfoExperimentInstanceController.experimentsByUser(userId: Long)
+GET       /app/usersByExperiment/:expId                       controllers.UserInfoExperimentInstanceController.usersByExperiment(expId: Long)
 
-GET     /app/experimentInstancesByExperiment/:experimentId  controllers.ExperimentInstanceController.getAllExperimentInstancesByExperiment(experimentId: Long)
+GET       /app/experimentInstancesByExperiment/:experimentId  controllers.ExperimentInstanceController.getAllExperimentInstancesByExperiment(experimentId: Long)
 
-#POST   /upload                     controllers.FileUploadControlleruploadCSVFile()
-GET     /*file               controllers.Assets.at(path="/public", file)
+# Client routes
+GET       /client/:clientId                                   controllers.ClientController.login(clientId: String)
+
+# Catch-all route
+GET       /*file                                              controllers.Assets.at(path="/public", file)
