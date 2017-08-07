@@ -40,7 +40,7 @@ public class DemoData {
                 u1.setGallupId("testgallupid1");
                 u1.setLanguage("en");
                 u1.setRandomizedId("ABCD1234");
-                u1.setStatus("WAITING");
+                u1.setStatus("NEW");
                 u1.setSampleGroup("1");
                 u1.save();
 
@@ -49,7 +49,7 @@ public class DemoData {
                 u2.setGallupId("testgallupid2");
                 u2.setLanguage("en");
                 u2.setRandomizedId("EFGH5678");
-                u2.setStatus("WAITING");
+                u2.setStatus("NEW");
                 u2.setSampleGroup("2");
                 u2.save();
 
@@ -58,7 +58,7 @@ public class DemoData {
                 u3.setGallupId("testgallupid3");
                 u3.setLanguage("en");
                 u3.setRandomizedId("IJKL2468");
-                u3.setStatus("WAITING");
+                u3.setStatus("NEW");
                 u3.setSampleGroup("3");
                 u3.save();
             }
