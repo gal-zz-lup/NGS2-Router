@@ -9,6 +9,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
+import play.mvc.Security;
 import util.CSVFileReader;
 import util.CSVReader;
 import util.Utility;
@@ -23,6 +24,7 @@ import java.util.List;
 /**
  * Created by anuradha_uduwage
  */
+@Security.Authenticated(SecurityController.class)
 public class FileUploadController extends Controller {
 
     /**
