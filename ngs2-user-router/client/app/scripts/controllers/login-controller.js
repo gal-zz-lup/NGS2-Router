@@ -33,14 +33,12 @@ angular.module('clientApp')
         password : this.password
       };
 
-      adminService.
-
       $http.post('/app/login', payload)
         .then(function(data){
           $log.debug(data);
           if(data.hasOwnProperty('success')) {
             adminService.username = payload.email;
-            adminService.authToken = data.body.authenticationToken
+            adminService.authToken = data.body.authenticationToken;
             $location.path('/');
           }
         },
