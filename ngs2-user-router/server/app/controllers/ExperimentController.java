@@ -8,6 +8,7 @@ import play.data.validation.Constraints;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import util.Utility;
 
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 /**
  * Created by anuradha_uduwage.
  */
+@Security.Authenticated(SecurityController.class)
 public class ExperimentController extends Controller {
 
     @Inject

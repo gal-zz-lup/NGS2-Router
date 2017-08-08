@@ -9,6 +9,7 @@ import play.data.validation.Constraints;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import services.URLShortenerService;
 import util.Utility;
 
@@ -19,6 +20,7 @@ import java.sql.Timestamp;
 /**
  * Created by anuradha_uduwage.
  */
+@Security.Authenticated(SecurityController.class)
 public class ExperimentInstanceController extends Controller {
 
     @Inject

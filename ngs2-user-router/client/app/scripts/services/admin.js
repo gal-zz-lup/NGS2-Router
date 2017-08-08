@@ -11,8 +11,10 @@ angular.module('clientApp')
   .service('adminService', function () {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var username = '';
+    var authToken = '';
 
     return {
-      username : username
+      username : username,
+      authToken : authToken
     };
   });

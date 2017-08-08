@@ -7,6 +7,7 @@ import models.UserInfo;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import util.Utility;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by anuradha_uduwage.
  */
+@Security.Authenticated(SecurityController.class)
 public class UserInfoExperimentInstanceController extends Controller {
 
     /**
