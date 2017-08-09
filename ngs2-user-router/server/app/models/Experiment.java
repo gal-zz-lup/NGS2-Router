@@ -11,17 +11,25 @@ import java.util.List;
  */
 @Entity
 public class Experiment extends Model {
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    public Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  public Long id;
 
-    @Column(length = 255, unique = true, nullable = false)
-    @Constraints.MaxLength(255)
-    @Constraints.Required
-    public String experimentName;
+  @Column(length = 255, unique = true, nullable = false)
+  @Constraints.MaxLength(255)
+  @Constraints.Required
+  public String experimentName;
 
-    @OneToMany
-    public List<ExperimentInstance> experimentInstances;
+  @OneToMany
+  public List<ExperimentInstance> experimentInstances;
 
-    public static Finder<Long, Experiment> find = new Finder<Long, Experiment>(Experiment.class);
+  public static Finder<Long, Experiment> find = new Finder<Long, Experiment>(Experiment.class);
+
+  public String getExperimentName() {
+    return experimentName;
+  }
+
+  public void setExperimentName(String experimentName) {
+    this.experimentName = experimentName;
+  }
 }

@@ -34,8 +34,15 @@ public class ClientController extends Controller {
 
   public Result update(String clientId) {
     // TODO: validate clientId efficiently before returning result
+    // TODO: make this more efficient
+    UserInfo user = UserInfo.find.where().eq("randomized_id", clientId).findUnique();
+    user.setLastCheckIn(Timestamp.from(Instant.now()));
+    user.save();
+
     ObjectNode result = Json.newObject();
     result.put("clientId", clientId);
+
+    /*
     joinedClients.put(clientId, Timestamp.from(Instant.now()));
     if (joinedClients.size() >= TEMPMAXVALUE) {
       UserInfo user = UserInfo.find.where().eq("randomized_id", clientId).findUnique();
@@ -47,6 +54,8 @@ public class ClientController extends Controller {
     progress.put("valuemin", TEMPMINVALUE);
     progress.put("value", joinedClients.size());
     result.put("progress", progress);
+    */
+
     return ok(result);
   }
 

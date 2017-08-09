@@ -38,6 +38,7 @@ CREATE TABLE user_info (
   language VARCHAR(16) NOT NULL,
   randomized_id VARCHAR(255) NOT NULL,
   arrival_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_check_in TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status VARCHAR(255) NOT NULL,
   sample_group VARCHAR(255) NOT NULL,
   CONSTRAINT uq_user_info_randomized_id UNIQUE (randomized_id),

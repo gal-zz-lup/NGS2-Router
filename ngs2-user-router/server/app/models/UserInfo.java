@@ -28,6 +28,8 @@ public class UserInfo extends Model {
   public String randomizedId;
   @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
   public Timestamp arrivalTime;
+  @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
+  public Timestamp lastCheckIn;
   @Column(name = "status", length = 255, nullable = false)
   @Constraints.Required
   public String status;
@@ -73,6 +75,14 @@ public class UserInfo extends Model {
 
   public void setArrivalTime(Timestamp arrivalTime) {
     this.arrivalTime = arrivalTime;
+  }
+
+  public Timestamp getLastCheckIn() {
+    return lastCheckIn;
+  }
+
+  public void setLastCheckIn(Timestamp lastCheckIn) {
+    this.lastCheckIn = lastCheckIn;
   }
 
   public String getStatus() {

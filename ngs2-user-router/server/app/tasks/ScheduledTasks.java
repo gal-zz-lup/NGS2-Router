@@ -4,24 +4,23 @@ import actors.QueueActor;
 import actors.QueueActorProtocol;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
 import play.Configuration;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class ScheduledTasks {
   // Dependency injected
   private final ActorSystem actorSystem;
-  private final ExecutionContext executionContext;
   private final Configuration configuration;
 
   private final ActorRef queueActor;
 
   @Inject
-  public ScheduledTasks(ActorSystem actorSystem, ExecutionContext executionContext, Configuration configuration) {
+  public ScheduledTasks(ActorSystem actorSystem, Configuration configuration) {
     this.actorSystem = actorSystem;
-    this.executionContext = executionContext;
     this.configuration = configuration;
 
     this.queueActor = actorSystem.actorOf(QueueActor.props);
@@ -35,7 +34,7 @@ public class ScheduledTasks {
         Duration.fromNanos(configuration.getNanoseconds("peel.server.scheduleInterval")),
         queueActor,
         new QueueActorProtocol.Tick(),
-        this.executionContext,
+        actorSystem.dispatcher(),
         ActorRef.noSender()
     );
   }
