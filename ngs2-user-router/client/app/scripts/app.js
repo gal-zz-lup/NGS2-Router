@@ -32,6 +32,7 @@ angular
     'app.services.users'
   ])
   .config(function ($routeProvider, $locationProvider) {
+    /*
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -46,6 +47,7 @@ angular
       });
 
    $locationProvider.html5Mode({ enabled: true, requireBase: false }).hashPrefix('*');
+     */
   })
   .constant('ApiConfig', {
     url: 'http://localhost:9090/'

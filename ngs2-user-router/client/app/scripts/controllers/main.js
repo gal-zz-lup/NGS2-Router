@@ -7,18 +7,28 @@
  * # MainCtrl
  * Controller of the clientApp
  */
-function MainController($scope, ExperimentService, UsersService, $uibModal, AlertService) {
+function MainController($scope, ExperimentService, UsersService, $uibModal, AlertService, AdminService, $location) {
+
   $scope.experiments = [];
   $scope.users = [];
-  console.log("Getting experiments");
-  ExperimentService.getAllExperiments().then(function(resp) {
-    $scope.experiments = resp;
-    console.log('experiments', resp);
-  });
+  $scope.loggedInAs = "";
+  $scope.loggedIn = AdminService.loggedIn;
 
-  UsersService.getAllUsers().then(function(resp) {
-    $scope.users = resp;
-  });
+  if (AdminService.loggedIn) {
+    $scope.loggedInAs = AdminService.username;
+    console.log("Getting experiments");
+    ExperimentService.getAllExperiments().then(function(resp) {
+      $scope.experiments = resp;
+      console.log('experiments', resp);
+    });
+
+    console.log("Getting users");
+    UsersService.getAllUsers().then(function(resp) {
+      $scope.users = resp;
+    });
+  } else {
+    //$location.path('#!login');
+  }
 
   $scope.createExperiment = function() {
     var modalInstance = $uibModal.open({
@@ -43,7 +53,7 @@ function MainController($scope, ExperimentService, UsersService, $uibModal, Aler
   };
 }
 
-MainController.$inject = ['$scope', 'ExperimentService', 'UsersService', '$uibModal', 'AlertService'];
+MainController.$inject = ['$scope', 'ExperimentService', 'UsersService', '$uibModal', 'AlertService', 'AdminService', '$location'];
 
 angular.module('clientApp')
   .controller('MainCtrl', MainController);

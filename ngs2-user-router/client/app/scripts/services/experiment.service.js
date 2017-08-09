@@ -1,11 +1,14 @@
 (function() {
   'use strict';
 
-  function ExperimentService(ApiConfig, $http, $q) {
+  function ExperimentService(ApiConfig, $http, $q, AdminService) {
     return {
       getAllExperiments: function () {
-        return $http.get(ApiConfig.url + 'app/allExperiments')
-          .then(function(response) {
+        return $http({
+          method: 'GET',
+          url: ApiConfig.url + 'app/allExperiments',
+          headers: {'X-AUTH-TOKEN':AdminService.authToken}
+        }).then(function(response) {
             return $q.when(response.data);
           },
           function(response) {
@@ -47,5 +50,5 @@
     .module('app.services.experiment', [])
     .factory('ExperimentService', ExperimentService);
 
-  ExperimentService.$inject = ['ApiConfig', '$http', '$q'];
+  ExperimentService.$inject = ['ApiConfig', '$http', '$q', 'AdminService'];
 })();

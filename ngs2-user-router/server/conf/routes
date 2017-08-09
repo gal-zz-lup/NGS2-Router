@@ -5,6 +5,7 @@
 GET     /                                                     controllers.Assets.at(path="/public", file="index.html")
 
 # Admin Login routes
++ nocsrf
 POST    /app/login                                            controllers.AuthenticationController.login
 POST    /app/logout                                           controllers.AuthenticationController.logout
 GET     /app/isauthenticated                                  controllers.AuthenticationController.isAuthenticated
