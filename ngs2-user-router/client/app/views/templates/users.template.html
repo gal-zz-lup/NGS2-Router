@@ -14,15 +14,21 @@
       <tr>
         <th>ID</th>
         <th>Gallup ID</th>
+        <th>Random ID</th>
         <th>Language</th>
+        <th>Sample Group</th>
+        <th>Status</th>
         <th><!-- Actions --></th>
       </tr>
       </thead>
       <tbody>
       <tr ng-repeat="user in users" ng-mouseover="hover=true" ng-mouseleave="hover=false" ng-class="{'active':hover}">
-        <td>{{ user.id }}</td>
-        <td>{{ user.gallup_id }}</td>
+        <td>{{ user.userId }}</td>
+        <td>{{ user.gallupId }}</td>
+        <td>{{ user.randomizedId }}</td>
         <td>{{ user.language }}</td>
+        <td>{{ user.sampleGroup }}</td>
+        <td>{{ user.status }}</td>
         <td align="right">
           <button ng-style="{'visibility' : (hover) ? 'visible' : 'hidden'}" ng-click="deleteUser(user)" class="btn btn-default btn-xs form-inline">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>

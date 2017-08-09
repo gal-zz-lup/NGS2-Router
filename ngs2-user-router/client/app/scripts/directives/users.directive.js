@@ -2,6 +2,7 @@
   'use strict';
 
   function UsersController($scope, $uibModal, UsersService) {
+    console.log("users", $scope.users);
     $scope.hover = false;
 
     $scope.deleteUser = function(user) {

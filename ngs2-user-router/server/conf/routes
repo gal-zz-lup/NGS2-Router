@@ -20,6 +20,7 @@ DELETE    /app/deleteExperimentInstance/:id                   controllers.Experi
 GET       /app/allExperiments                                 controllers.ExperimentController.getAllExperiments
 GET       /app/experimentsByUser/:userId                      controllers.UserInfoExperimentInstanceController.experimentsByUser(userId: Long)
 GET       /app/usersByExperiment/:expId                       controllers.UserInfoExperimentInstanceController.usersByExperiment(expId: Long)
+GET       /app/allUsers                                       controllers.UserInfoController.getAllUsers
 
 GET       /app/experimentInstancesByExperiment/:experimentId  controllers.ExperimentInstanceController.getAllExperimentInstancesByExperiment(experimentId: Long)
 POST      /app/upload                                         controllers.FileUploadController.uploadCSVFile

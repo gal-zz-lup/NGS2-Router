@@ -119,3 +119,15 @@ input[type='number'] {
   z-index: 999;
 }
 
+.peel-icon-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  border: 0;
+  background: transparent;
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+

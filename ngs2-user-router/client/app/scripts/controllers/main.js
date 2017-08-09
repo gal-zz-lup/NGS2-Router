@@ -24,6 +24,7 @@ function MainController($scope, ExperimentService, UsersService, $uibModal, Aler
 
     console.log("Getting users");
     UsersService.getAllUsers().then(function(resp) {
+      console.log("getAllUsers() -> resp", resp);
       $scope.users = resp;
     });
   } else {

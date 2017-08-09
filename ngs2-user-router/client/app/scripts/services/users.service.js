@@ -1,28 +1,20 @@
 (function() {
   'use strict';
 
-  function UsersService($q) {
+  function UsersService($q, $http, ApiConfig, AdminService) {
     return {
       getAllUsers: function () {
-        return $q(function(resolve) {
-          resolve([
-            {'id': 1,
-              'gallup_id': 'ABCD1234',
-              'language': 'en',
-              'url': 'https://brdbrd.net/A4B5C6'
-            },
-            {'id': 2,
-              'gallup_id': 'EFGH5678',
-              'language': 'es',
-              'url': 'https://brdbrd.net/B4C6D8'
-            },
-            {'id': 3,
-              'gallup_id': 'IJKL9101',
-              'language': 'sw',
-              'url': 'https://brdbrd.net/C8D0E2'
-            }
-          ]);
-        });
+        return $http({
+          method: 'GET',
+          url: ApiConfig.url + 'app/allUsers',
+          headers: {'X-AUTH-TOKEN':AdminService.authToken}
+        }).then(function(response) {
+          console.log("response", response);
+            return $q.when(response.data);
+          },
+          function(response) {
+            return $q.reject(response.data);
+          });
       },
       exportUsers: function() {
         return $q(function(resolve) {
@@ -59,5 +51,5 @@
     .module('app.services.users', [])
     .factory('UsersService', UsersService);
 
-  UsersService.$inject = ['$q'];
+  UsersService.$inject = ['$q', '$http', 'ApiConfig', 'AdminService'];
 })();

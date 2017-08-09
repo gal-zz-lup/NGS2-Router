@@ -12,6 +12,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import util.Utility;
 
+import java.time.Duration;
 import javax.inject.Inject;
 
 /**
@@ -56,8 +57,14 @@ public class AuthenticationController extends Controller {
       String authenticationToken = adminUser.createAuthToken();
       ObjectNode authTokenJson = Json.newObject();
       authTokenJson.put(AUTH_TOKEN, authenticationToken);
-      response().setCookie(Http.Cookie.builder(AUTH_TOKEN, authenticationToken).withSecure(ctx()
-          .request().secure()).build());
+      Http.Cookie cookie = Http.Cookie.builder(AUTH_TOKEN, authenticationToken + "|" + login.email)
+          .withMaxAge(Duration.ofDays(7))
+          .withSameSite(Http.Cookie.SameSite.STRICT)
+          .build();
+
+      //response().setCookie(Http.Cookie.builder(AUTH_TOKEN, authenticationToken).withSecure(ctx()
+      //   .request().secure()).build());
+      response().setCookie(cookie);
       return ok(Utility.createResponse(authTokenJson, true));
     }
   }
