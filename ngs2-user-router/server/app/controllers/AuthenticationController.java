@@ -17,7 +17,7 @@ import javax.inject.Inject;
 /**
  * Created by anuradha_uduwage.
  */
-public class AuthenticationController extends Controller{
+public class AuthenticationController extends Controller {
 
   @Inject
   FormFactory formFactory;
@@ -33,6 +33,7 @@ public class AuthenticationController extends Controller{
 
   /**
    * Method establish authentication token and returns the authentication token.
+   *
    * @return
    */
   public Result login() {
@@ -62,15 +63,15 @@ public class AuthenticationController extends Controller{
   }
 
   public Result isAuthenticated() {
-    if (getAdmin() != null ) {
+    if (getAdmin() != null) {
       Logger.info("User " + getAdmin().getEmail() + " is logged in");
       return ok("User " + getAdmin().getEmail() + "is logged in");
-    }
-    else return unauthorized();
+    } else return unauthorized();
   }
 
   /**
    * Logout the user and redirect to the root.
+   *
    * @return
    */
   @Security.Authenticated(SecurityController.class)

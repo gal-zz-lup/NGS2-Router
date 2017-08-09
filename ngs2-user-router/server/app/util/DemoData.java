@@ -1,11 +1,14 @@
 package util;
 
+import io.ebean.Ebean;
+import io.ebean.EbeanServer;
 import models.Admin;
 import models.Experiment;
 import models.ExperimentInstance;
 import models.UserInfo;
 import play.Environment;
 import play.Logger;
+import play.db.ebean.EbeanConfig;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,24 +22,27 @@ import java.time.Instant;
 @Singleton
 public class DemoData {
 
-  public Admin admin1;
+  private final EbeanServer ebeanServer;
 
   @Inject
-  public DemoData(Environment environment) {
-    if (environment.isDev() || environment.isTest()) {
-      if (Admin.findByEmailAndPassword("admin1@demo.com", "password") == null) {
-        Logger.info("Loading Demo Data");
+  public DemoData(Environment environment, EbeanConfig ebeanConfig) {
+    this.ebeanServer = Ebean.getServer(ebeanConfig.defaultServer());
 
-        admin1 = new Admin();
+    if (environment.isDev() || environment.isTest()) {
+      Logger.debug("Loading demo data");
+      if (ebeanServer.find(Admin.class).findCount() == 0) {
+        Logger.debug("Loading first Admin");
+        Admin admin1 = new Admin();
 
         admin1.setEmail("admin1@demo.com");
         admin1.setPassword("password");
         admin1.save();
       } else {
-        Logger.info("User already exists in the database");
+        Logger.debug("Admin table is not empty");
       }
 
-      if (UserInfo.find.findRowCount() == 0) {
+      if (ebeanServer.find(UserInfo.class).findCount() == 0) {
+        Logger.debug("Loading demo Users");
         UserInfo u1 = new UserInfo();
         u1.setArrivalTime(Timestamp.from(Instant.now()));
         u1.setGallupId("testgallupid1");
@@ -63,12 +69,14 @@ public class DemoData {
         u3.setStatus("NEW");
         u3.setSampleGroup("3");
         u3.save();
+      } else {
+        Logger.debug("UserInfo table is not empty");
       }
 
-      if (Experiment.find.findRowCount() == 0) {
+      if (ebeanServer.find(Experiment.class).findCount() == 0) {
+        Logger.debug("Loading demo Experiments");
         Experiment e1 = new Experiment();
         e1.setExperimentName("experiment-1");
-        e1.save();
 
         ExperimentInstance ei1 = new ExperimentInstance();
         ei1.nParticipants = 20;
@@ -78,7 +86,6 @@ public class DemoData {
         ei1.experimentInstanceUrlShort = "";
         ei1.priority = 1;
         ei1.status = "ACTIVE";
-        ei1.save();
 
         ExperimentInstance ei2 = new ExperimentInstance();
         ei2.nParticipants = 25;
@@ -88,7 +95,6 @@ public class DemoData {
         ei2.experimentInstanceUrlShort = "";
         ei2.priority = 2;
         ei2.status = "ACTIVE";
-        ei2.save();
 
         ExperimentInstance ei3 = new ExperimentInstance();
         ei3.nParticipants = 15;
@@ -98,7 +104,14 @@ public class DemoData {
         ei3.experimentInstanceUrlShort = "";
         ei3.priority = 3;
         ei3.status = "ACTIVE";
-        ei3.save();
+
+        e1.experimentInstances.add(ei1);
+        e1.experimentInstances.add(ei2);
+        e1.experimentInstances.add(ei3);
+
+        e1.save();
+      } else {
+        Logger.debug("Experiment table is not empty");
       }
 
     }

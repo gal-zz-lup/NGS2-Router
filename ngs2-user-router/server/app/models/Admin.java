@@ -1,7 +1,8 @@
 package models;
 
-import com.avaje.ebean.Model;
-import com.avaje.ebean.annotation.JsonIgnore;
+import io.ebean.Finder;
+import io.ebean.Model;
+import io.ebean.annotation.JsonIgnore;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
@@ -89,6 +90,7 @@ public class Admin extends Model {
      */
     public static Admin findByEmailAndPassword(String email, String password) {
         return find
+                .query()
                 .where()
                 .eq("email", email.toLowerCase())
                 .eq("shaPassword", getSha512(password))
@@ -103,6 +105,7 @@ public class Admin extends Model {
      */
     public static Admin findByEmail(String email) {
         return find
+                .query()
                 .where()
                 .eq("email", email.toLowerCase())
                 .findUnique();
@@ -118,7 +121,7 @@ public class Admin extends Model {
             return null;
         } else {
             try {
-                return find.where().eq("authenticationToken", authenticationToken).findUnique();
+                return find.query().where().eq("authenticationToken", authenticationToken).findUnique();
             } catch (Exception ex) {
                 return null;
             }

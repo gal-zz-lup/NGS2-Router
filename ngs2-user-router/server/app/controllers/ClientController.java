@@ -1,26 +1,38 @@
 package controllers;
 
+import actors.QueueActorProtocol;
+import akka.actor.ActorRef;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.typesafe.config.Config;
 import models.UserInfo;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.twirl.api.Html;
+import scala.compat.java8.FutureConverters;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.HashMap;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.TimeUnit;
+
+import static akka.pattern.Patterns.ask;
 
 public class ClientController extends Controller {
-  // TODO: Replace this with the SchedulerService
-  private int TEMPMAXVALUE = 3;
-  private int TEMPMINVALUE = 0;
-  private HashMap<String, Timestamp> joinedClients = new HashMap<>();
+
+  // Dependency injected
+  private final ActorRef queueActor;
+  private final Config config;
+
+  @Inject
+  public ClientController(@Named("peel-queue-actor") ActorRef queueActor, Config config) {
+    this.queueActor = queueActor;
+    this.config = config;
+  }
 
   public Result login(String clientId) {
-    UserInfo user = UserInfo.find.where().eq("randomized_id", clientId).findUnique();
+    UserInfo user = UserInfo.find.query().where().eq("randomized_id", clientId).findUnique();
     if (user == null) {
-      // TODO: Redirect to 401 page here
       return notFound("User not found.");
     }
     // User is connecting to the router, set their status to "WAITING" and
@@ -28,44 +40,22 @@ public class ClientController extends Controller {
     user.setStatus("WAITING");
     user.setArrivalTime(Timestamp.from(Instant.now()));
     user.save();
-    Html clientTemplate = views.html.client.render(user);
-    return ok(clientTemplate);
+    return ok(views.html.client.render(user));
   }
 
-  public Result update(String clientId) {
-    // TODO: validate clientId efficiently before returning result
-    // TODO: make this more efficient
-    UserInfo user = UserInfo.find.where().eq("randomized_id", clientId).findUnique();
-    user.setLastCheckIn(Timestamp.from(Instant.now()));
-    user.save();
-
-    ObjectNode result = Json.newObject();
-    result.put("clientId", clientId);
-
-    /*
-    joinedClients.put(clientId, Timestamp.from(Instant.now()));
-    if (joinedClients.size() >= TEMPMAXVALUE) {
-      UserInfo user = UserInfo.find.where().eq("randomized_id", clientId).findUnique();
-      user.setStatus("PLAYING");
-      result.put("src", "http://brdbrd.net");
-    }
-    ObjectNode progress = Json.newObject();
-    progress.put("valuemax", TEMPMAXVALUE);
-    progress.put("valuemin", TEMPMINVALUE);
-    progress.put("value", joinedClients.size());
-    result.put("progress", progress);
-    */
-
-    return ok(result);
+  public CompletionStage<Result> update(String clientId) {
+    return FutureConverters.toJava(
+        ask(queueActor,
+            new QueueActorProtocol.ClientUpdate(clientId),
+            config.getDuration("peel.server.actorTimeout", TimeUnit.MILLISECONDS)))
+        .thenApply(response -> ok((ObjectNode) response));
   }
 
   public Result waiting(String clientId) {
-    UserInfo user = UserInfo.find.where().eq("randomized_id", clientId).findUnique();
+    UserInfo user = UserInfo.find.query().where().eq("randomized_id", clientId).findUnique();
     if (user == null) {
-      // TODO: Redirect to 401 page here
       return notFound("User not found.");
     }
-    Html clientTemplate = views.html.waiting.render(user);
-    return ok(clientTemplate);
+    return ok(views.html.waiting.render(user));
   }
 }

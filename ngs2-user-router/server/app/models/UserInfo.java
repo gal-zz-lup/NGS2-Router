@@ -1,6 +1,7 @@
 package models;
 
-import com.avaje.ebean.Model;
+import io.ebean.Finder;
+import io.ebean.Model;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 

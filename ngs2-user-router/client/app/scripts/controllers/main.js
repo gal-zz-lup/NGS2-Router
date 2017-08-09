@@ -10,6 +10,7 @@
 function MainController($scope, ExperimentService, UsersService, $uibModal, AlertService) {
   $scope.experiments = [];
   $scope.users = [];
+  console.log("Getting experiments");
   ExperimentService.getAllExperiments().then(function(resp) {
     $scope.experiments = resp;
     console.log('experiments', resp);

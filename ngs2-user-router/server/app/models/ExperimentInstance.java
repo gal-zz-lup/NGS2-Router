@@ -1,7 +1,8 @@
 package models;
 
-import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.ebean.Finder;
+import io.ebean.Model;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
@@ -19,7 +20,7 @@ public class ExperimentInstance extends Model {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Long id;
 
-    @OneToOne
+    @ManyToOne
     @JsonIgnore
     public Experiment experiment;
 
@@ -64,7 +65,7 @@ public class ExperimentInstance extends Model {
      * @return
      */
     public static List<ExperimentInstance> findExperimentInstancesByPriority(int priority) {
-        return find.where()
+        return find.query().where()
                 .eq("priority", priority).findList();
     }
 
@@ -74,7 +75,7 @@ public class ExperimentInstance extends Model {
      * @return
      */
     public static List<ExperimentInstance> findExperimentInstancesByStatus(String status) {
-        return find.where()
+        return find.query().where()
                 .eq("status", status.toUpperCase()).findList();
     }
 
@@ -85,7 +86,7 @@ public class ExperimentInstance extends Model {
      * @return
      */
     public static List<ExperimentInstance> findExperimentInstancesByStatusAndPriority(String status, int priority) {
-        return find.where()
+        return find.query().where()
                 .eq("status", status.toUpperCase())
                 .eq("priority", priority).findList();
     }

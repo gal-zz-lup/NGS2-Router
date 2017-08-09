@@ -1,10 +1,8 @@
 package models;
 
-import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
 
 import javax.persistence.ManyToOne;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**

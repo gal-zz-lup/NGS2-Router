@@ -10,6 +10,8 @@ libraryDependencies ++= Seq(
   javaJdbc,
   cache,
   javaWs,
+  guice,
+  "com.h2database" % "h2" % "1.4.193",
   "org.mindrot" % "jbcrypt" % "0.4",
   "org.apache.commons" % "commons-csv" % "1.4"
 )

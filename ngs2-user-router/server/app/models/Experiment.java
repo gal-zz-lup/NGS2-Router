@@ -1,6 +1,7 @@
 package models;
 
-import com.avaje.ebean.Model;
+import io.ebean.Finder;
+import io.ebean.Model;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
@@ -20,7 +21,7 @@ public class Experiment extends Model {
   @Constraints.Required
   public String experimentName;
 
-  @OneToMany
+  @OneToMany(mappedBy="experiment", cascade=CascadeType.PERSIST)
   public List<ExperimentInstance> experimentInstances;
 
   public static Finder<Long, Experiment> find = new Finder<Long, Experiment>(Experiment.class);

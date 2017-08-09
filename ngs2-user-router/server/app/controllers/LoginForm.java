@@ -7,10 +7,10 @@ import play.data.validation.Constraints;
  */
 public class LoginForm {
 
-    @Constraints.Required
-    @Constraints.Email
-    public String email;
+  @Constraints.Required
+  @Constraints.Email
+  public String email;
 
-    @Constraints.Required
-    public String password;
+  @Constraints.Required
+  public String password;
 }

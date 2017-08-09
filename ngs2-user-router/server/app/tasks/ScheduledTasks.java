@@ -1,40 +1,42 @@
 package tasks;
 
-import actors.QueueActor;
 import actors.QueueActorProtocol;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import com.typesafe.config.Config;
+import scala.concurrent.ExecutionContext;
 import scala.concurrent.duration.Duration;
-import play.Configuration;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
+import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class ScheduledTasks {
   // Dependency injected
-  private final ActorSystem actorSystem;
-  private final Configuration configuration;
-
   private final ActorRef queueActor;
+  private final ActorSystem actorSystem;
+  private final ExecutionContext executionContext;
+  private final Config config;
 
   @Inject
-  public ScheduledTasks(ActorSystem actorSystem, Configuration configuration) {
+  public ScheduledTasks(@Named("peel-queue-actor") ActorRef queueActor, ActorSystem actorSystem, ExecutionContext executionContext, Config config) {
+    this.queueActor = queueActor;
     this.actorSystem = actorSystem;
-    this.configuration = configuration;
-
-    this.queueActor = actorSystem.actorOf(QueueActor.props);
+    this.executionContext = executionContext;
+    this.config = config;
 
     this.initialize();
   }
 
   private void initialize() {
     this.actorSystem.scheduler().schedule(
-        Duration.fromNanos(configuration.getNanoseconds("peel.server.scheduleInterval")),
-        Duration.fromNanos(configuration.getNanoseconds("peel.server.scheduleInterval")),
+        Duration.fromNanos(config.getDuration("peel.server.scheduleInterval", TimeUnit.NANOSECONDS)),
+        Duration.fromNanos(config.getDuration("peel.server.scheduleInterval", TimeUnit.NANOSECONDS)),
         queueActor,
         new QueueActorProtocol.Tick(),
-        actorSystem.dispatcher(),
+        executionContext,
         ActorRef.noSender()
     );
   }

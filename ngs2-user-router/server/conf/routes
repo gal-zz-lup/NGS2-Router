@@ -16,7 +16,7 @@ POST      /app/updateExperiment/:id                           controllers.Experi
 POST      /app/updateExperimentInstance/:id                   controllers.ExperimentInstanceController.updateExperimentInstance(id: Long)
 DELETE    /app/deleteExperiment/:id                           controllers.ExperimentController.deleteExperiment(id: Long)
 DELETE    /app/deleteExperimentInstance/:id                   controllers.ExperimentInstanceController.deleteExperimentInstance(id: Long)
-GET       /app/allExperiments                                 controllers.ExperimentController.getAllExperiments()
+GET       /app/allExperiments                                 controllers.ExperimentController.getAllExperiments
 GET       /app/experimentsByUser/:userId                      controllers.UserInfoExperimentInstanceController.experimentsByUser(userId: Long)
 GET       /app/usersByExperiment/:expId                       controllers.UserInfoExperimentInstanceController.usersByExperiment(expId: Long)
 

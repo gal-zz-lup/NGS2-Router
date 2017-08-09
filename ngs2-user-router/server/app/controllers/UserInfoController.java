@@ -12,11 +12,12 @@ import play.mvc.Security;
 @Security.Authenticated(SecurityController.class)
 public class UserInfoController extends Controller {
 
-    /**
-     * Return all the users
-     * @return
-     */
-    public Result getAllUsers() {
-        return ok(Json.toJson(UserInfo.find.all()));
-    }
+  /**
+   * Return all the users
+   *
+   * @return
+   */
+  public Result getAllUsers() {
+    return ok(Json.toJson(UserInfo.find.all()));
+  }
 }

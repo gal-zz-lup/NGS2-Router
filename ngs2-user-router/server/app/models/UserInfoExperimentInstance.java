@@ -1,7 +1,8 @@
 package models;
 
-import com.avaje.ebean.Model;
-import com.avaje.ebean.annotation.JsonIgnore;
+import io.ebean.Finder;
+import io.ebean.Model;
+import io.ebean.annotation.JsonIgnore;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
@@ -45,7 +46,7 @@ public class UserInfoExperimentInstance extends Model {
     }
 
     public static List<UserInfo> findByUser(UserInfo userInfo) {
-        return UserInfo.find.where().eq("userInfo", userInfo).findList();
+        return UserInfo.find.query().where().eq("userInfo", userInfo).findList();
     }
 
 

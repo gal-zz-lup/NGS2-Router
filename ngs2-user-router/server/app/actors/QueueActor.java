@@ -1,29 +1,28 @@
 package actors;
 
 import akka.actor.Props;
-import akka.actor.UntypedActor;
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Query;
-import com.avaje.ebean.RawSql;
-import com.avaje.ebean.RawSqlBuilder;
-import com.avaje.ebean.annotation.Sql;
-import models.Experiment;
+import akka.actor.UntypedAbstractActor;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.typesafe.config.Config;
+import io.ebean.*;
 import models.ExperimentInstance;
 import models.UserInfo;
 import actors.QueueActorProtocol.*;
-import play.Configuration;
 import play.Logger;
+import play.db.ebean.EbeanConfig;
+import play.libs.Json;
 
 import javax.inject.Inject;
-import javax.persistence.Entity;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 
-public class QueueActor extends UntypedActor {
+public class QueueActor extends UntypedAbstractActor {
 
-  public static Props props = Props.create(QueueActor.class);
+  public static Props getProps() {
+    return Props.create(QueueActor.class);
+  }
 
   // This is an in-memory representation of waiting clients for quickly responding to client polling
   private HashMap<String, Timestamp> waitingClients = new HashMap<>();
@@ -31,37 +30,37 @@ public class QueueActor extends UntypedActor {
   private Integer minValue = 0;
   private Integer maxValue = 0;
 
-  private final Configuration configuration;
+  private final Config config;
+  private final EbeanConfig ebeanConfig;
+
+  private final EbeanServer ebeanServer;
 
   @Inject
-  public QueueActor(Configuration configuration) {
-    this.configuration = configuration;
-    updateMaxValue();
-  }
-
-  @Entity
-  @Sql
-  private class MaxValueResult {
-    Integer value;
+  public QueueActor(Config config, EbeanConfig ebeanConfig) {
+    this.config = config;
+    this.ebeanConfig = ebeanConfig;
+    this.ebeanServer = Ebean.getServer(ebeanConfig.defaultServer());
   }
 
   private void updateMaxValue() {
-    String sql = "select max(n_participants) as value from experiment_instance where status = 'ACTIVE';";
-    RawSql rawSql = RawSqlBuilder.parse(sql).columnMapping("value", "value").create();
-    Query<MaxValueResult> query = Ebean.find(MaxValueResult.class);
-    MaxValueResult maxValueResult = query.setRawSql(rawSql).findUnique();
-    maxValue = maxValueResult.value;
+    List<ExperimentInstance> activeExperimentInstances = ebeanServer.find(ExperimentInstance.class).where().eq("status", "ACTIVE").findList();
+    for (ExperimentInstance activeExperimentInstance : activeExperimentInstances) {
+      maxValue = Math.max(maxValue, activeExperimentInstance.nParticipants);
+    }
   }
 
   @Override
   public void onReceive(Object message) throws Throwable {
     if (message instanceof Tick) {
-      List<UserInfo> waitingUsers = UserInfo.find.where().eq("status", "WAITING").setOrderBy("arrival_time asc").findList();
-      List<ExperimentInstance> activeExperimentInstances = ExperimentInstance.find.where().eq("status", "ACTIVE").setOrderBy("priority asc").findList();
+      //Logger.debug("Tick");
+      updateMaxValue();
+
+      List<UserInfo> waitingUsers = UserInfo.find.query().where().eq("status", "WAITING").setOrderBy("arrival_time asc").findList();
+      List<ExperimentInstance> activeExperimentInstances = ExperimentInstance.find.query().where().eq("status", "ACTIVE").setOrderBy("priority asc").findList();
 
       if (waitingUsers.size() > 0) {
         for(UserInfo user : waitingUsers) {
-          Logger.debug(user.getRandomizedId() + ": " + user.getArrivalTime());
+          //Logger.debug(user.getRandomizedId() + ": " + user.getArrivalTime());
         }
       }
     }
@@ -71,9 +70,14 @@ public class QueueActor extends UntypedActor {
       // Update last updated timestamp
       waitingClients.put(clientUpdate.clientId, Timestamp.from(Instant.now()));
 
-      ProgressUpdate progressUpdate = new ProgressUpdate(minValue, maxValue, waitingClients.size(), "");
+      ObjectNode result = Json.newObject();
+      ObjectNode progress = Json.newObject();
+      progress.put("valuemax", maxValue);
+      progress.put("valuemin", minValue);
+      progress.put("value", waitingClients.size());
+      result.put("progress", progress);
 
-      sender().tell(progressUpdate, self());
+      sender().tell(result, self());
     }
   }
 
