@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  function UploadCSVFileController($scope, upload, $timeout) {
+  function UploadCSVFileController($scope, Upload, $timeout) {
     $scope.uploadFiles = function (file, errFiles) {
       $scope.f = file;
       $scope.errFile = errFiles && errFiles[0];
@@ -26,6 +26,8 @@
   }
 
   angular
-    .module('app.modals.import_users', [])
-    .controller('UploadCSVFileController', UploadCSVFileController)
+    .module('app.modals.file_upload', [])
+    .controller('UploadCSVFileController', UploadCSVFileController);
+
+  UploadCSVFileController.$inject = ['$scope', 'Upload', '$timeout'];
 })();
