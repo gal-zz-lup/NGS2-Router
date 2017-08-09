@@ -19,7 +19,7 @@
         ariaLabelledBy: 'modal-title',
         ariaDescribedBy: 'modal-body',
         templateUrl: 'views/modals/import-users.modals.html',
-        controller: 'ImportUsersController',
+        controller: 'UploadCSVFileController',
         size: 'lg'
       });
 
