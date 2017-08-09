@@ -17,6 +17,7 @@ angular
     'ngSanitize',
     'ngTouch',
     'ui.bootstrap',
+    'ngFileUpload',
     'app.directives.experiment',
     'app.directives.experiment_instance',
     'app.directives.users',

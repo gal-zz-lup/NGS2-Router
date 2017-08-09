@@ -39,7 +39,7 @@ angular.module('clientApp')
           if(data.hasOwnProperty('success')) {
             adminService.username = payload.email;
             adminService.authToken = data.body.authenticationToken;
-            $location.path('/');
+            $location.path('/allExperiment');
           }
         },
           function(data){
@@ -61,3 +61,5 @@ angular.module('clientApp')
           });
     };
   });
+
+//LoginCtrl.$inject = ['$scope', 'ExperimentService', 'UsersService', 'AlertService'];
