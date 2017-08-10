@@ -21,7 +21,7 @@ public class Experiment extends Model {
   @Constraints.Required
   public String experimentName;
 
-  @OneToMany(mappedBy="experiment", cascade=CascadeType.PERSIST)
+  @OneToMany(mappedBy="experiment", cascade=CascadeType.ALL)
   public List<ExperimentInstance> experimentInstances;
 
   public static Finder<Long, Experiment> find = new Finder<Long, Experiment>(Experiment.class);

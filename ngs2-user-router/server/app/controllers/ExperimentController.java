@@ -2,6 +2,8 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Experiment;
+import models.ExperimentInstance;
+import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.data.validation.Constraints;
@@ -72,18 +74,13 @@ public class ExperimentController extends Controller {
    * @return
    */
   public Result deleteExperiment(Long id) {
-    JsonNode json = request().body().asJson();
-    if (json == null) {
-      return badRequest(Utility.createResponse("Expecting json", false));
+    boolean status = Experiment.find.ref(id).delete();
+    if (!status) {
+      return notFound(Utility.createResponse(
+          "Experiment with id:" + id + " not found", false));
     } else {
-      boolean status = Experiment.find.ref(id).delete();
-      if (!status) {
-        return notFound(Utility.createResponse(
-            "Experiment with id:" + id + " not found", false));
-      } else {
-        return ok(Utility.createResponse(
-            "Experiment with id:" + id + " deleted", true));
-      }
+      return ok(Utility.createResponse(
+          "Experiment with id:" + id + " deleted", true));
     }
   }
 

@@ -46,10 +46,16 @@
       },
       removeExperiment: function(experimentId) {
         console.log('removeExperiment', experimentId);
-        return $q(function(resolve) {
-          resolve({
+        return $http({
+          method: 'DELETE',
+          url: ApiConfig.url + 'app/deleteExperiment/' + experimentId,
+          headers: {'X-AUTH-TOKEN':AdminService.authToken, 'Csrf-Token':'nocheck'}
+        }).then(function(response) {
+            return $q.when(response);
+          },
+          function(response) {
+            return $q.reject(response);
           });
-        });
       }
     };
   }
