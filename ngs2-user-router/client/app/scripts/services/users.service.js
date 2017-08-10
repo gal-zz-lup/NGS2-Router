@@ -41,11 +41,16 @@
         });
       },
       removeUser: function(userId) {
-        return $q(function(resolve) {
-          console.log('Remove user', userId);
-          resolve({
+        return $http({
+          method: 'DELETE',
+          url: ApiConfig.url + 'app/deleteUser/' + userId,
+          headers: {'X-AUTH-TOKEN':AdminService.authToken, 'Csrf-Token':'nocheck'}
+        }).then(function(response) {
+            return $q.when(response);
+          },
+          function(response) {
+            return $q.reject(response);
           });
-        });
       }
     };
   }

@@ -22,6 +22,7 @@ GET       /app/experimentsByUser/:userId                      controllers.UserIn
 GET       /app/usersByExperiment/:expId                       controllers.UserInfoExperimentInstanceController.usersByExperiment(expId: Long)
 GET       /app/allUsers                                       controllers.UserInfoController.getAllUsers
 GET       /app/exportUsers                                    controllers.UserInfoController.exportUsers
+DELETE    /app/deleteUser/:id                                 controllers.UserInfoController.deleteUser(id: Long)
 
 GET       /app/experimentInstancesByExperiment/:experimentId  controllers.ExperimentInstanceController.getAllExperimentInstancesByExperiment(experimentId: Long)
 POST      /app/upload                                         controllers.FileUploadController.uploadCSVFile

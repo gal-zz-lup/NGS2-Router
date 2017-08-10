@@ -7,7 +7,7 @@
 
     $scope.deleteUser = function(user) {
       if (window.confirm('Are you sure you want this delete this user? This cannot be undone.')) {
-        UsersService.removeUser(user.id)
+        UsersService.removeUser(user.userId)
           .then(function () {
             $scope.users.splice($scope.users.indexOf(user), 1);
           });

@@ -7,6 +7,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import util.Utility;
 
 import java.util.List;
 
@@ -44,4 +45,19 @@ public class UserInfoController extends Controller {
     return ok(returnJson);
   }
 
+  /**
+   * Delete user
+   *
+   * @return
+   */
+  public Result deleteUser(Long id) {
+    boolean status = UserInfo.find.ref(id).delete();
+    if (!status) {
+      return notFound(Utility.createResponse(
+          "User with id:" + id + " not found", false));
+    } else {
+      return ok(Utility.createResponse(
+          "User with id:" + id + " deleted", true));
+    }
+  }
 }
