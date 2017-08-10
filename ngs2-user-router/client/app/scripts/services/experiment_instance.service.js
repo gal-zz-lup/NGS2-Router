@@ -1,9 +1,9 @@
-(function() {
+(function () {
   'use strict';
 
-  function ExperimentInstanceService(ApiConfig, $http, $q) {
+  function ExperimentInstanceService(ApiConfig, $http, $q, AdminService) {
     return {
-      createExperimentInstance: function(experimentId, experimentInstanceName, experimentInstanceUrl, nParticipants, priority) {
+      createExperimentInstance: function (experimentId, experimentInstanceName, experimentInstanceUrl, nParticipants, priority) {
         var payload = {
           'experimentId': experimentId,
           'experimentInstanceName': experimentInstanceName,
@@ -11,32 +11,43 @@
           'nParticipants': nParticipants,
           'priority': priority
         };
-        return $http.put(ApiConfig.url + 'app/createExperimentInstance', payload)
-          .then(function(response) {
-              return $q.when(response);
-            },
-            function(response) {
-              return $q.reject(response);
-            });
+        return $http({
+          method: 'PUT',
+          url: ApiConfig.url + 'app/createExperimentInstance',
+          data: payload,
+          headers: {'X-AUTH-TOKEN': AdminService.authToken, 'Csrf-Token': 'nocheck'}
+        }).then(function (response) {
+            return $q.when(response);
+          },
+          function (response) {
+            return $q.reject(response);
+          });
       },
-      updateExperimentInstance: function(experimentInstance) {
-        return $http.post(ApiConfig.url + 'app/updateExperimentInstance/' + experimentInstance.id, experimentInstance)
-          .then(function(response) {
-              return $q.when(response.body);
-            },
-            function(response) {
-              return $q.reject(response.body);
-            });
+      updateExperimentInstance: function (experimentInstance) {
+        return $http({
+          method: 'POST',
+          url: ApiConfig.url + 'app/updateExperimentInstance/' + experimentInstance.id,
+          data: experimentInstance,
+          headers: {'X-AUTH-TOKEN': AdminService.authToken, 'Csrf-Token': 'nocheck'}
+        }).then(function (response) {
+            return $q.when(response.body);
+          },
+          function (response) {
+            return $q.reject(response.body);
+          });
       },
-      removeExperimentInstance: function(experimentInstanceId) {
+      removeExperimentInstance: function (experimentInstanceId) {
         //console.log('removeExperimentInstance', experimentInstanceId);
-        return $http.delete(ApiConfig.url + 'app/deleteExperimentInstance/' + experimentInstanceId)
-          .then(function(response) {
-              return $q.when(response);
-            },
-            function(response) {
-              return $q.reject(response);
-            });
+        return $http({
+          method: 'DELETE',
+          url: ApiConfig.url + 'app/deleteExperimentInstance/' + experimentInstanceId,
+          headers: {'X-AUTH-TOKEN': AdminService.authToken, 'Csrf-Token': 'nocheck'}
+        }).then(function (response) {
+            return $q.when(response);
+          },
+          function (response) {
+            return $q.reject(response);
+          });
       }
     };
   }
@@ -45,5 +56,5 @@
     .module('app.services.experiment_instance', [])
     .factory('ExperimentInstanceService', ExperimentInstanceService);
 
-  ExperimentInstanceService.$inject = ['ApiConfig', '$http', '$q'];
+  ExperimentInstanceService.$inject = ['ApiConfig', '$http', '$q', 'AdminService'];
 })();
