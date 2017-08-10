@@ -17,14 +17,17 @@
           });
       },
       exportUsers: function() {
-        return $q(function(resolve) {
-          resolve(
-            '\"gallup_id\",\"url\"\n' +
-            '\"ABCD1234\",\"https://brdbrd.net/A4B5C6\"\n' +
-            '\"EFGH5678\",\"https://brdbrd.net/B4C6D8\"\n' +
-            '\"IJKL9101\",\"https://brdbrd.net/C8D0E2\"\n'
-          );
-        });
+        return $http({
+          method: 'GET',
+          url: ApiConfig.url + 'app/exportUsers',
+          headers: {'X-AUTH-TOKEN':AdminService.authToken}
+        }).then(function(response) {
+            console.log("response", response);
+            return $q.when(response.data);
+          },
+          function(response) {
+            return $q.reject(response.data);
+          });
       },
       importUsers: function(importCsv) {
         return $q(function(resolve) {

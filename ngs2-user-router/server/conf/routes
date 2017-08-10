@@ -21,12 +21,13 @@ GET       /app/allExperiments                                 controllers.Experi
 GET       /app/experimentsByUser/:userId                      controllers.UserInfoExperimentInstanceController.experimentsByUser(userId: Long)
 GET       /app/usersByExperiment/:expId                       controllers.UserInfoExperimentInstanceController.usersByExperiment(expId: Long)
 GET       /app/allUsers                                       controllers.UserInfoController.getAllUsers
+GET       /app/exportUsers                                    controllers.UserInfoController.exportUsers
 
 GET       /app/experimentInstancesByExperiment/:experimentId  controllers.ExperimentInstanceController.getAllExperimentInstancesByExperiment(experimentId: Long)
 POST      /app/upload                                         controllers.FileUploadController.uploadCSVFile
 
 # Client routes
-GET       /client/:clientId                                   controllers.ClientController.login(clientId: String)
+GET       /client/:clientId                                   controllers.ClientController.login(clientId)
 GET       /client/:clientId/update                            controllers.ClientController.update(clientId: String)
 GET       /client/:clientId/waiting                           controllers.ClientController.waiting(clientId: String)
 

@@ -41,7 +41,7 @@
           size: 'lg',
           resolve: {
             exportedUsers: function() {
-              return resp;
+              return resp.user_csv;
             }
           }
         });
