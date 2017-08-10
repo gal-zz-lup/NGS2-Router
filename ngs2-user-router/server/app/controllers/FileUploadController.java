@@ -4,6 +4,7 @@ import play.Logger;
 import play.data.Form;
 import play.data.FormFactory;
 import play.data.validation.Constraints;
+import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
@@ -36,9 +37,11 @@ public class FileUploadController extends Controller {
     return ok("Hello");
   }
 
+  @BodyParser.Of(BodyParser.Raw.class)
   public Result uploadCSVFile() {
 
-    Form<FileUploadForm> fileUploadFormForm = formFactory.form(FileUploadForm.class).bindFromRequest();
+    File file = request().body().asRaw().asFile();
+    Logger.info(file.getName());
     Logger.info("Getting ready to upload the csv file");
     try {
       MultipartFormData<File> body = request().body().asMultipartFormData();

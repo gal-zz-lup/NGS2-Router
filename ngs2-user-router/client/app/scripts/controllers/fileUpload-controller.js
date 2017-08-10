@@ -1,13 +1,15 @@
 (function() {
   'use strict';
 
-  function UploadCSVFileController($scope, Upload, $timeout) {
+  function UploadCSVFileController($scope, Upload, $timeout, AdminService, ApiConfig) {
     $scope.uploadFiles = function (file, errFiles) {
       $scope.f = file;
       $scope.errFile = errFiles && errFiles[0];
       if (file) {
         file.upload = Upload.upload({
-          data : {file: file}
+          url: ApiConfig.url + 'app/upload',
+          data : {file: file},
+          headers: {'X-AUTH-TOKEN':AdminService.authToken, 'Csrf-Token':'nocheck'}
         });
 
         file.upload.then(function (response) {
@@ -29,5 +31,5 @@
     .module('app.modals.file_upload', [])
     .controller('UploadCSVFileController', UploadCSVFileController);
 
-  UploadCSVFileController.$inject = ['$scope', 'Upload', '$timeout'];
+  UploadCSVFileController.$inject = ['$scope', 'Upload', '$timeout', 'AdminService', 'ApiConfig'];
 })();
