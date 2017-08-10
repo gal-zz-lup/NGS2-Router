@@ -85,6 +85,7 @@ public class AuthenticationController extends Controller {
   public Result logout() {
     response().discardCookie(AUTH_TOKEN);
     getAdmin().deleteAuthToken();
+    Logger.info("User Successfully logged out");
     return redirect("/");
   }
 

@@ -7,7 +7,7 @@ GET     /                                                     controllers.Assets
 # Admin Login routes
 + nocsrf
 POST    /app/login                                            controllers.AuthenticationController.login
-POST    /app/logout                                           controllers.AuthenticationController.logout
+GET     /app/logout                                           controllers.AuthenticationController.logout
 GET     /app/isauthenticated                                  controllers.AuthenticationController.isAuthenticated
 
 # Admin CRUD routes

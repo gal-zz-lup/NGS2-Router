@@ -39,7 +39,7 @@ public class FileUploadController extends Controller {
   public Result uploadCSVFile() {
 
     Form<FileUploadForm> fileUploadFormForm = formFactory.form(FileUploadForm.class).bindFromRequest();
-
+    Logger.info("Getting ready to upload the csv file");
     try {
       MultipartFormData<File> body = request().body().asMultipartFormData();
       FilePart<File> csvFile = body.getFile("csvfile");

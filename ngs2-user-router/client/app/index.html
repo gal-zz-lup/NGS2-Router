@@ -29,7 +29,9 @@
 </div>
 
 <div class="container-fluid">
-  <p class="text-right" ng-if="AdminService.loggedIn">Logged in as {{AdminService.username}}</p>
+  <p class="text-right" ng-if="AdminService.loggedIn">Logged in as {{AdminService.username}}
+    <a ng-href="/" ng-click="logout()">Logout</a>
+  </p>
 </div>
 
 <div class="container">

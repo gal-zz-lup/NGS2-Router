@@ -57,6 +57,26 @@ function LoginCtrl($scope, AdminService, $location, $log, $http, AlertService, A
         });
   };
 
+  $scope.logout = function () {
+    $http.get(ApiConfig.url + 'app/logout')
+      .then(function (data) {
+        if(data.hasOwnProperty('success')) {
+          AdminService.username = '';
+          AdminService.authToken = '';
+          AdminService.loggedIn = false;
+        }
+      });
+  };
+
+  $scope.$watch('AdminService.username', function(newVal){
+    if (newVal === '') {
+      AdminService.loggedIn = false;
+    } else {
+      AdminService.username = newVal;
+      AdminService.loggedIn = true;
+    }
+  });
+
 }
 
 angular.module('clientApp')
