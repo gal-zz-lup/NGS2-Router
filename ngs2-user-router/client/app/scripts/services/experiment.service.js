@@ -19,8 +19,12 @@
         var payload = {
           'experimentName': experimentName
         };
-        return $http.put(ApiConfig.url + 'app/createExperiment', payload)
-          .then(function(response) {
+        return $http({
+          method: 'PUT',
+          url: ApiConfig.url + 'app/createExperiment',
+          data: payload,
+          headers: {'X-AUTH-TOKEN':AdminService.authToken, 'Csrf-Token':'nocheck'}
+        }).then(function(response) {
               return $q.when(response);
             },
             function(response) {
@@ -28,8 +32,12 @@
             });
       },
       updateExperiment: function(experiment) {
-        return $http.post(ApiConfig.url + 'app/updateExperiment/' + experiment.id, experiment)
-          .then(function(response) {
+        return $http({
+          method: 'POST',
+          url: ApiConfig.url + 'app/updateExperiment/' + experiment.id,
+          data: experiment,
+          headers: {'X-AUTH-TOKEN':AdminService.authToken, 'Csrf-Token':'nocheck'}
+        }).then(function(response) {
               return $q.when(response);
             },
             function(response) {

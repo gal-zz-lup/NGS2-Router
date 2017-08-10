@@ -10,6 +10,13 @@ function AppController($scope, AdminService, $cookies) {
       AdminService.loggedIn = true;
     }
   }
+
+  $scope.logout = function() {
+    $cookies.remove('authenticationToken');
+    AdminService.authToken = '';
+    AdminService.username = '';
+    AdminService.loggedIn = false;
+  }
 }
 
 AppController.$inject = ['$scope', 'AdminService', '$cookies'];
