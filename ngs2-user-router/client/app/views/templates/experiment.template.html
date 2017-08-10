@@ -36,7 +36,7 @@
           </thead>
           <tbody ng-if="!minimized">
               <tr class="experiment-instance"
-                  ng-repeat="experimentInstance in experiment.experimentInstances"
+                  ng-repeat="experimentInstance in experiment.experimentInstances | orderBy: 'priority'"
                   experiment-instance="experimentInstance"
                   ng-if="!deleted">
               </tr>
