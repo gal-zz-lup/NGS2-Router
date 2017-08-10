@@ -1,20 +1,21 @@
 package controllers;
 
+import models.UserInfo;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import play.Logger;
-import play.data.Form;
-import play.data.FormFactory;
-import play.data.validation.Constraints;
-import play.mvc.BodyParser;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import play.mvc.Security;
-import util.CSVReader;
 import util.Utility;
 
-import javax.inject.Inject;
 import java.io.File;
+import java.io.FileReader;
+import java.io.Reader;
+import java.util.ArrayList;
 
 
 /**
@@ -23,53 +24,34 @@ import java.io.File;
 @Security.Authenticated(SecurityController.class)
 public class FileUploadController extends Controller {
 
-  /**
-   * An action that renders login credentials to identify successful
-   * login action.
-   * The configuration in the <code>routes</code> file means that
-   * this method will be called when the application receives a
-   * <code>GET</code> request with a path of <code>/</code>.
-   */
-  @Inject
-  FormFactory formFactory;
-
-  public Result index() {
-    return ok("Hello");
-  }
-
-  @BodyParser.Of(BodyParser.Raw.class)
   public Result uploadCSVFile() {
 
-    File file = request().body().asRaw().asFile();
-    Logger.info(file.getName());
-    Logger.info("Getting ready to upload the csv file");
+    ArrayList<UserInfo> importedUsers = new ArrayList<>();
+    //Logger.info("Getting ready to upload the csv file");
     try {
-      MultipartFormData<File> body = request().body().asMultipartFormData();
-      FilePart<File> csvFile = body.getFile("csvfile");
-      CSVReader csvReader;
-      if (csvFile != null && csvFile.getFilename().contains(".csv")) {
-        try {
-          csvReader = new CSVReader(csvFile.getFilename());
-          csvReader.parseFile();
+      MultipartFormData body = request().body().asMultipartFormData();
+      FilePart file = body.getFile("file");
+      File f = (File)file.getFile();
+      Reader in = new FileReader(f);
+      Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(in);
 
-        } catch (Exception ex) {
-          Logger.error("Exception occured::: " + ex.getMessage());
-          return status(400, "Missing file");
+      for (CSVRecord record : records) {
+        if (record.isSet("id") && record.isSet("language") && record.isSet("sample_group")) {
+          String id = record.get("id");
+          String language = record.get("language");
+          String sampleGroup = record.get("sample_group");
+          Logger.debug(id + "," + language + "," + sampleGroup);
+          importedUsers.add(UserInfo.importUser(id, language, sampleGroup));
+        } else {
+          return internalServerError("CSV does not have required header row (id, language, sample_group).");
         }
       }
     } catch (Exception ex) {
+      Logger.debug("exception thrown: " + ex.getMessage());
       return internalServerError();
     }
-    return ok(Utility.createResponse("File was successfully loaded and parse", true));
+    return ok(Utility.createResponse(Json.toJson(importedUsers), true));
   }
 
-  /**
-   * Static class for the form.
-   */
-  public static class FileUploadForm {
-
-    @Constraints.Required
-    public String filePath;
-  }
 
 }

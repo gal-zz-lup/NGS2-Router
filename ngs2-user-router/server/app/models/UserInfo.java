@@ -2,6 +2,7 @@ package models;
 
 import io.ebean.Finder;
 import io.ebean.Model;
+import org.apache.commons.lang3.RandomStringUtils;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
@@ -101,4 +102,28 @@ public class UserInfo extends Model {
   public void setSampleGroup(String sampleGroup) {
     this.sampleGroup = sampleGroup;
   }
+
+  public static UserInfo importUser(String gallupId, String language, String sampleGroup) {
+    UserInfo user = new UserInfo();
+    user.setGallupId(gallupId);
+    user.setLanguage(language);
+    user.setSampleGroup(sampleGroup);
+    user.setStatus("NEW");
+    user.setRandomizedId(createRandomId());
+    user.save();
+    return user;
+  }
+
+  private static String createRandomId() {
+    String randomId = "";
+    boolean unique = false;
+    while (!unique) {
+      randomId = RandomStringUtils.randomAlphanumeric(8);
+      if (UserInfo.find.query().where().eq("randomized_id", randomId).findCount() == 0) {
+        unique = true;
+      }
+    }
+    return randomId;
+  }
+
 }

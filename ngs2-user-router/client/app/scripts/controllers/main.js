@@ -16,19 +16,15 @@ function MainController($scope, ExperimentService, UsersService, $uibModal, Aler
 
   if (AdminService.loggedIn) {
     $scope.loggedInAs = AdminService.username;
-    console.log("Getting experiments");
+    //console.log("Getting experiments");
     ExperimentService.getAllExperiments().then(function(resp) {
       $scope.experiments = resp;
-      console.log('experiments', resp);
     });
 
-    console.log("Getting users");
+    //console.log("Getting users");
     UsersService.getAllUsers().then(function(resp) {
-      console.log("getAllUsers() -> resp", resp);
       $scope.users = resp;
     });
-  } else {
-    //$location.path('#!login');
   }
 
   $scope.createExperiment = function() {
@@ -42,10 +38,6 @@ function MainController($scope, ExperimentService, UsersService, $uibModal, Aler
     modalInstance.result.then(function(newExperiment) {
       $scope.experiments.push(newExperiment);
     });
-  };
-
-  $scope.addAlert = function() {
-    AlertService.add('warning', 'Hello world!');
   };
 
   $scope.closeAlert = function(alert) {

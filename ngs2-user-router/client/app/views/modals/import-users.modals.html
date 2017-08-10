@@ -1,33 +1,23 @@
-<body ng-app="fileUpload" ng-controller="UploadCSVFileController">
-<h4>Upload on file select</h4>
-<button type="file" ngf-select="uploadFiles($file, $invalidFiles)"
-        accept=".csv" ngf-max-height="1000" ngf-max-size="1MB">
-  Select File</button>
-<br><br>
-File:
-<div>{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
-  <span class="progress" ng-show="f.progress >= 0">
-          <div style="width:{{f.progress}}%"
-               ng-bind="f.progress + '%'"></div>
-      </span>
-</div>
-{{errorMsg}}
-</body>
-
-<!--
 <div class="container">
-  <h3>Upload CSV File</h3>
-  <div class="form-group">
-    <input type="file" name="file"/>
-  </div>
   <h3>Import Users</h3>
-  <small>(gallup_id, language)</small>
+  <p><small>Select CSV with header row: id,language,sample_group</small></p>
   <div class="form-group">
-    <textarea rows="30" class="form-control" ng-model="importCsv"></textarea>
+    <button
+      id="peel-select-file"
+      type="file"
+      ngf-select="uploadFiles($file, $invalidFiles)"
+      accept=".csv"
+      ngf-max-height="1000"
+      ngf-max-size="1MB">
+      Select File
+    </button>
   </div>
-  <div class="form-group">
-      <button class="btn btn-success" ng-click="importUsers()">Import <span class="glyphicon glyphicon-import"></span></button>
-      <button class="btn btn-danger" ng-click="close()">Cancel <span class="glyphicon glyphicon-remove"></span></button>
-  </div>
+    <div>{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}
+      <span class="progress" ng-show="f.progress >= 0">
+              <div style="width:{{f.progress}}%"
+                   ng-bind="f.progress + '%'"></div>
+          </span>
+    </div>
+    {{errorMsg}}
 </div>
--->
+

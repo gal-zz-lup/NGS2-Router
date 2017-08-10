@@ -26,7 +26,7 @@
 
       modalInstance.result.then(function (importedUsers) {
         console.log(importedUsers);
-        $scope.users.push(importedUsers);
+        $scope.users = $scope.users.concat(importedUsers.data.body);
       });
     };
 

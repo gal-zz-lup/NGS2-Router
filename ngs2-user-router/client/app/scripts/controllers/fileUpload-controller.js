@@ -1,22 +1,19 @@
 (function() {
   'use strict';
 
-  function UploadCSVFileController($scope, Upload, $timeout, AdminService, ApiConfig) {
+  function UploadCSVFileController($uibModalInstance, $scope, Upload, $timeout, AdminService, ApiConfig) {
     $scope.uploadFiles = function (file, errFiles) {
       $scope.f = file;
       $scope.errFile = errFiles && errFiles[0];
       if (file) {
         file.upload = Upload.upload({
           url: ApiConfig.url + 'app/upload',
-          data : {file: file},
+          data : {'file': file},
+          method: 'POST',
           headers: {'X-AUTH-TOKEN':AdminService.authToken, 'Csrf-Token':'nocheck'}
-        });
-
-        file.upload.then(function (response) {
-          $timeout(function () {
-            file.result = response.data;
-          });
-        }, function (response) {
+        }).then(function(response) {
+          $uibModalInstance.close(response);
+        },function (response) {
           if (response.status > 0)
             $scope.errorMsg = response.status + ': ' + response.data;
         }, function (evt) {
@@ -31,5 +28,5 @@
     .module('app.modals.file_upload', [])
     .controller('UploadCSVFileController', UploadCSVFileController);
 
-  UploadCSVFileController.$inject = ['$scope', 'Upload', '$timeout', 'AdminService', 'ApiConfig'];
+  UploadCSVFileController.$inject = ['$uibModalInstance', '$scope', 'Upload', '$timeout', 'AdminService', 'ApiConfig'];
 })();
