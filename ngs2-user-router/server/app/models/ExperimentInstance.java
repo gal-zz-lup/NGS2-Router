@@ -106,6 +106,11 @@ public class ExperimentInstance extends Model {
         this.nParticipants = nParticipants;
     }
 
+    public List<UserInfo> getUserInfoList() {
+      return userInfoList;
+    }
+
+
     private String getUserURL(UserInfo user) {
         String url = this.experimentInstanceUrlActual;
 

@@ -71,7 +71,8 @@ public class QueueActor extends UntypedAbstractActor {
       updateMaxValue();
 
       List<UserInfo> waitingUsers = UserInfo.find.query().where()
-              .eq("status", "WAITING").setOrderBy("arrival_time asc").findList();
+              .eq("status", "WAITING").setOrderBy("arrival_time asc")
+              .fetch("experimentInstanceList").findList();
 
       // Update number of waiting clients here
       waitingClients = waitingUsers.size();
@@ -96,15 +97,8 @@ public class QueueActor extends UntypedAbstractActor {
       if (waitingUsers.size() > 0) {
         for (UserInfo userInfo : waitingUsers) {
           for (ExperimentInstance experimentInstance : activeExperimentInstances) {
-            // get the users by experimentInstance
-            List<UserInfoExperimentInstance> userInfoExperimentInstances = UserInfoExperimentInstance.
-                    getUsersInfoExperimentByInstanceId(experimentInstance.id);
-            // we need to iterate over userinfo_experiment_instance table to get users in instances
-            for (UserInfoExperimentInstance uInfoExpInstance : userInfoExperimentInstances) {
-              if (userInfo.getUserId() == uInfoExpInstance.getUserInfo().getUserId()) {
-                break;
-              }
-
+            if (experimentInstance.getUserInfoList().contains(userInfo)) {
+              break;
             }
           }
         }
