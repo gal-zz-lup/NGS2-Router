@@ -58,6 +58,12 @@ public class ExperimentInstance extends Model {
     @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
     public Timestamp updatedTime;
 
+    @ManyToMany
+    @JoinTable(name = "user_info_experiment_instance",
+                joinColumns = @JoinColumn(name = "experiment_instance_id", referencedColumnName = "id"),
+                inverseJoinColumns = @JoinColumn(name="user_info_id", referencedColumnName = "id"))
+    public List<UserInfo> userInfoList;
+
     public static Finder<Long, ExperimentInstance> find = new Finder<Long, ExperimentInstance>(ExperimentInstance.class);
 
     /**

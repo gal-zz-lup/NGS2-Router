@@ -103,12 +103,8 @@ public class QueueActor extends UntypedAbstractActor {
             for (UserInfoExperimentInstance uInfoExpInstance : userInfoExperimentInstances) {
               if (userInfo.getUserId() == uInfoExpInstance.getUserInfo().getUserId()) {
                 break;
-              } else {
-                if(waitingClients > experimentInstance.getnParticipants()) {
-                  experimentInstance.assignUserInfo(userInfo);
-                  break;
-                }
               }
+
             }
           }
         }

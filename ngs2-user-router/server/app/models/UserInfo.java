@@ -8,6 +8,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by anuradha_uduwage.
@@ -40,6 +41,9 @@ public class UserInfo extends Model {
   @Column(name = "sample_group", length = 255, nullable = false)
   @Constraints.Required
   public String sampleGroup;
+
+  @ManyToMany(mappedBy = "userInfoList")
+  public List<ExperimentInstance> experimentInstanceList;
 
   public Long getUserId() {
     return userId;
@@ -113,6 +117,14 @@ public class UserInfo extends Model {
     this.currentGameUrl = currentGameUrl;
   }
 
+
+  /**
+   * Set the properties of UserInfo object.
+   * @param gallupId
+   * @param language
+   * @param sampleGroup
+   * @return
+   */
   public static UserInfo importUser(String gallupId, String language, String sampleGroup) {
     UserInfo user = new UserInfo();
     user.setGallupId(gallupId);
