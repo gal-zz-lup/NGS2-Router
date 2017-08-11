@@ -4,13 +4,14 @@ $(document).ready(function() {
   function updateClient() {
     $.getJSON(window.location.pathname + '/update',
       function (response) {
+        console.log("response", response);
         var curSrc = window.location.pathname + '/waiting';
-        if (response.hasOwnProperty('src') && response.src !== '') {
+        if (response.hasOwnProperty('src') && response.src !== '' && response.src !== null && response.src !== 'null') {
           curSrc = response.src;
-          // If the src is different than what is currently being displayed
-          if ($('#peel-iframe').attr('src') !== curSrc) {
-            $('#peel-iframe').attr('src', curSrc);
-          }
+        }
+        // If the src is different than what is currently being displayed
+        if ($('#peel-iframe').attr('src') !== curSrc) {
+          $('#peel-iframe').attr('src', curSrc);
         }
 
         if (response.hasOwnProperty('progress')) {
@@ -34,7 +35,7 @@ $(document).ready(function() {
       }
     } else {
       // Hide the status div if the client's status is not WAITING
-      $('$status-div').css('display', 'none');
+      $('#status-div').css('display', 'none');
     }
   }
 
