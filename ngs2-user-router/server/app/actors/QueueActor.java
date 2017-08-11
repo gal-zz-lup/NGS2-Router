@@ -5,9 +5,11 @@ import akka.actor.UntypedAbstractActor;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.typesafe.config.Config;
 import io.ebean.*;
+import models.Experiment;
 import models.ExperimentInstance;
 import models.UserInfo;
 import actors.QueueActorProtocol.*;
+import models.UserInfoExperimentInstance;
 import play.Logger;
 import play.db.ebean.EbeanConfig;
 import play.libs.Json;
@@ -92,7 +94,16 @@ public class QueueActor extends UntypedAbstractActor {
       AND ui.id NOT IN (SELECT uiei.user_info_id FROM user_info_experiment_instance uiei
               WHERE uiei.experiment_instance_id in (SELECT ei.id FROM experiment_instance ei WHERE ei.experiment_id = '234'));
       */
-      
+      for (ExperimentInstance experimentInstance : activeExperimentInstances) {
+        //get a records from the user_info_experiment_instance table that matches active experiment instance id
+        List<UserInfoExperimentInstance> userInfoExperimentInstances =
+                UserInfoExperimentInstance.getUsersInfoExperimentByInstanceId(experimentInstance.id);
+        for (UserInfoExperimentInstance userInfoExperimentInstance : userInfoExperimentInstances) {
+          // foreach record we check the the user's status
+          userInfoExperimentInstance.getUserInfo();
+        }
+      }
+
 
     }
 
