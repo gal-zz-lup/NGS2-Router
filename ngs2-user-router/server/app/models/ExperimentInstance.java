@@ -92,6 +92,14 @@ public class ExperimentInstance extends Model {
                 .eq("priority", priority).findList();
     }
 
+    public int getnParticipants() {
+        return nParticipants;
+    }
+
+    public void setnParticipants(int nParticipants) {
+        this.nParticipants = nParticipants;
+    }
+
     private String getUserURL(UserInfo user) {
         String url = this.experimentInstanceUrlActual;
 
