@@ -101,36 +101,18 @@ public class QueueActor extends UntypedAbstractActor {
                     getUsersInfoExperimentByInstanceId(experimentInstance.id);
             // we need to iterate over userinfo_experiment_instance table to get users in instances
             for (UserInfoExperimentInstance uInfoExpInstance : userInfoExperimentInstances) {
-              if (userInfo.getUserId() != uInfoExpInstance.getUserInfo().getUserId()) {
-                
+              if (userInfo.getUserId() == uInfoExpInstance.getUserInfo().getUserId()) {
+                break;
+              } else {
+                if(waitingClients > experimentInstance.getnParticipants()) {
+                  //call assignment
+                  break;
+                }
               }
             }
           }
         }
       }
-
-      /*
-      Query that return the users who are ready for experiment.
-
-      SELECT count(*)
-      FROM user_info ui
-      WHERE ui.status = 'WAITING'
-      AND ui.id NOT IN (SELECT uiei.user_info_id FROM user_info_experiment_instance uiei
-              WHERE uiei.experiment_instance_id in (SELECT ei.id FROM experiment_instance ei WHERE ei.experiment_id = '234'));
-      */
-      /*
-      for (ExperimentInstance experimentInstance : activeExperimentInstances) {
-        //get a records from the user_info_experiment_instance table that matches active experiment instance id
-        List<UserInfoExperimentInstance> userInfoExperimentInstances =
-                UserInfoExperimentInstance.getUsersInfoExperimentByInstanceId(experimentInstance.id);
-        for (UserInfoExperimentInstance userInfoExperimentInstance : userInfoExperimentInstances) {
-          // foreach record we check the the user's status
-          userInfoExperimentInstance.getUserInfo();
-        }
-      }
-      */
-
-
     }
 
     if (message instanceof ClientUpdate) {
