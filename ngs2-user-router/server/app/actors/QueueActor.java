@@ -66,8 +66,10 @@ public class QueueActor extends UntypedAbstractActor {
       //Logger.debug("Tick");
       updateMaxValue();
 
-      List<UserInfo> waitingUsers = UserInfo.find.query().where().eq("status", "WAITING").setOrderBy("arrival_time asc").findList();
-      List<ExperimentInstance> activeExperimentInstances = ExperimentInstance.find.query().where().eq("status", "ACTIVE").setOrderBy("priority asc").findList();
+      List<UserInfo> waitingUsers = UserInfo.find.query().where()
+              .eq("status", "WAITING").setOrderBy("arrival_time asc").findList();
+      List<ExperimentInstance> activeExperimentInstances = ExperimentInstance.find.query().where()
+              .eq("status", "ACTIVE").setOrderBy("priority asc").findList();
 
       if (waitingUsers.size() > 0) {
         for(UserInfo user : waitingUsers) {
@@ -80,6 +82,18 @@ public class QueueActor extends UntypedAbstractActor {
           }
         }
       }
+
+      /*
+      Query that return the users who are ready for experiment.
+
+      SELECT count(*)
+      FROM user_info ui
+      WHERE ui.status = 'WAITING'
+      AND ui.id NOT IN (SELECT uiei.user_info_id FROM user_info_experiment_instance uiei
+              WHERE uiei.experiment_instance_id in (SELECT ei.id FROM experiment_instance ei WHERE ei.experiment_id = '234'));
+      */
+      
+
     }
 
     if (message instanceof ClientUpdate) {
