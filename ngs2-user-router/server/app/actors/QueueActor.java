@@ -17,6 +17,8 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class QueueActor extends UntypedAbstractActor {
 
@@ -43,10 +45,19 @@ public class QueueActor extends UntypedAbstractActor {
   }
 
   private void updateMaxValue() {
-    List<ExperimentInstance> activeExperimentInstances = ebeanServer.find(ExperimentInstance.class).where().eq("status", "ACTIVE").findList();
+    List<ExperimentInstance> activeExperimentInstances = ebeanServer.find(
+            ExperimentInstance.class).where().eq("status", "ACTIVE").findList();
     for (ExperimentInstance activeExperimentInstance : activeExperimentInstances) {
       maxValue = Math.max(maxValue, activeExperimentInstance.nParticipants);
     }
+  }
+
+  private long getTimeDifference(Timestamp arrival, Timestamp current) {
+    long arrivalMillisecond = arrival.getTime();
+    long currentMillisecond = current.getTime();
+    long timeDiff = currentMillisecond - arrivalMillisecond;
+    long diffInMinutes = timeDiff / 1000;
+    return diffInMinutes;
   }
 
   @Override
@@ -61,6 +72,12 @@ public class QueueActor extends UntypedAbstractActor {
       if (waitingUsers.size() > 0) {
         for(UserInfo user : waitingUsers) {
           //Logger.debug(user.getRandomizedId() + ": " + user.getArrivalTime());
+          long waitedTime = getTimeDifference(user.getArrivalTime(), Timestamp.from(Instant.now()));
+          if (waitedTime > config.getDuration("server.idleTime", TimeUnit.SECONDS)) {
+            user.setStatus("IDLE");
+            user.save();
+            waitingUsers.remove(user);
+          }
         }
       }
     }
