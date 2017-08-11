@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -28,11 +29,9 @@ public class QueueActor extends UntypedAbstractActor {
     return Props.create(QueueActor.class);
   }
 
-  // This is an in-memory representation of waiting clients for quickly responding to client polling
-  private HashMap<String, Timestamp> waitingClients = new HashMap<>();
-
   private Integer minValue = 0;
   private Integer maxValue = 0;
+  private Integer waitingClients = 0;
 
   private final Config config;
   private final EbeanConfig ebeanConfig;
@@ -64,23 +63,48 @@ public class QueueActor extends UntypedAbstractActor {
 
   @Override
   public void onReceive(Object message) throws Throwable {
+
+    //List of users who are ready to be assigned
+
     if (message instanceof Tick) {
       //Logger.debug("Tick");
       updateMaxValue();
 
       List<UserInfo> waitingUsers = UserInfo.find.query().where()
               .eq("status", "WAITING").setOrderBy("arrival_time asc").findList();
+
+      // Update number of waiting clients here
+      waitingClients = waitingUsers.size();
+
       List<ExperimentInstance> activeExperimentInstances = ExperimentInstance.find.query().where()
               .eq("status", "ACTIVE").setOrderBy("priority asc").findList();
 
       if (waitingUsers.size() > 0) {
-        for(UserInfo user : waitingUsers) {
+        Iterator<UserInfo> iter = waitingUsers.iterator();
+        while(iter.hasNext()) {
+          UserInfo user = iter.next();
           //Logger.debug(user.getRandomizedId() + ": " + user.getArrivalTime());
           long waitedTime = getTimeDifference(user.getArrivalTime(), Timestamp.from(Instant.now()));
-          if (waitedTime > config.getDuration("server.idleTime", TimeUnit.SECONDS)) {
+          if (waitedTime > config.getDuration("peel.server.idleTime", TimeUnit.SECONDS)) {
             user.setStatus("IDLE");
             user.save();
-            waitingUsers.remove(user);
+            iter.remove();
+          }
+        }
+      }
+
+      if (waitingUsers.size() > 0) {
+        for (UserInfo userInfo : waitingUsers) {
+          for (ExperimentInstance experimentInstance : activeExperimentInstances) {
+            // get the users by experimentInstance
+            List<UserInfoExperimentInstance> userInfoExperimentInstances = UserInfoExperimentInstance.
+                    getUsersInfoExperimentByInstanceId(experimentInstance.id);
+            // we need to iterate over userinfo_experiment_instance table to get users in instances
+            for (UserInfoExperimentInstance uInfoExpInstance : userInfoExperimentInstances) {
+              if (userInfo.getUserId() != uInfoExpInstance.getUserInfo().getUserId()) {
+                
+              }
+            }
           }
         }
       }
@@ -94,6 +118,7 @@ public class QueueActor extends UntypedAbstractActor {
       AND ui.id NOT IN (SELECT uiei.user_info_id FROM user_info_experiment_instance uiei
               WHERE uiei.experiment_instance_id in (SELECT ei.id FROM experiment_instance ei WHERE ei.experiment_id = '234'));
       */
+      /*
       for (ExperimentInstance experimentInstance : activeExperimentInstances) {
         //get a records from the user_info_experiment_instance table that matches active experiment instance id
         List<UserInfoExperimentInstance> userInfoExperimentInstances =
@@ -103,23 +128,28 @@ public class QueueActor extends UntypedAbstractActor {
           userInfoExperimentInstance.getUserInfo();
         }
       }
+      */
 
 
     }
 
     if (message instanceof ClientUpdate) {
       ClientUpdate clientUpdate = (ClientUpdate) message;
-      // Update last updated timestamp
-      waitingClients.put(clientUpdate.clientId, Timestamp.from(Instant.now()));
 
-      ObjectNode result = Json.newObject();
-      ObjectNode progress = Json.newObject();
-      progress.put("valuemax", maxValue);
-      progress.put("valuemin", minValue);
-      progress.put("value", waitingClients.size());
-      result.put("progress", progress);
-
-      sender().tell(result, self());
+      UserInfo user = ebeanServer.find(UserInfo.class).where().eq("randomized_id", clientUpdate.clientId).findUnique();
+      if (user != null) {
+        // Update last_check_in timestamp
+        user.setLastCheckIn(Timestamp.from(Instant.now()));
+        user.save();
+        ObjectNode result = Json.newObject();
+        result.put("status", user.getStatus());
+        ObjectNode progress = Json.newObject();
+        progress.put("valuemax", maxValue);
+        progress.put("valuemin", minValue);
+        progress.put("value", waitingClients);
+        result.put("progress", progress);
+        sender().tell(result, self());
+      }
     }
   }
 
