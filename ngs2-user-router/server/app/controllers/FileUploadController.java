@@ -39,7 +39,7 @@ public class FileUploadController extends Controller {
         if (record.isSet("GALLUP_MATCH_ID") &&
                 record.isSet("PRIMARY_LANGUAGE") && record.isSet("LANG") &&
                 record.isSet("COUNTRY") && record.isSet("COUNTRY_CD") &&
-                record.isSet("SAMPLEFILE")) {
+                record.isSet("SAMPFILE")) {
           String id = record.get("GALLUP_MATCH_ID");
           String language = record.get("PRIMARY_LANGUAGE");
           String sampleGroup = record.get("SAMPFILE");
