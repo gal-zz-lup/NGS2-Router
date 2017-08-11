@@ -8,6 +8,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -97,5 +98,32 @@ public class ExperimentInstance extends Model {
 
     public void setnParticipants(int nParticipants) {
         this.nParticipants = nParticipants;
+    }
+
+    private String getUserURL(UserInfo user) {
+        String url = this.experimentInstanceUrlActual;
+
+        if (user.getLanguage() != null) {
+            url = url.replace("{language}", user.getLanguage());
+        }
+
+        if (user.getRandomizedId() != null) {
+            url = url.replace("{id}", user.getRandomizedId());
+        }
+
+        return url;
+    }
+
+    // Assign a user to this experiment instance
+    public void assignUserInfo(UserInfo user) {
+        user.setCurrentGameUrl(getUserURL(user));
+        user.setStatus("PLAYING");
+        user.save();
+
+        UserInfoExperimentInstance uiei = new UserInfoExperimentInstance();
+        uiei.setExperimentInstance(this);
+        uiei.setUserInfo(user);
+        uiei.setArrivalTime(Timestamp.from(Instant.now()));
+        uiei.save();
     }
 }

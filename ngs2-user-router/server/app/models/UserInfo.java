@@ -35,6 +35,8 @@ public class UserInfo extends Model {
   @Column(name = "status", length = 255, nullable = false)
   @Constraints.Required
   public String status;
+  @Column(name = "current_game_url", length = 255)
+  public String currentGameUrl;
   @Column(name = "sample_group", length = 255, nullable = false)
   @Constraints.Required
   public String sampleGroup;
@@ -101,6 +103,14 @@ public class UserInfo extends Model {
 
   public void setSampleGroup(String sampleGroup) {
     this.sampleGroup = sampleGroup;
+  }
+
+  public String getCurrentGameUrl() {
+    return currentGameUrl;
+  }
+
+  public void setCurrentGameUrl(String currentGameUrl) {
+    this.currentGameUrl = currentGameUrl;
   }
 
   public static UserInfo importUser(String gallupId, String language, String sampleGroup) {

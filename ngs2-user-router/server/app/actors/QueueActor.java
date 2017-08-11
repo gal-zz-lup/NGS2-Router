@@ -105,7 +105,7 @@ public class QueueActor extends UntypedAbstractActor {
                 break;
               } else {
                 if(waitingClients > experimentInstance.getnParticipants()) {
-                  //call assignment
+                  experimentInstance.assignUserInfo(userInfo);
                   break;
                 }
               }
