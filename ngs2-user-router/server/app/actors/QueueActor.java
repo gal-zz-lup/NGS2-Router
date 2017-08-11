@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -76,13 +77,15 @@ public class QueueActor extends UntypedAbstractActor {
               .eq("status", "ACTIVE").setOrderBy("priority asc").findList();
 
       if (waitingUsers.size() > 0) {
-        for(UserInfo user : waitingUsers) {
+        Iterator<UserInfo> iter = waitingUsers.iterator();
+        while(iter.hasNext()) {
+          UserInfo user = iter.next();
           //Logger.debug(user.getRandomizedId() + ": " + user.getArrivalTime());
           long waitedTime = getTimeDifference(user.getArrivalTime(), Timestamp.from(Instant.now()));
           if (waitedTime > config.getDuration("peel.server.idleTime", TimeUnit.SECONDS)) {
             user.setStatus("IDLE");
             user.save();
-            waitingUsers.remove(user);
+            iter.remove();
           }
         }
       }
