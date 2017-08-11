@@ -41,14 +41,15 @@ public class UserInfoExperimentInstance extends Model {
     public static Finder<Long, UserInfoExperimentInstance>
             find = new Finder<Long, UserInfoExperimentInstance>(UserInfoExperimentInstance.class);
 
-    public static List<UserInfo> findUserByExperimentInstance(ExperimentInstance experimentInstance) {
-        return null;
+    public static List<UserInfoExperimentInstance> getUsersInfoExperimentByInstanceId(Long experimentInstanceId) {
+        return UserInfoExperimentInstance.find.query()
+                .where()
+                .eq("experiment_instance_id", experimentInstanceId).findList();
     }
 
     public static List<UserInfo> findByUser(UserInfo userInfo) {
         return UserInfo.find.query().where().eq("userInfo", userInfo).findList();
     }
-
 
     public UserInfo getUserInfo() {
         return userInfo;
