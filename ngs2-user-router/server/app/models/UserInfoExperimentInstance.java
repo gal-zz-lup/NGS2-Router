@@ -18,7 +18,7 @@ public class UserInfoExperimentInstance extends Model {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  public Long userExperimentId;
+  public Long id;
 
   @OneToOne
   @JsonIgnore

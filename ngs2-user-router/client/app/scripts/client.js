@@ -4,12 +4,15 @@ $(document).ready(function() {
   function updateClient() {
     $.getJSON(window.location.pathname + '/update',
       function (response) {
-        if (response.hasOwnProperty('src')) {
-          if (curSrc !== response.src) {
-            $('#peel-iframe').attr('src', response.src);
-            curSrc = response.src;
+        var curSrc = window.location.pathname + '/waiting';
+        if (response.hasOwnProperty('src') && response.src !== '') {
+          curSrc = response.src;
+          // If the src is different than what is currently being displayed
+          if ($('#peel-iframe').attr('src') !== curSrc) {
+            $('#peel-iframe').attr('src', curSrc);
           }
         }
+
         if (response.hasOwnProperty('progress')) {
           updateProgress(response.status, response.progress);
         }
@@ -35,7 +38,5 @@ $(document).ready(function() {
     }
   }
 
-  var curSrc = window.location.pathname + '/waiting';
-  $('#peel-iframe').attr('src', curSrc);
   updateClient();
 });

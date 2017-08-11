@@ -143,6 +143,7 @@ public class QueueActor extends UntypedAbstractActor {
         user.save();
         ObjectNode result = Json.newObject();
         result.put("status", user.getStatus());
+        result.put("src", user.getCurrentGameUrl());
         ObjectNode progress = Json.newObject();
         progress.put("valuemax", maxValue);
         progress.put("valuemin", minValue);
