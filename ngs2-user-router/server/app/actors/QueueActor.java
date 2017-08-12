@@ -86,7 +86,7 @@ public class QueueActor extends UntypedAbstractActor {
         while(iter.hasNext()) {
           UserInfo user = iter.next();
           //Logger.debug(user.getRandomizedId() + ": " + user.getArrivalTime());
-          long waitedTime = getTimeDifference(user.getArrivalTime(), Timestamp.from(Instant.now()));
+          long waitedTime = getTimeDifference(user.getLastCheckIn(), Timestamp.from(Instant.now()));
           if (waitedTime > config.getDuration("peel.server.idleTime", TimeUnit.SECONDS)) {
             user.setStatus("IDLE");
             user.save();
