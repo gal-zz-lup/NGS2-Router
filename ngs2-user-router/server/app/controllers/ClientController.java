@@ -37,9 +37,11 @@ public class ClientController extends Controller {
     }
     // User is connecting to the router, set their status to "WAITING" and
     // their arrival time to now
-    user.setStatus("WAITING");
-    user.setArrivalTime(Timestamp.from(Instant.now()));
-    user.save();
+    if (!user.getStatus().equals("PLAYING")) {
+      user.setStatus("WAITING");
+      user.setArrivalTime(Timestamp.from(Instant.now()));
+      user.save();
+    }
     return ok(views.html.client.render(user));
   }
 

@@ -86,7 +86,10 @@ public class QueueActor extends UntypedAbstractActor {
         while(iter.hasNext()) {
           UserInfo user = iter.next();
           //Logger.debug(user.getRandomizedId() + ": " + user.getArrivalTime());
-          long waitedTime = getTimeDifference(user.getArrivalTime(), Timestamp.from(Instant.now()));
+          long waitedTime = getTimeDifference(user.getLastCheckIn(), Timestamp.from(Instant.now()));
+          Logger.debug("waitedTime = " + waitedTime);
+          Logger.debug("peel.server.idleTime = " + config.getDuration("peel.server.idleTime", TimeUnit.SECONDS));
+
           if (waitedTime > config.getDuration("peel.server.idleTime", TimeUnit.SECONDS)) {
             user.setStatus("IDLE");
             user.save();
@@ -102,10 +105,10 @@ public class QueueActor extends UntypedAbstractActor {
             if (experimentInstance.getUserInfoList().contains(userInfo)) {
               break;
             }
-            //using the lambda function to filter and collect the users who have not partcipated in the instance.
+            //using the lambda function to filter and collect the users who have not participated in the instance.
             List<UserInfo> filteredByInstanceWaitingUsers = waitingUsers.stream().filter(u -> !experimentInstance.
                     getUserInfoList().contains(u.userId)).collect(Collectors.toList());
-            if(filteredByInstanceWaitingUsers.size() > experimentInstance.getnParticipants()) {
+            if(filteredByInstanceWaitingUsers.size() >= experimentInstance.getnParticipants()) {
               experimentInstance.assignUserInfo(filteredByInstanceWaitingUsers);
             }
           }
