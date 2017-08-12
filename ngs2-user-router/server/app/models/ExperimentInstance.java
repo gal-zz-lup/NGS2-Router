@@ -137,6 +137,7 @@ public class ExperimentInstance extends Model {
             uiei.setExperimentInstance(this);
             uiei.setUserInfo(user);
             uiei.setArrivalTime(Timestamp.from(Instant.now()));
+            this.status = "PLAYING";
             uiei.save();
         }
     }
