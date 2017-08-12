@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class QueueActor extends UntypedAbstractActor {
 
@@ -97,8 +98,15 @@ public class QueueActor extends UntypedAbstractActor {
       if (waitingUsers.size() > 0) {
         for (UserInfo userInfo : waitingUsers) {
           for (ExperimentInstance experimentInstance : activeExperimentInstances) {
+            // Since we are using many to many relationship we can get the userInfo list with experimentInstance
             if (experimentInstance.getUserInfoList().contains(userInfo)) {
               break;
+            }
+            //using the lambda function to filter and collect the users who have not partcipated in the instance.
+            List<UserInfo> filteredByInstanceWaitingUsers = waitingUsers.stream().filter(u -> !experimentInstance.
+                    getUserInfoList().contains(u.userId)).collect(Collectors.toList());
+            if(filteredByInstanceWaitingUsers.size() > experimentInstance.getnParticipants()) {
+              experimentInstance.assignUserInfo(filteredByInstanceWaitingUsers);
             }
           }
         }

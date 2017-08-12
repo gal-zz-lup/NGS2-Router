@@ -126,15 +126,18 @@ public class ExperimentInstance extends Model {
     }
 
     // Assign a user to this experiment instance
-    public void assignUserInfo(UserInfo user) {
-        user.setCurrentGameUrl(getUserURL(user));
-        user.setStatus("PLAYING");
-        user.save();
+    // Has to change because passing a list of users to be assigned. 
+    public void assignUserInfo(List<UserInfo> users) {
+        for (UserInfo user : users) {
+            user.setCurrentGameUrl(getUserURL(user));
+            user.setStatus("PLAYING");
+            user.save();
 
-        UserInfoExperimentInstance uiei = new UserInfoExperimentInstance();
-        uiei.setExperimentInstance(this);
-        uiei.setUserInfo(user);
-        uiei.setArrivalTime(Timestamp.from(Instant.now()));
-        uiei.save();
+            UserInfoExperimentInstance uiei = new UserInfoExperimentInstance();
+            uiei.setExperimentInstance(this);
+            uiei.setUserInfo(user);
+            uiei.setArrivalTime(Timestamp.from(Instant.now()));
+            uiei.save();
+        }
     }
 }
