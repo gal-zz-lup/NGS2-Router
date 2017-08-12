@@ -126,7 +126,7 @@ public class ExperimentInstance extends Model {
     }
 
     // Assign a user to this experiment instance
-    // Has to change because passing a list of users to be assigned. 
+    // Has to change because passing a list of users to be assigned.
     public void assignUserInfo(List<UserInfo> users) {
         for (UserInfo user : users) {
             user.setCurrentGameUrl(getUserURL(user));

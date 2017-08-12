@@ -105,8 +105,8 @@ public class QueueActor extends UntypedAbstractActor {
             //using the lambda function to filter and collect the users who have not partcipated in the instance.
             List<UserInfo> filteredByInstanceWaitingUsers = waitingUsers.stream().filter(u -> !experimentInstance.
                     getUserInfoList().contains(u.userId)).collect(Collectors.toList());
-            if(filteredByInstanceWaitingUsers.size() > experimentInstance.getnParticipants()) {
-              experimentInstance.assignUserInfo(filteredByInstanceWaitingUsers);
+            if(filteredByInstanceWaitingUsers.size() >= experimentInstance.getnParticipants()) {
+              experimentInstance.assignUserInfo(filteredByInstanceWaitingUsers.);
             }
           }
         }
