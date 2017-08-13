@@ -17,10 +17,7 @@ import play.libs.Json;
 import javax.inject.Inject;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -81,11 +78,14 @@ public class QueueActor extends UntypedAbstractActor {
       List<ExperimentInstance> activeExperimentInstances = ExperimentInstance.find.query().where()
               .eq("status", "ACTIVE").setOrderBy("priority asc").findList();
 
+      //shuffling the active experiment list
+      Collections.shuffle(activeExperimentInstances);
+
       if (waitingUsers.size() > 0) {
         Iterator<UserInfo> iter = waitingUsers.iterator();
         while(iter.hasNext()) {
           UserInfo user = iter.next();
-          //Logger.debug(user.getRandomizedId() + ": " + user.getArrivalTime());
+          //Logger.debug(user.getRandomizedId() + ": " + user.getArrivalTime() + " : " + user.getLastCheckIn());
           // if user has just arrived lastCheckIn is same as arrival
           long waitedTime;
           if (user.getLastCheckIn() != null) {
