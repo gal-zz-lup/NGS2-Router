@@ -136,9 +136,12 @@ public class ExperimentInstance extends Model {
             UserInfoExperimentInstance uiei = new UserInfoExperimentInstance();
             uiei.setExperimentInstance(this);
             uiei.setUserInfo(user);
-            uiei.setArrivalTime(Timestamp.from(Instant.now()));
-            this.status = "PLAYING";
+            uiei.setArrivalTime(user.getArrivalTime());
+            uiei.setSendOffTime(Timestamp.from(Instant.now()));
             uiei.save();
+
+            this.status = "PLAYING";
+            this.save();
         }
     }
 }

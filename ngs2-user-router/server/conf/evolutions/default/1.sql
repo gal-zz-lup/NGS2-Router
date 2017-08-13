@@ -57,12 +57,12 @@ CREATE TABLE user_info_experiment_instance (
   CONSTRAINT pk_experiment_user_info PRIMARY KEY (id)
 );
 
-SELECT count(*)
-FROM user_info ui
-WHERE ui.status = 'WAITING'
-AND ui.id NOT IN (SELECT uiei.user_info_id FROM user_info_experiment_instance uiei
-WHERE uiei.experiment_instance_id in (SELECT ei.id FROM experiment_instance ei WHERE ei.experiment_id = '234'));
 
+#-- SELECT count(*)
+#-- FROM user_info ui
+#-- WHERE ui.status = 'WAITING'
+#-- AND ui.id NOT IN (SELECT uiei.user_info_id FROM user_info_experiment_instance uiei
+#-- WHERE uiei.experiment_instance_id in (SELECT ei.id FROM experiment_instance ei WHERE ei.experiment_id = '234'));
 
 # --- !Downs
 DROP TABLE experiment;
