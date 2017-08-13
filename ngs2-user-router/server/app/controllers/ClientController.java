@@ -40,6 +40,8 @@ public class ClientController extends Controller {
     if (!user.getStatus().equals("PLAYING")) {
       user.setStatus("WAITING");
       user.setArrivalTime(Timestamp.from(Instant.now()));
+      // We need to set the lastCheckInTime
+      user.setLastCheckIn(user.getArrivalTime());
       user.save();
     }
     return ok(views.html.client.render(user));
