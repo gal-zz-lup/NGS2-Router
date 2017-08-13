@@ -3,6 +3,7 @@ package models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.ebean.Finder;
 import io.ebean.Model;
+import play.Logger;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
@@ -128,6 +129,7 @@ public class ExperimentInstance extends Model {
     // Assign a user to this experiment instance
     // Has to change because passing a list of users to be assigned.
     public void assignUserInfo(List<UserInfo> users) {
+        Logger.debug("user.size() = " + users.size());
         for (UserInfo user : users) {
             user.setCurrentGameUrl(getUserURL(user));
             user.setStatus("PLAYING");

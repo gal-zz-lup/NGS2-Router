@@ -81,6 +81,7 @@ public class QueueActor extends UntypedAbstractActor {
       //shuffling the active experiment list
       Collections.shuffle(activeExperimentInstances);
 
+      Logger.debug(waitingUsers.size() + " players are WAITING");
       if (waitingUsers.size() > 0) {
         Iterator<UserInfo> iter = waitingUsers.iterator();
         while(iter.hasNext()) {
@@ -94,6 +95,7 @@ public class QueueActor extends UntypedAbstractActor {
             waitedTime = getTimeDifference(user.getArrivalTime(), Timestamp.from(Instant.now()));
           }
           if (waitedTime > config.getDuration("peel.server.idleTime", TimeUnit.SECONDS)) {
+            Logger.debug("User " + user.getRandomizedId() + " is IDLE");
             user.setStatus("IDLE");
             user.save();
             iter.remove();
@@ -106,14 +108,19 @@ public class QueueActor extends UntypedAbstractActor {
           for (ExperimentInstance experimentInstance : activeExperimentInstances) {
             // Since we are using many to many relationship we can get the userInfo list with experimentInstance
             if (experimentInstance.getUserInfoList().contains(userInfo)) {
+              Logger.debug("User " + userInfo.getRandomizedId() + " has already participated in this experiment");
               break;
             }
             //using the lambda function to filter and collect the users who have not participated in the instance.
+            // TODO: This should filter users who have not participated in the parent Experiment, not the ExperimentInstance
             List<UserInfo> filteredByInstanceWaitingUsers = waitingUsers.stream().filter(u -> !experimentInstance.
                     getUserInfoList().contains(u.userId)).collect(Collectors.toList());
+            Logger.debug(filteredByInstanceWaitingUsers.size() + " users have not participated in experiment ");
             if(filteredByInstanceWaitingUsers.size() >= experimentInstance.getnParticipants()) {
+              Logger.debug("experimentInstance.getnParticipants() = " + experimentInstance.getnParticipants());
+
               experimentInstance.assignUserInfo(filteredByInstanceWaitingUsers
-                      .subList(experimentInstance.getnParticipants(), waitingUsers.size()));
+                      .subList(0, experimentInstance.getnParticipants()));
             }
           }
         }
