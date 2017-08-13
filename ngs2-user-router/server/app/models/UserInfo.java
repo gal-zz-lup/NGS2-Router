@@ -148,4 +148,13 @@ public class UserInfo extends Model {
     return randomId;
   }
 
+  public boolean hasParticipatedInExperiment(Experiment experiment) {
+    for (ExperimentInstance ei : experimentInstanceList) {
+      if (ei.experiment.equals(experiment)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

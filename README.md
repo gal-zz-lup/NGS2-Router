@@ -2,24 +2,18 @@
 
 NGS2-Router is a webservice which provide capabilities to control traffic of incoming participants until it meets minimum condition that satisfies available experiments and route participants into randomly selected experiment or experiment site. 
 
-## Steps to run client and server
+## Start the Router
 
-Change directory to client folder in side the project and execute `grunt serve`. Client will be running on `port 9000` while listening to the server on `port 9090`
+1. Open a terminal and `cd server`
+2. Execute `sbt 'run 9090'`
+3. Go to http://localhost:9090
+4. Log in with `admin1@demo.com` and the password `password`
 
-```
-Running "configureProxies:server" (configureProxies) task
-Proxy created for: /app to localhost:9090
+## Create and connect to a test Experiment Instance
 
-Running "postcss:server" (postcss) task
->> 1 processed stylesheet created.
-
-Running "connect:livereload" (connect) task
-Started connect web server on http://localhost:9000
-
-Running "watch" task
-Waiting...
-```
-Now change the directory `server` directory in the project folder and execute `sbt` command and then `run 9090`.  
+1. Create an Experiment Instance with the URL: `https://brdbrd.net:9776/game/417/9253/{id}/connected`
+2. Set `# Participants` to '3'
+3. Connect to `http://localhost:9090/client/ABCD1234`, `http://localhost:9090/client/EFGH5678`, and `http://localhost:9090/client/IJKL2468`
 
 ## License
 

@@ -10,7 +10,7 @@
   </td>
   <td ng-if="editing">
     <button ng-style="{'visibility' : editing ? 'visible' : 'hidden' }" ng-click="toggleExperimentInstance(experimentInstance)" class="btn btn-default btn-xs form-inline">
-      <span ng-class="{'glyphicon-stop' : experimentInstance.status === 'ACTIVE', 'glyphicon-play' : experimentInstance.status === 'STOPPED'}" class="glyphicon" aria-hidden="true"></span>
+      <span ng-class="{'glyphicon-stop' : (experimentInstance.status === 'ACTIVE' || experimentInstance.status === 'PLAYING'), 'glyphicon-play' : experimentInstance.status === 'STOPPED'}" class="glyphicon" aria-hidden="true"></span>
     </button>
   </td>
   <td ng-if="!editing">{{experimentInstance.priority}}</td>

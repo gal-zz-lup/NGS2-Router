@@ -107,14 +107,14 @@ public class QueueActor extends UntypedAbstractActor {
         for (UserInfo userInfo : waitingUsers) {
           for (ExperimentInstance experimentInstance : activeExperimentInstances) {
             // Since we are using many to many relationship we can get the userInfo list with experimentInstance
-            if (experimentInstance.getUserInfoList().contains(userInfo)) {
+            if (userInfo.hasParticipatedInExperiment(experimentInstance.experiment)) {
               Logger.debug("User " + userInfo.getRandomizedId() + " has already participated in this experiment");
               break;
             }
             //using the lambda function to filter and collect the users who have not participated in the instance.
-            // TODO: This should filter users who have not participated in the parent Experiment, not the ExperimentInstance
-            List<UserInfo> filteredByInstanceWaitingUsers = waitingUsers.stream().filter(u -> !experimentInstance.
-                    getUserInfoList().contains(u.userId)).collect(Collectors.toList());
+            // This should filter users who have not participated in the parent Experiment, not the ExperimentInstance
+            List<UserInfo> filteredByInstanceWaitingUsers = waitingUsers.stream().filter(u -> !u.hasParticipatedInExperiment(
+                experimentInstance.experiment)).collect(Collectors.toList());
             Logger.debug(filteredByInstanceWaitingUsers.size() + " users have not participated in experiment ");
             if(filteredByInstanceWaitingUsers.size() >= experimentInstance.getnParticipants()) {
               Logger.debug("experimentInstance.getnParticipants() = " + experimentInstance.getnParticipants());

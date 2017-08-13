@@ -92,14 +92,17 @@ public class ExperimentInstanceController extends Controller {
     URLShortenerService urlShortenerService = new URLShortenerService();
     ExperimentInstance experimentInstance = ExperimentInstance.find.byId(id);
     Form<ExperimentInstanceForm> experimentForm = formFactory.form(ExperimentInstanceForm.class).bindFromRequest();
-    experimentInstance.experimentInstanceName = experimentForm.get().experimentInstanceName;
-    experimentInstance.experimentInstanceUrlActual = experimentForm.get().experimentInstanceUrlActual;
-    experimentInstance.experimentInstanceUrlShort = urlShortenerService.getShortURL(
-        experimentInstance.experimentInstanceUrlActual);
-    experimentInstance.updatedTime = new Timestamp(System.currentTimeMillis());
-    experimentInstance.nParticipants = experimentForm.get().nParticipants;
-    experimentInstance.priority = experimentForm.get().priority;
-    experimentInstance.status = "ACTIVE";
+    experimentInstance.setExperimentInstanceName(experimentForm.get().experimentInstanceName);
+    experimentInstance.setExperimentInstanceUrlActual(experimentForm.get().experimentInstanceUrlActual);
+    experimentInstance.setExperimentInstanceUrlShort(urlShortenerService.getShortURL(
+        experimentInstance.experimentInstanceUrlActual));
+    experimentInstance.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
+    experimentInstance.setnParticipants(experimentForm.get().nParticipants);
+    experimentInstance.setPriority(experimentForm.get().priority);
+    experimentInstance.setStatus(experimentForm.get().status);
+    if (experimentInstance.getStatus().equals("STOPPED")) {
+      experimentInstance.stopExperimentInstance();
+    }
     experimentInstance.update();
     JsonNode jsonObject = Json.toJson(experimentInstance);
     return ok(Utility.createResponse(jsonObject, true));
@@ -142,6 +145,8 @@ public class ExperimentInstanceController extends Controller {
     @Constraints.Required
     public int priority;
 
+    @Constraints.MaxLength(255)
+    public String status;
   }
 
 }
