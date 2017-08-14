@@ -69,6 +69,15 @@ public class DemoData {
         u3.setStatus("NEW");
         u3.setSampleGroup("3");
         u3.save();
+
+        UserInfo u4 = new UserInfo();
+        u4.setArrivalTime(Timestamp.from(Instant.now()));
+        u4.setGallupId("testgallupid4");
+        u4.setLanguage("en");
+        u4.setRandomizedId("MNOP1234");
+        u4.setStatus("NEW");
+        u4.setSampleGroup("4");
+        u4.save();
       } else {
         Logger.debug("UserInfo table is not empty");
       }
@@ -79,7 +88,7 @@ public class DemoData {
         e1.setExperimentName("experiment-1");
 
         ExperimentInstance ei1 = new ExperimentInstance();
-        ei1.nParticipants = 20;
+        ei1.nParticipants = 3;
         ei1.experiment = e1;
         ei1.experimentInstanceName = "e1_2017-08-08-01";
         ei1.experimentInstanceUrlActual = "http://brdbrd.net";
@@ -88,16 +97,16 @@ public class DemoData {
         ei1.status = "ACTIVE";
 
         ExperimentInstance ei2 = new ExperimentInstance();
-        ei2.nParticipants = 25;
+        ei2.nParticipants = 3;
         ei2.experiment = e1;
         ei2.experimentInstanceName = "e1_2017-08-08-02";
-        ei2.experimentInstanceUrlActual = "http://xkcd.com";
+        ei2.experimentInstanceUrlActual = "https://en.wikipedia.org/wiki/Peel_(tool)";
         ei2.experimentInstanceUrlShort = "";
         ei2.priority = 2;
         ei2.status = "ACTIVE";
 
         ExperimentInstance ei3 = new ExperimentInstance();
-        ei3.nParticipants = 15;
+        ei3.nParticipants = 3;
         ei3.experiment = e1;
         ei3.experimentInstanceName = "e1_2017-08-08-03";
         ei3.experimentInstanceUrlActual = "https://brdbrd.net:9776/game/417/9253/{id}/connected";

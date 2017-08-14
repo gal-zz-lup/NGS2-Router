@@ -3,6 +3,7 @@ package models;
 import io.ebean.Finder;
 import io.ebean.Model;
 import org.apache.commons.lang3.RandomStringUtils;
+import play.Logger;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 
@@ -159,6 +160,8 @@ public class UserInfo extends Model {
    */
   public boolean hasParticipatedInExperiment(Experiment experiment) {
     for (ExperimentInstance ei : experimentInstanceList) {
+      Logger.debug(ei.experiment.experimentName);
+      Logger.debug(experiment.experimentName);
       if (ei.experiment.equals(experiment)) {
         return true;
       }

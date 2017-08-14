@@ -53,7 +53,7 @@ public class ClientController extends Controller {
   }
 
   /**
-   * Asking the queue to be update based on actor timeout setting. 
+   * Asking the queue to be update based on actor timeout setting.
    * @param clientId
    * @return
    */

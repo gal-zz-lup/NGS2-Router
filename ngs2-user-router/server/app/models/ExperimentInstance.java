@@ -171,6 +171,14 @@ public class ExperimentInstance extends Model {
     this.updatedTime = updatedTime;
   }
 
+  public Experiment getExperiment() {
+    return experiment;
+  }
+
+  public void setExperiment(Experiment experiment) {
+    this.experiment = experiment;
+  }
+
   /**
    * Generate Unique URL for user.
    * @param user

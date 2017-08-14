@@ -3,7 +3,6 @@ package actors;
 import akka.actor.Props;
 import akka.actor.UntypedAbstractActor;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.oracle.tools.packager.Log;
 import com.typesafe.config.Config;
 import io.ebean.*;
 import models.Experiment;
@@ -102,29 +101,31 @@ public class QueueActor extends UntypedAbstractActor {
             iter.remove();
           }
         }
-      }
-
-      if (waitingUsers.size() > 0) {
         for (UserInfo userInfo : waitingUsers) {
+          innerloop:
           for (ExperimentInstance experimentInstance : activeExperimentInstances) {
+
             // Since we are using many to many relationship we can get the userInfo list with experimentInstance
-            if (userInfo.hasParticipatedInExperiment(experimentInstance.experiment)) {
+            if (userInfo.hasParticipatedInExperiment(experimentInstance.getExperiment())) {
               Logger.debug("User " + userInfo.getRandomizedId() + " has already participated in this experiment");
-              break;
+              break innerloop;
             }
+            
             //using the lambda function to filter and collect the users who have not participated in the instance.
             // This should filter users who have not participated in the parent Experiment, not the ExperimentInstance
             List<UserInfo> filteredByInstanceWaitingUsers = waitingUsers.stream().filter(u -> !u.hasParticipatedInExperiment(
-                experimentInstance.experiment)).collect(Collectors.toList());
+                    experimentInstance.experiment)).collect(Collectors.toList());
             Logger.debug(filteredByInstanceWaitingUsers.size() + " users have not participated in experiment ");
+
             if(filteredByInstanceWaitingUsers.size() >= experimentInstance.getnParticipants()) {
               Logger.debug("experimentInstance.getnParticipants() = " + experimentInstance.getnParticipants());
               experimentInstance.assignUserInfo(filteredByInstanceWaitingUsers
                       .subList(0, experimentInstance.getnParticipants()));
-              Log.debug("UsersId::" + filteredByInstanceWaitingUsers.stream().map(u ->
+              Logger.debug("Router send of users :: " + filteredByInstanceWaitingUsers.stream().map(u ->
                       u.getRandomizedId())
                       .collect(Collectors
-                              .joining("|")) + "<====> " + experimentInstance.getExperimentInstanceName());
+                              .joining("|")) + "to experiment ::" + experimentInstance.getExperimentInstanceName());
+              break innerloop;
             }
           }
         }
