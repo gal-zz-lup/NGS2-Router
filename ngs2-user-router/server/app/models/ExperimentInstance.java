@@ -171,6 +171,11 @@ public class ExperimentInstance extends Model {
     this.updatedTime = updatedTime;
   }
 
+  /**
+   * Generate Unique URL for user.
+   * @param user
+   * @return
+   */
   private String getUserURL(UserInfo user) {
     String url = this.experimentInstanceUrlActual;
 
@@ -185,6 +190,9 @@ public class ExperimentInstance extends Model {
     return url;
   }
 
+  /**
+   * Method to stop experiment instance.
+   */
   public void stopExperimentInstance() {
     // Call this when stopping the experiment instance to reset the src and status of the players
     for (UserInfo user : userInfoList) {
@@ -194,8 +202,12 @@ public class ExperimentInstance extends Model {
     }
   }
 
-  // Assign a user to this experiment instance
-  // Has to change because passing a list of users to be assigned.
+  /**
+   * Populate user information and change state in UserInfo,
+   * UserInforExperimentInstance and ExperimentInstance.
+   *
+   * @param users
+   */
   public void assignUserInfo(List<UserInfo> users) {
     Logger.debug("user.size() = " + users.size());
     for (UserInfo user : users) {

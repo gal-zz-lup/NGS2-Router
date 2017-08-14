@@ -136,6 +136,10 @@ public class UserInfo extends Model {
     return user;
   }
 
+  /**
+   * Creating randomize id for the user identification.
+   * @return
+   */
   private static String createRandomId() {
     String randomId = "";
     boolean unique = false;
@@ -148,6 +152,11 @@ public class UserInfo extends Model {
     return randomId;
   }
 
+  /**
+   * Method to check if user has participated in an experiment.
+   * @param experiment
+   * @return
+   */
   public boolean hasParticipatedInExperiment(Experiment experiment) {
     for (ExperimentInstance ei : experimentInstanceList) {
       if (ei.experiment.equals(experiment)) {

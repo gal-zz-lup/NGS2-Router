@@ -100,7 +100,7 @@ public class DemoData {
         ei3.nParticipants = 15;
         ei3.experiment = e1;
         ei3.experimentInstanceName = "e1_2017-08-08-03";
-        ei3.experimentInstanceUrlActual = "http://breadboard.yale.edu";
+        ei3.experimentInstanceUrlActual = "https://brdbrd.net:9776/game/417/9253/{id}/connected";
         ei3.experimentInstanceUrlShort = "";
         ei3.priority = 3;
         ei3.status = "ACTIVE";

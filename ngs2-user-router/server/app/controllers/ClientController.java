@@ -30,6 +30,11 @@ public class ClientController extends Controller {
     this.config = config;
   }
 
+  /**
+   * Check the validity of the user as request arrive and save user information to UserInfo.
+   * @param clientId
+   * @return
+   */
   public Result login(String clientId) {
     UserInfo user = UserInfo.find.query().where().eq("randomized_id", clientId).findUnique();
     if (user == null) {
@@ -47,6 +52,11 @@ public class ClientController extends Controller {
     return ok(views.html.client.render(user));
   }
 
+  /**
+   * Asking the queue to be update based on actor timeout setting. 
+   * @param clientId
+   * @return
+   */
   public CompletionStage<Result> update(String clientId) {
     return FutureConverters.toJava(
         ask(queueActor,

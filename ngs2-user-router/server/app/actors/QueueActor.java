@@ -3,6 +3,7 @@ package actors;
 import akka.actor.Props;
 import akka.actor.UntypedAbstractActor;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.oracle.tools.packager.Log;
 import com.typesafe.config.Config;
 import io.ebean.*;
 import models.Experiment;
@@ -118,9 +119,12 @@ public class QueueActor extends UntypedAbstractActor {
             Logger.debug(filteredByInstanceWaitingUsers.size() + " users have not participated in experiment ");
             if(filteredByInstanceWaitingUsers.size() >= experimentInstance.getnParticipants()) {
               Logger.debug("experimentInstance.getnParticipants() = " + experimentInstance.getnParticipants());
-
               experimentInstance.assignUserInfo(filteredByInstanceWaitingUsers
                       .subList(0, experimentInstance.getnParticipants()));
+              Log.debug("UsersId::" + filteredByInstanceWaitingUsers.stream().map(u ->
+                      u.getRandomizedId())
+                      .collect(Collectors
+                              .joining("|")) + "<====> " + experimentInstance.getExperimentInstanceName());
             }
           }
         }
