@@ -110,7 +110,7 @@ public class QueueActor extends UntypedAbstractActor {
               Logger.debug("User " + userInfo.getRandomizedId() + " has already participated in this experiment");
               break innerloop;
             }
-            
+
             //using the lambda function to filter and collect the users who have not participated in the instance.
             // This should filter users who have not participated in the parent Experiment, not the ExperimentInstance
             List<UserInfo> filteredByInstanceWaitingUsers = waitingUsers.stream().filter(u -> !u.hasParticipatedInExperiment(

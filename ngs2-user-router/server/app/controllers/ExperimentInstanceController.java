@@ -101,7 +101,7 @@ public class ExperimentInstanceController extends Controller {
     experimentInstance.setPriority(experimentForm.get().priority);
     experimentInstance.setStatus(experimentForm.get().status);
     if (experimentInstance.getStatus().equals("STOPPED")) {
-      experimentInstance.stopExperimentInstance();
+      experimentInstance.stopExperimentInstance(experimentInstance);
     }
     experimentInstance.update();
     JsonNode jsonObject = Json.toJson(experimentInstance);

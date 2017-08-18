@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.ebean.Finder;
 import io.ebean.Model;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -43,7 +44,7 @@ public class UserInfo extends Model {
   @Constraints.Required
   public String sampleGroup;
 
-  @ManyToMany(mappedBy = "userInfoList")
+  @ManyToMany(mappedBy = "userInfoList", cascade = CascadeType.ALL)
   public List<ExperimentInstance> experimentInstanceList;
 
   public Long getUserId() {

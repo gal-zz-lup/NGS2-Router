@@ -201,12 +201,24 @@ public class ExperimentInstance extends Model {
   /**
    * Method to stop experiment instance.
    */
-  public void stopExperimentInstance() {
-    // Call this when stopping the experiment instance to reset the src and status of the players
-    for (UserInfo user : userInfoList) {
-      user.setStatus("FINISHED");
-      user.setCurrentGameUrl("");
-      user.update();
+  public void stopExperimentInstance(ExperimentInstance experimentInstance) {
+
+    UserInfoExperimentInstance uieiObj = new UserInfoExperimentInstance();
+    List<UserInfoExperimentInstance> uieiList = uieiObj.getUsersInfoExperimentByInstanceId(experimentInstance.id);
+    for(UserInfoExperimentInstance uiei : uieiList) {
+      for (UserInfo user : userInfoList) {
+        if (uiei.getUserInfo().getUserId().equals(user.getUserId())) {
+          Logger.info("Changing setstus of User " + user.userId + " stopping instance " + uiei.getExperimentInstance().id);
+          user.setStatus("FINISHED");
+          user.setCurrentGameUrl("");
+          uiei.setArrivalTime(user.getArrivalTime());
+          uiei.setSendOffTime(user.getLastCheckIn());
+          experimentInstance.setStatus("FINISHED");
+          experimentInstance.update();
+          user.update();
+          uiei.update();
+        }
+      }
     }
   }
 
