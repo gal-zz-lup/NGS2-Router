@@ -147,7 +147,7 @@ public class QueueActor extends UntypedAbstractActor {
         progress.put("valuemax", maxValue);
         progress.put("valuemin", minValue);
         progress.put("value", waitingClients);
-        result.put("progress", progress);
+        result.set("progress", progress);
         sender().tell(result, self());
       }
     }
