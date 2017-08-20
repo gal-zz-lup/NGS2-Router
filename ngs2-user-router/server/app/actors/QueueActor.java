@@ -101,9 +101,12 @@ public class QueueActor extends UntypedAbstractActor {
             iter.remove();
           }
         }
+        outter:
         for (UserInfo userInfo : waitingUsers) {
           innerloop:
           for (ExperimentInstance experimentInstance : activeExperimentInstances) {
+
+            Logger.debug("Evaluating User " + userInfo.getUserId() + ":" + userInfo.getRandomizedId() + experimentInstance.id);
 
             // Since we are using many to many relationship we can get the userInfo list with experimentInstance
             if (userInfo.hasParticipatedInExperiment(experimentInstance.getExperiment())) {
@@ -125,7 +128,13 @@ public class QueueActor extends UntypedAbstractActor {
                       u.getRandomizedId())
                       .collect(Collectors
                               .joining("|")) + "to experiment ::" + experimentInstance.getExperimentInstanceName());
-              break innerloop;
+              //waitingUsers = waitingUsers.stream().filter(u -> !filteredByInstanceWaitingUsers.contains(u.getRandomizedId())).collect(Collectors.toList());
+              waitingUsers.removeAll(filteredByInstanceWaitingUsers);
+              Logger.debug(waitingUsers.size() + "waiting");
+              if (waitingUsers.size() > 0)
+                break innerloop;
+              else
+                break outter;
             }
           }
         }
