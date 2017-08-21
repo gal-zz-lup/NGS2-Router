@@ -103,6 +103,14 @@ public class ExperimentInstance extends Model {
         .eq("priority", priority).findList();
   }
 
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
   public int getnParticipants() {
     return nParticipants;
   }
@@ -202,25 +210,25 @@ public class ExperimentInstance extends Model {
    * Method to stop experiment instance.
    */
   public void stopExperimentInstance(ExperimentInstance experimentInstance) {
+    // Call this when stopping the experiment instance to reset the src and status of the players
+    for (UserInfo user : userInfoList) {
+      user.setStatus("FINISHED");
+      user.setCurrentGameUrl("");
+      user.update();
 
-    UserInfoExperimentInstance uieiObj = new UserInfoExperimentInstance();
-    List<UserInfoExperimentInstance> uieiList = uieiObj.getUsersInfoExperimentByInstanceId(experimentInstance.id);
-    for(UserInfoExperimentInstance uiei : uieiList) {
-      for (UserInfo user : userInfoList) {
-        if (uiei.getUserInfo().getUserId().equals(user.getUserId())) {
-          Logger.info("Changing setstus of User " + user.userId + " stopping instance " + uiei.getExperimentInstance().id);
-          user.setStatus("FINISHED");
-          user.setCurrentGameUrl("");
-          uiei.setArrivalTime(user.getArrivalTime());
-          uiei.setSendOffTime(user.getLastCheckIn());
-          experimentInstance.setStatus("FINISHED");
-          experimentInstance.update();
-          user.update();
-          uiei.update();
-        }
-      }
+      //if works pull it out as a query to bring out UIEI table and iterate similar to previous commit.
+      UserInfoExperimentInstance uiei = UserInfoExperimentInstance.find.query()
+              .where().eq("user_info_id", user.getUserId())
+              .eq("experiment_instance_id", experimentInstance.getId()).findOne();
+      experimentInstance.setStatus("FINISH");
+      experimentInstance.update();
+
+      uiei.setArrivalTime(user.getArrivalTime());
+      uiei.setSendOffTime(uiei.getSendOffTime());
+      uiei.update();
     }
   }
+
 
   /**
    * Populate user information and change state in UserInfo,
