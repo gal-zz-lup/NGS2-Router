@@ -31,6 +31,7 @@ POST      /app/upload                                         controllers.FileUp
 GET       /client/:clientId                                   controllers.ClientController.login(clientId)
 GET       /client/:clientId/update                            controllers.ClientController.update(clientId: String)
 GET       /client/:clientId/waiting                           controllers.ClientController.waiting(clientId: String)
+GET       /client/:clientId/no-experiments                    controllers.ClientController.noExperiments(clientId: String)
 
 # Catch-all route
 GET       /*file                                              controllers.Assets.at(path="/public", file)

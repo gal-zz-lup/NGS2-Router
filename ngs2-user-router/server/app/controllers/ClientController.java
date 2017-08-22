@@ -72,4 +72,12 @@ public class ClientController extends Controller {
     }
     return ok(views.html.waiting.render(user));
   }
+
+  public Result noExperiments(String clientId) {
+    UserInfo user = UserInfo.find.query().where().eq("randomized_id", clientId).findUnique();
+    if (user == null) {
+      return notFound("User not found.");
+    }
+    return ok(views.html.no_experiments.render(user));
+  }
 }
