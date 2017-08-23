@@ -30,7 +30,10 @@ POST      /app/upload                                         controllers.FileUp
 # Client routes
 GET       /client/:clientId                                   controllers.ClientController.login(clientId)
 GET       /client/:clientId/update                            controllers.ClientController.update(clientId: String)
+POST      /client/:clientId/ready                             controllers.ClientController.ready(clientId: String)
+POST      /client/:clientId/unready                           controllers.ClientController.unready(clientId: String)
 GET       /client/:clientId/waiting                           controllers.ClientController.waiting(clientId: String)
+GET       /client/:clientId/not-waiting                       controllers.ClientController.notWaiting(clientId: String)
 GET       /client/:clientId/no-experiments                    controllers.ClientController.noExperiments(clientId: String)
 
 # Catch-all route

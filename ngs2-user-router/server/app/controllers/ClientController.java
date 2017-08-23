@@ -43,13 +43,41 @@ public class ClientController extends Controller {
     // User is connecting to the router, set their status to "WAITING" and
     // their arrival time to now
     if (!user.getStatus().equals("PLAYING")) {
-      user.setStatus("WAITING");
+      user.setStatus("LOGGED_IN");
       user.setArrivalTime(Timestamp.from(Instant.now()));
       // We need to set the lastCheckInTime
       user.setLastCheckIn(user.getArrivalTime());
       user.save();
     }
     return ok(views.html.client.render(user));
+  }
+
+  public Result ready(String clientId) {
+    UserInfo user = UserInfo.find.query().where().eq("randomized_id", clientId).findUnique();
+    if (user == null) {
+      return notFound("User not found.");
+    }
+    // User is connecting to the router, set their status to "WAITING" and
+    // their arrival time to now
+    if (!user.getStatus().equals("PLAYING")) {
+      user.setStatus("WAITING");
+      user.save();
+    }
+    return ok();
+  }
+
+  public Result unready(String clientId) {
+    UserInfo user = UserInfo.find.query().where().eq("randomized_id", clientId).findUnique();
+    if (user == null) {
+      return notFound("User not found.");
+    }
+    // User is connecting to the router, set their status to "WAITING" and
+    // their arrival time to now
+    if (!user.getStatus().equals("PLAYING")) {
+      user.setStatus("LOGGED_IN");
+      user.save();
+    }
+    return ok();
   }
 
   /**
@@ -71,6 +99,14 @@ public class ClientController extends Controller {
       return notFound("User not found.");
     }
     return ok(views.html.waiting.render(user));
+  }
+
+  public Result notWaiting(String clientId) {
+    UserInfo user = UserInfo.find.query().where().eq("randomized_id", clientId).findUnique();
+    if (user == null) {
+      return notFound("User not found.");
+    }
+    return ok(views.html.not_waiting.render(user));
   }
 
   public Result noExperiments(String clientId) {

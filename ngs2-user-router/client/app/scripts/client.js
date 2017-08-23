@@ -14,7 +14,9 @@ $(document).ready(function() {
 
         if (response.hasOwnProperty('progress')) {
           updateProgress(response);
+          updateReadyButton(response);
         }
+
         setTimeout(updateClient, 3000);
       });
   }
@@ -26,18 +28,50 @@ $(document).ready(function() {
 
     if (response.hasOwnProperty('nActiveExperimentInstances') && $.isNumeric(response.nActiveExperimentInstances)) {
       if (response.nActiveExperimentInstances > 0) {
-        return window.location.pathname + '/waiting';
+        if (response.status == 'WAITING') {
+          return window.location.pathname + '/waiting';
+        } else {
+          return window.location.pathname + '/not-waiting';
+        }
       }
     }
 
     return window.location.pathname + '/no-experiments'
   }
 
+  function updateReadyButton(response) {
+    if (response.hasOwnProperty('status') && response.status === "LOGGED_IN") {
+      $('#ready-button').css("display", "block");
+    } else {
+      $('#ready-button').css("display", "none");
+    }
+
+    if (response.hasOwnProperty('status') && response.status === "WAITING") {
+      $('#unready-button').css("display", "block");
+    } else {
+      $('#unready-button').css("display", "none");
+    }
+  }
+
+  function clickReady() {
+    $.post(window.location.pathname + '/ready', function(data) {
+      console.log("Ready response", data);
+      $('#ready-button').css("display", "none");
+    });
+  }
+
+  function clickUnready() {
+    $.post(window.location.pathname + '/unready', function(data) {
+      console.log("Unready response", data);
+      $('#unready-button').css("display", "none");
+    });
+  }
+
   function updateProgress(response) {
     var status = response.status;
     var progressObject = response.progress;
     var nActiveExperimentInstances = response.nActiveExperimentInstances;
-    if (status == "WAITING" && nActiveExperimentInstances > 0) {
+    if ((status === "WAITING" || status === "LOGGED_IN") && nActiveExperimentInstances > 0) {
       if (progressObject.hasOwnProperty("minValue")
         && progressObject.hasOwnProperty("maxValue")
         && progressObject.hasOwnProperty("value")) {
@@ -47,6 +81,7 @@ $(document).ready(function() {
         var percent = Math.min(Math.round((progressObject.value /progressObject.maxValue) * 100), 100);
         $('#peel-progress').css('width', percent + '%');
         $('#peel-progress').html(progressObject.value + ' participants have joined');
+        $('#status-div').css('display', 'block');
       }
     } else {
       // Hide the status div if the client's status is not WAITING
@@ -55,4 +90,6 @@ $(document).ready(function() {
   }
 
   updateClient();
+  $('#ready-button').on('click', clickReady);
+  $('#unready-button').on('click', clickUnready);
 });

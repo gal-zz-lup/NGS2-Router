@@ -1,4 +1,5 @@
 html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -21,6 +22,9 @@ html, body {
 }
 
 #peel-iframe {
+  display: block;
+  height: 100%;
+  width: 100%;
   z-index: 1;
 }
 
@@ -29,9 +33,17 @@ html, body {
 }
 
 .peel-container {
-  margin-top: 4em;
+  margin-top: 6em;
 }
 
 #peel-progress {
   width: 0%;
+}
+
+#ready-button {
+  margin-left: 1em;
+}
+
+#unready-button {
+  margin-left: 1em;
 }

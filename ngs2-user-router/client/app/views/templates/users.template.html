@@ -32,6 +32,7 @@
       <th>Language</th>
       <th>Sample Group</th>
       <th>Status</th>
+      <th>URL</th>
       <th><!-- Actions --></th>
     </tr>
     </thead>
@@ -43,6 +44,7 @@
       <td>{{ user.language }}</td>
       <td>{{ user.sampleGroup }}</td>
       <td>{{ user.status }}</td>
+      <td>{{ user.currentGameUrl }}</td>
       <td align="right">
         <button ng-style="{'visibility' : (hover) ? 'visible' : 'hidden'}" ng-click="deleteUser(user)"
                 class="btn btn-default btn-xs form-inline">
