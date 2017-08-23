@@ -59,9 +59,7 @@ public class ExperimentInstance extends Model {
   @Constraints.Required
   @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
   public Timestamp updatedTime;
-
-
-
+  
   @JsonIgnore
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "user_info_experiment_instance",
@@ -237,7 +235,7 @@ public class ExperimentInstance extends Model {
       uiei.setArrivalTime(uiei.getArrivalTime());
       uiei.update();
     }
-    // Updating the experiment instance table to reflect stoppage. 
+    // Updating the experiment instance table to reflect stoppage.
     experimentInstance.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
     experimentInstance.update();
   }
