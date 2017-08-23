@@ -23,7 +23,7 @@
     };
 
     $scope.toggleExperimentInstance = function(experimentInstance) {
-      experimentInstance.status = (experimentInstance.status === 'ACTIVE') ? 'STOPPED' : 'ACTIVE';
+      experimentInstance.status = (experimentInstance.status === 'STOPPED') ? 'ACTIVE' : 'STOPPED';
     };
 
     $scope.deleteExperimentInstance = function(experimentInstance) {

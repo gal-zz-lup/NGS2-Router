@@ -24,6 +24,14 @@ function MainController($scope, ExperimentService, UsersService, $uibModal, Aler
     //console.log("Getting users");
     UsersService.getAllUsers().then(function(resp) {
       $scope.users = resp;
+      $scope.userStats = {};
+      angular.forEach($scope.users, function(user) {
+        if ($scope.userStats.hasOwnProperty(user.status)) {
+          $scope.userStats[user.status] ++;
+        } else {
+          $scope.userStats[user.status] = 1;
+        }
+      });
     });
   }
 
