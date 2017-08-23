@@ -49,9 +49,13 @@ CREATE TABLE user_info (
 CREATE TABLE user_info_experiment_instance (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   user_info_id bigint(20) NOT NULL,
-  FOREIGN KEY (user_info_id) REFERENCES user_info(id),
+  FOREIGN KEY (user_info_id) REFERENCES user_info(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   experiment_instance_id bigint(20) NOT NULL,
-  FOREIGN KEY (experiment_instance_id) REFERENCES experiment_instance(id),
+  FOREIGN KEY (experiment_instance_id) REFERENCES experiment_instance(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   arrival_time TIMESTAMP NOT NULL,
   send_off_time TIMESTAMP NOT NULL,
   CONSTRAINT pk_experiment_user_info PRIMARY KEY (id)
