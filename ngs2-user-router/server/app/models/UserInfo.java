@@ -10,6 +10,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class UserInfo extends Model {
   @Constraints.Required
   public String sampleGroup;
 
-  @ManyToMany(mappedBy = "userInfoList", cascade = CascadeType.ALL)
+  @ManyToMany(mappedBy = "userInfoList", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   public List<ExperimentInstance> experimentInstanceList;
 
   public Long getUserId() {
@@ -119,6 +120,13 @@ public class UserInfo extends Model {
     this.currentGameUrl = currentGameUrl;
   }
 
+  public List<ExperimentInstance> getExperimentInstanceList() {
+    return experimentInstanceList;
+  }
+
+  public void setExperimentInstanceList(List<ExperimentInstance> experimentInstanceList) {
+    this.experimentInstanceList = experimentInstanceList;
+  }
 
   /**
    * Set the properties of UserInfo object.

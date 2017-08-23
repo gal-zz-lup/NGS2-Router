@@ -10,6 +10,7 @@ import play.data.validation.Constraints;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,11 +60,13 @@ public class ExperimentInstance extends Model {
   @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
   public Timestamp updatedTime;
 
+
+
   @JsonIgnore
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinTable(name = "user_info_experiment_instance",
-      joinColumns = @JoinColumn(name = "experiment_instance_id", referencedColumnName = "id"),
-      inverseJoinColumns = @JoinColumn(name = "user_info_id", referencedColumnName = "id"))
+      joinColumns = {@JoinColumn(name = "experiment_instance_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "user_info_id", referencedColumnName = "id")})
   public List<UserInfo> userInfoList;
 
   public static Finder<Long, ExperimentInstance> find = new Finder<Long, ExperimentInstance>(ExperimentInstance.class);
@@ -117,10 +120,6 @@ public class ExperimentInstance extends Model {
 
   public void setnParticipants(int nParticipants) {
     this.nParticipants = nParticipants;
-  }
-
-  public List<UserInfo> getUserInfoList() {
-    return userInfoList;
   }
 
   public String getExperimentInstanceName() {
@@ -187,6 +186,14 @@ public class ExperimentInstance extends Model {
     this.experiment = experiment;
   }
 
+  public List<UserInfo> getUserInfoList() {
+    return userInfoList;
+  }
+
+  public void setUserInfoList(List<UserInfo> userInfoList) {
+    this.userInfoList = userInfoList;
+  }
+
   /**
    * Generate Unique URL for user.
    * @param user
@@ -207,26 +214,32 @@ public class ExperimentInstance extends Model {
   }
 
   /**
-   * Method to stop experiment instance.
+   * Method to stop experiment instance and set the status of the users who were playing in the instance
+   * to be completed state.
+   * @param experimentInstance object contains experiment instance info and user info of that instance.
    */
   public void stopExperimentInstance(ExperimentInstance experimentInstance) {
-    // Call this when stopping the experiment instance to reset the src and status of the players
-    for (UserInfo user : userInfoList) {
-      user.setStatus("FINISHED");
-      user.setCurrentGameUrl("");
-      user.update();
+    // Getting all the records relevant to experiment instance from user_info_experiment_instance table
+    List<UserInfoExperimentInstance> uieiList = UserInfoExperimentInstance.getUsersInfoExperimentByInstanceId(
+            experimentInstance.getId());
 
-      //if works pull it out as a query to bring out UIEI table and iterate similar to previous commit.
-      UserInfoExperimentInstance uiei = UserInfoExperimentInstance.find.query()
-              .where().eq("user_info_id", user.getUserId())
-              .eq("experiment_instance_id", experimentInstance.getId()).findOne();
-      experimentInstance.setStatus("FINISH");
-      experimentInstance.update();
+    Logger.info("Stopping Experiment Instance " + experimentInstance.getId() + "::" +
+            experimentInstance.getExperimentInstanceName());
 
-      uiei.setArrivalTime(user.getArrivalTime());
+    for (UserInfoExperimentInstance uiei : uieiList) {
+      // Iterating over the users who are attached to the experiment instance to change status.
+      for (UserInfo user : uiei.getExperimentInstance().getUserInfoList()) {
+        user.setStatus("FINISHED");
+        user.setCurrentGameUrl("");
+        user.update();
+      }
       uiei.setSendOffTime(uiei.getSendOffTime());
+      uiei.setArrivalTime(uiei.getArrivalTime());
       uiei.update();
     }
+    // Updating the experiment instance table to reflect stoppage. 
+    experimentInstance.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
+    experimentInstance.update();
   }
 
 

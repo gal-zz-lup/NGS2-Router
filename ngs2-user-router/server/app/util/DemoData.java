@@ -95,6 +95,7 @@ public class DemoData {
         ei1.experimentInstanceUrlShort = "";
         ei1.priority = 1;
         ei1.status = "ACTIVE";
+        ei1.createdTime = new Timestamp(System.currentTimeMillis());
 
         ExperimentInstance ei2 = new ExperimentInstance();
         ei2.nParticipants = 3;
@@ -104,6 +105,7 @@ public class DemoData {
         ei2.experimentInstanceUrlShort = "";
         ei2.priority = 2;
         ei2.status = "ACTIVE";
+        ei2.createdTime = new Timestamp(System.currentTimeMillis());
 
         ExperimentInstance ei3 = new ExperimentInstance();
         ei3.nParticipants = 3;
@@ -113,6 +115,7 @@ public class DemoData {
         ei3.experimentInstanceUrlShort = "";
         ei3.priority = 3;
         ei3.status = "ACTIVE";
+        ei3.createdTime = new Timestamp(System.currentTimeMillis());
 
         e1.experimentInstances.add(ei1);
         e1.experimentInstances.add(ei2);
