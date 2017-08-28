@@ -1,6 +1,7 @@
 'use strict';
 
 $(document).ready(function() {
+  $.ajaxSetup({cache: false});
   function updateClient() {
     $.getJSON(window.location.pathname + '/update',
       function (response) {
